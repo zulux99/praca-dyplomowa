@@ -1,4 +1,7 @@
 function Navbar(props) {
+  function showMenu() {
+    console.log("test");
+  }
   return (
     <nav className="nav">
       <a href="#" className="brand">
@@ -26,10 +29,10 @@ function Navbar(props) {
           </a>
         </li>
       </ul>
-      <div className="nav_toggler">
-        <div className="line1"></div>
-        <div className="line2"></div>
-        <div className="line3"></div>
+      <div className="nav_toggler" onClick={() => showMenu()}>
+        <div className="line"></div>
+        <div className="line"></div>
+        <div className="line"></div>
       </div>
     </nav>
   );
