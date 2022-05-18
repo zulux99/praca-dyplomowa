@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
       <Navbar/>
-      Hello world!
+      {/* Hello world! */}
     </div> 
   )
 }
