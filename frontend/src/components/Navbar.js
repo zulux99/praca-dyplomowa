@@ -1,14 +1,21 @@
+import { useState } from "react";
 function Navbar() {
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const navItems = new Map();
   function openSideNav() {
     console.log("otwieram nav");
-    
   }
   function closeSideNav() {
     console.log("zamykam nav");
   }
   return (
     <div>
-      <nav className="nav">
+      <nav
+        className="nav"
+        style={isNavExpanded
+          ? { filter: "blur(0.1rem)" }
+          : { filter: "blur(0)" }}
+      >
         <a href="#" className="brand">
           Budżet domowy
         </a>
@@ -34,14 +41,27 @@ function Navbar() {
             </a>
           </li>
         </ul>
-        <div className="nav_toggler" onClick={() => openSideNav()}>
+        <div
+          className="nav_toggler"
+          onClick={() => {
+            setIsNavExpanded(!isNavExpanded);
+          }}
+        >
           <div className="line"></div>
           <div className="line"></div>
           <div className="line"></div>
         </div>
       </nav>
-      <div className="side_nav">
-        <a className="closeSideNavButton" onClick={() => closeSideNav()}>
+      <div
+        className="side_nav"
+        style={isNavExpanded ? { width: "60%" } : { width: "0" }}
+      >
+        <a
+          className="closeSideNavButton"
+          onClick={() => {
+            setIsNavExpanded(!isNavExpanded);
+          }}
+        >
           <h1>&times;</h1>
         </a>
         <ul className="side_nav_list">
