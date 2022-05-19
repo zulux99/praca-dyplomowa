@@ -1,13 +1,15 @@
-import { createRoot } from 'react-dom/client';
-import Navbar from './Navbar';
+import { createRoot } from "react-dom/client";
+import Navbar from "./Navbar";
 
 function App() {
   return (
-    <div>
-      <Navbar/>
-      {/* Hello world! */}
-    </div> 
-  )
+    <>
+      <div>
+        <Navbar />
+        {/* Hello world! */}
+      </div>
+    </>
+  );
 }
 
 export default App;

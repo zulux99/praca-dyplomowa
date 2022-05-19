@@ -1,94 +1,73 @@
 import { useState } from "react";
 function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const navItems = new Map();
-  function openSideNav() {
-    console.log("otwieram nav");
-  }
-  function closeSideNav() {
-    console.log("zamykam nav");
-  }
+  const [onMobile, setOnMobile] = useState(false);
+  const navBarPages = ["Strona główna", "Twoje wydatki", "Twoje przychody", "Twoje rachunki"];
   return (
-    <div>
-      <nav
-        className="nav"
-        style={isNavExpanded
-          ? { filter: "blur(0.1rem)" }
-          : { filter: "blur(0)" }}
-      >
-        <a href="#" className="brand">
-          Budżet domowy
-        </a>
-        <ul className="nav_menu">
-          <li className="nav_item">
-            <a href="#" className="nav_link">
-              Strona główna
-            </a>
-          </li>
-          <li className="nav_item">
-            <a href="#" className="nav_link">
-              Twoje wydatki
-            </a>
-          </li>
-          <li className="nav_item">
-            <a href="#" className="nav_link">
-              Twoje przychody
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav_link">
-              Twoje rachunki
-            </a>
-          </li>
-        </ul>
+    <>
+      <div className="main">
         <div
-          className="nav_toggler"
-          onClick={() => {
-            setIsNavExpanded(!isNavExpanded);
-          }}
-        >
-          <div className="line"></div>
-          <div className="line"></div>
-          <div className="line"></div>
-        </div>
-      </nav>
+          className="closing_side_bar"
+          style={isNavExpanded ? { display: "block" } : { display: "none" }}
+          onClick={() => setIsNavExpanded(false)}></div>
+        <nav className="nav" style={isNavExpanded ? { filter: "blur(0.1rem)" } : { filter: "blur(0)" }}>
+          <a href="#" className="brand">
+            Budżet domowy
+          </a>
+          <ul className="nav_menu">
+            {navBarPages.map((item) => {
+              return (
+                <div className="nav_link">
+                  <li>
+                    <a href="#">{item}</a>
+                  </li>
+                </div>
+              );
+            })}
+          </ul>
+          <div
+            className="nav_toggler"
+            onClick={() => {
+              setIsNavExpanded(true);
+            }}>
+            {[...Array(3)].map((x) => (
+              <div className="line"></div>
+            ))}
+          </div>
+        </nav>
+        <SideNav isNavExpanded={isNavExpanded} setIsNavExpanded={setIsNavExpanded} navBarPages={navBarPages} />
+      </div>
+    </>
+  );
+}
+
+export default Navbar;
+
+function SideNav({ isNavExpanded, setIsNavExpanded, navBarPages }) {
+  return (
+    <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { width: "0" }}>
       <div
-        className="side_nav"
-        style={isNavExpanded ? { width: "60%" } : { width: "0" }}
-      >
-        <a
-          className="closeSideNavButton"
-          onClick={() => {
-            setIsNavExpanded(!isNavExpanded);
-          }}
-        >
+        className="side_nav_close"
+        onClick={() => {
+          setIsNavExpanded(false);
+        }}>
+        <a>
           <h1>&times;</h1>
         </a>
-        <ul className="side_nav_list">
-          <li className="side_nav_item">
-            <a href="#" className="side_nav_link">
-              Strona główna
-            </a>
-          </li>
-          <li className="side_nav_item">
-            <a href="#" className="side_nav_link">
-              Twoje wydatki
-            </a>
-          </li>
-          <li className="side_nav_item">
-            <a href="#" className="side_nav_link">
-              Twoje przychody
-            </a>
-          </li>
-          <li>
-            <a href="#" className="side_nav_link">
-              Twoje rachunki
-            </a>
-          </li>
+      </div>
+      <div className="side_nav_list">
+        <ul>
+          {navBarPages.map((item) => {
+            return (
+              <div className="side_nav_link" onClick={() => setIsNavExpanded(false)}>
+                <li>
+                  <a href="#">{item}</a>
+                </li>
+              </div>
+            );
+          })}
         </ul>
       </div>
     </div>
   );
 }
-
-export default Navbar;

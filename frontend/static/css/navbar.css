@@ -3,6 +3,20 @@
     padding: 0;
 }
 
+.main {
+    height: 100%;
+    width: 100%;
+}
+
+.closing_side_bar {
+    display: none;
+    position: fixed;
+    width: 40%;
+    height: 100%;
+    left: 0;
+    z-index: 2;
+}
+
 .brand {
     font-size: 1.5rem;
     color: black;
@@ -22,17 +36,23 @@
     display: flex;
     justify-content: space-between;
     list-style: none;
-    margin: 10px;
+    margin: 20px;
     gap: 60px;
+    height: 100%;
 }
 
 .nav_link {
+    position: relative;
     color: black;
-    text-decoration: none;
     transition: 0.3s ease;
+    height: 100%;
+}
+.nav_link a {
+    text-decoration: none;
+    color: black;
 }
 
-.nav_link:hover {
+.nav_link a:hover {
     color: white;
 }
 
@@ -41,10 +61,6 @@
     display: none;
 }
 
-button {
-    width: 30px;
-    height: 20px;
-}
 
 .line {
     display: block;
@@ -73,38 +89,59 @@ button {
     }
 
     .side_nav {
-        position: fixed;
         display: block;
+        gap: 2rem;
+        position: fixed;
         height: 100%;
-        width: 0;
+        width: 60%;
         background: lightgray;
         justify-content: center;
         align-items: center;
         z-index: 1;
-        padding-top: 50px;
         top: 0;
         right: 0;
-        overflow-x: hidden;
         transition: 0.3s ease;
+        overflow-y: scroll;
+    }
+
+    .side_nav_close {
+        top: 1rem;
+        position: fixed;
+        width: 100%;
+        display: flex;
+        z-index: 2;
     }
 
     .side_nav ul {
         list-style: none;
+        flex-direction: column;
     }
 
-    .closeSideNavButton {
-        width: 20px;
-        height: 20px;
-        transition: 0.2s;
-        cursor: pointer;
-    }
-
-    .closeSideNavButton:hover {
-        color: white;
+    .side_nav_list {
+        width: 100%;
+        margin-top: 5rem;
     }
 
     .side_nav_link {
-        text-decoration: none;
-        color: green;
+        display: flex;
+        justify-content: center;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
+
+    .side_nav_link:hover,
+    .side_nav_close:hover {
+        background: darkgray;
+        cursor: pointer;
+    }
+
+
+    .side_nav a {
+        text-decoration: none;
+        color: black;
+    }
+}
+
+div {
+    outline: 2px solid red !important;
 }
