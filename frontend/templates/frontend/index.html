@@ -1,11 +1,14 @@
 {% load static %}
+{% load compress %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static "css/navbar.css"%}">
+        {% compress css %}
+            <link type="text/x-scss" rel="stylesheet" href="{% static "css/navbar.scss" %}">
+        {% endcompress %}
         <title>Django REST with React</title>
     </head>
     <body>

@@ -1,3 +1,6 @@
+$navBarHeight: 3rem;
+$transitionSpeed: 0.3s;
+
 * {
     margin: 0;
     padding: 0;
@@ -28,6 +31,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: $navBarHeight;
     background: gray;
     align-items: center;
 }
@@ -44,7 +48,7 @@
 .nav_link {
     position: relative;
     color: black;
-    transition: 0.3s ease;
+    transition: $transitionSpeed ease;
     height: 100%;
 }
 .nav_link a {
@@ -74,9 +78,10 @@
     display: none;
 }
 
-@media (max-width: 768px) {
+@media only screen and (hover: none) {
     .nav_toggler {
         display: block;
+        transition: $transitionSpeed;
     }
 
     .nav_menu {
@@ -92,15 +97,15 @@
         display: block;
         gap: 2rem;
         position: fixed;
-        height: 100%;
+        height: calc(100% - #{$navBarHeight});
         width: 60%;
         background: lightgray;
         justify-content: center;
         align-items: center;
         z-index: 1;
-        top: 0;
         right: 0;
-        transition: 0.3s ease;
+        bottom: 0;
+        transition: $transitionSpeed ease;
         overflow-y: scroll;
     }
 
@@ -119,7 +124,6 @@
 
     .side_nav_list {
         width: 100%;
-        margin-top: 5rem;
     }
 
     .side_nav_link {
@@ -139,6 +143,17 @@
     .side_nav a {
         text-decoration: none;
         color: black;
+    }
+    .line2:nth-child(1) {
+    transform: rotate(45deg);
+    transform-origin: top left;
+    }
+    .line2:nth-child(2) {
+    opacity: 0;
+    }
+    .line2:nth-child(3) {
+    transform: rotate(-45deg);
+    transform-origin: bottom left;
     }
 }
 

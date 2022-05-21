@@ -10,7 +10,7 @@ function Navbar() {
           className="closing_side_bar"
           style={isNavExpanded ? { display: "block" } : { display: "none" }}
           onClick={() => setIsNavExpanded(false)}></div>
-        <nav className="nav" style={isNavExpanded ? { filter: "blur(0.1rem)" } : { filter: "blur(0)" }}>
+        <nav className="nav">
           <a href="#" className="brand">
             Budżet domowy
           </a>
@@ -27,11 +27,10 @@ function Navbar() {
           </ul>
           <div
             className="nav_toggler"
-            onClick={() => {
-              setIsNavExpanded(true);
+            onClick={() => { isNavExpanded ? setIsNavExpanded(false)  : setIsNavExpanded(true)
             }}>
             {[...Array(3)].map((x) => (
-              <div className="line"></div>
+              <div className={isNavExpanded ? "line line2" : "line"}></div>
             ))}
           </div>
         </nav>
@@ -45,16 +44,7 @@ export default Navbar;
 
 function SideNav({ isNavExpanded, setIsNavExpanded, navBarPages }) {
   return (
-    <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { width: "0" }}>
-      <div
-        className="side_nav_close"
-        onClick={() => {
-          setIsNavExpanded(false);
-        }}>
-        <a>
-          <h1>&times;</h1>
-        </a>
-      </div>
+    <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { right: "-70%" }}>
       <div className="side_nav_list">
         <ul>
           {navBarPages.map((item) => {
