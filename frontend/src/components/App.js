@@ -1,11 +1,13 @@
 import { createRoot } from "react-dom/client";
 import Navbar from "./Navbar";
+import Przekierowania from "./Przekierowania";
 
 function App() {
   return (
     <>
       <div>
-        <Navbar />
+        {/* <Navbar /> */}
+        <Przekierowania />
         {/* Hello world! */}
       </div>
     </>

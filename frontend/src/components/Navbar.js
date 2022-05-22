@@ -18,16 +18,17 @@ function Navbar() {
             {navBarPages.map((item) => {
               return (
                 <div className="nav_link">
-                  <li>
-                    <a href="#">{item}</a>
-                  </li>
+                    <li>
+                      <a href="#">{item}</a>
+                    </li>
                 </div>
               );
             })}
           </ul>
           <div
             className="nav_toggler"
-            onClick={() => { isNavExpanded ? setIsNavExpanded(false)  : setIsNavExpanded(true)
+            onClick={() => {
+              isNavExpanded ? setIsNavExpanded(false) : setIsNavExpanded(true);
             }}>
             {[...Array(3)].map((x) => (
               <div className={isNavExpanded ? "line line2" : "line"}></div>

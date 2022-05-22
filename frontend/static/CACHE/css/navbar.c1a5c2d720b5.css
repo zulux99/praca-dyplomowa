@@ -1,0 +1,149 @@
+/* line 4, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+* {
+  margin: 0;
+  padding: 0; }
+
+/* line 9, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.main {
+  height: 100%;
+  width: 100%; }
+
+/* line 14, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.closing_side_bar {
+  display: none;
+  position: fixed;
+  width: 40%;
+  height: 100%;
+  left: 0;
+  z-index: 2; }
+
+/* line 23, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.brand {
+  font-size: 1.5rem;
+  color: black;
+  margin: 10px;
+  text-decoration: none; }
+
+/* line 30, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 3rem;
+  background: gray;
+  align-items: center; }
+
+/* line 39, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav_menu {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 20px;
+  gap: 60px;
+  height: 100%; }
+
+/* line 48, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav_link {
+  position: relative;
+  color: black;
+  transition: 0.3s ease;
+  height: 100%; }
+
+/* line 54, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav_link a {
+  text-decoration: none;
+  color: black; }
+
+/* line 59, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav_link a:hover {
+  color: white; }
+
+/* line 63, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.nav_toggler {
+  cursor: pointer;
+  display: none; }
+
+/* line 69, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.line {
+  display: block;
+  height: 5px;
+  width: 30px;
+  background: black;
+  margin: 5px; }
+
+/* line 77, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+.side_nav {
+  display: none; }
+
+@media only screen and (hover: none) {
+  /* line 82, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .nav_toggler {
+    display: block;
+    transition: 0.3s; }
+  /* line 87, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .nav_menu {
+    left: -150%;
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    align-items: center; }
+  /* line 96, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav {
+    display: block;
+    gap: 2rem;
+    position: fixed;
+    height: calc(100% - 3rem);
+    width: 60%;
+    background: lightgray;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    transition: 0.3s ease;
+    overflow-y: scroll; }
+  /* line 112, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav_close {
+    top: 1rem;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    z-index: 2; }
+  /* line 120, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav ul {
+    list-style: none;
+    flex-direction: column; }
+  /* line 125, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav_list {
+    width: 100%; }
+  /* line 129, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav_link {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem; }
+  /* line 136, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav_link:hover,
+  .side_nav_close:hover {
+    background: darkgray;
+    cursor: pointer; }
+  /* line 143, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .side_nav a {
+    text-decoration: none;
+    color: black; }
+  /* line 147, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .line2:nth-child(1) {
+    transform: rotate(45deg);
+    transform-origin: top left; }
+  /* line 151, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .line2:nth-child(2) {
+    opacity: 0; }
+  /* line 154, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+  .line2:nth-child(3) {
+    transform: rotate(-45deg);
+    transform-origin: bottom left; } }
+
+/* line 160, c:/users/szymo/desktop/studia/praca-dyplomowa/frontend/static/css/navbar.scss */
+div {
+  outline: 2px solid red !important; }
