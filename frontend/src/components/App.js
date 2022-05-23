@@ -1,36 +1,25 @@
 import { createRoot } from "react-dom/client";
+import { Link, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Bills from "./Bills";
+import HomePage from "./HomePage";
 import Navbar from "./Navbar";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-import { HashRouter } from "react-router-dom";
-// import Przekierowania from "./Przekierowania";
 
 function App() {
   return (
     <>
-      <div>
-        <HashRouter>
-          <Routes>
-            {/* <Navbar /> */}
-            {/* <Przekierowania /> */}
-            <Route path="/" element={<Bills />} />
-            {/* Hello world! */}
-            <Route path="bills" element={<Bills />} />
-          </Routes>
-        </HashRouter>
-      </div>
-    </>
-  );
-}
-function Bills() {
-  return (
-    <>
-      <main>
-        <h2>Welcome to the bills!</h2>
-        <p>You can do this, I believe in you.</p>
-      </main>
-      <nav>
-        <Link to="/bills">About</Link>
-      </nav>
+      <BrowserRouter>
+        <div>
+          <Navbar />
+          <Link to="/">HomePage</Link>
+          <br />
+          <Link to="bills">Bils</Link>
+        </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="bills" element={<Bills />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

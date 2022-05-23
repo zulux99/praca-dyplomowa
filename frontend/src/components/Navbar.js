@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const [onMobile, setOnMobile] = useState(false);
-  const navBarPages = ["Strona główna", "Twoje wydatki", "Twoje przychody", "Twoje rachunki"];
+  const navBarPagesArray = [
+    { link: "/", name: "Strona główna" },
+    { link: "/bills", name: "Rachunki" },
+  ];
   return (
     <>
       <div className="main">
@@ -15,12 +19,12 @@ function Navbar() {
             Budżet domowy
           </a>
           <ul className="nav_menu">
-            {navBarPages.map((item) => {
+            {navBarPagesArray.map((item, index) => {
               return (
                 <div className="nav_link">
-                    <li>
-                      <a href="#">{item}</a>
-                    </li>
+                  <li key={index}>
+                    <Link to={item.link}>{item.name}</Link>
+                  </li>
                 </div>
               );
             })}
@@ -35,30 +39,24 @@ function Navbar() {
             ))}
           </div>
         </nav>
-        <SideNav isNavExpanded={isNavExpanded} setIsNavExpanded={setIsNavExpanded} navBarPages={navBarPages} />
+        <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { right: "-70%" }}>
+          <div className="side_nav_list">
+            <ul>
+              {navBarPagesArray.map((item, index) => {
+                return (
+                  <div className="side_nav_link" onClick={() => setIsNavExpanded(false)}>
+                    <li key={index}>
+                    <Link to={item.link}>{item.name}</Link>
+                    </li>
+                  </div>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       </div>
     </>
   );
 }
 
 export default Navbar;
-
-function SideNav({ isNavExpanded, setIsNavExpanded, navBarPages }) {
-  return (
-    <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { right: "-70%" }}>
-      <div className="side_nav_list">
-        <ul>
-          {navBarPages.map((item) => {
-            return (
-              <div className="side_nav_link" onClick={() => setIsNavExpanded(false)}>
-                <li>
-                  <a href="#">{item}</a>
-                </li>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
-  );
-}

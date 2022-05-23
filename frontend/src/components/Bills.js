@@ -1,7 +1,7 @@
 function Bills() {
   return (
     <>
-      <div className="dupa">
+      <div>
         <p>Tutaj są twoje rachunki</p>
       </div>
     </>
