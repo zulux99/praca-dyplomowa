@@ -6,6 +6,8 @@ function Navbar() {
   const navBarPagesArray = [
     { link: "/", name: "Strona główna" },
     { link: "/bills", name: "Rachunki" },
+    { link: "/register", name: "Zarejestruj się" },
+    { link: "/materialui", name: "Testowanie material-ui" },
   ];
   return (
     <>
@@ -21,7 +23,7 @@ function Navbar() {
           <ul className="nav_menu">
             {navBarPagesArray.map((item, index) => {
               return (
-                <div className="nav_link">
+                <div className="nav_link" key={index}>
                   <li key={index}>
                     <Link to={item.link}>{item.name}</Link>
                   </li>
@@ -34,8 +36,8 @@ function Navbar() {
             onClick={() => {
               isNavExpanded ? setIsNavExpanded(false) : setIsNavExpanded(true);
             }}>
-            {[...Array(3)].map((x) => (
-              <div className={isNavExpanded ? "line line2" : "line"}></div>
+            {[...Array(3)].map((x, index) => (
+              <div className={isNavExpanded ? "line line2" : "line"} key={index}></div>
             ))}
           </div>
         </nav>
@@ -44,9 +46,9 @@ function Navbar() {
             <ul>
               {navBarPagesArray.map((item, index) => {
                 return (
-                  <div className="side_nav_link" onClick={() => setIsNavExpanded(false)}>
+                  <div className="side_nav_link" onClick={() => setIsNavExpanded(false)} key={index}>
                     <li key={index}>
-                    <Link to={item.link}>{item.name}</Link>
+                      <Link to={item.link}>{item.name}</Link>
                     </li>
                   </div>
                 );

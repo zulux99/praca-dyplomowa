@@ -5,6 +5,9 @@ import axios from "axios";
 import Bills from "./Bills";
 import HomePage from "./HomePage";
 import Navbar from "./Navbar";
+import Register from "./Register";
+import MaterialUI from "./MaterialUI";
+import { CssBaseline } from "@mui/material";
 
 function App() {
   const [user, setUser] = useState([]);
@@ -34,12 +37,14 @@ function App() {
     <>
       <BrowserRouter>
         <div>
+          <CssBaseline />
           <Navbar />
         </div>
-        <div>{userData}</div>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="bills" element={<Bills />} />
+          <Route path="register" element={<Register />} />
+          <Route path="materialui" element={<MaterialUI />} />
         </Routes>
       </BrowserRouter>
     </>
