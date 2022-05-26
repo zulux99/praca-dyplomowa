@@ -7,10 +7,15 @@ import Container from "@mui/system/Container";
 
 function Register() {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
 
   const [user, setUser] = useState("");
+
+  const confirmPassword = (password2) => {
+    password1 !== password2 ? Error : "";
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,25 +55,26 @@ function Register() {
               type="password"
               label="Hasło"
               id="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword1(e.target.value)}
               margin="dense"></TextField>
             <TextField
               fullWidth
               className="textField"
               required
+              error
               variant="outlined"
               type="password"
               label="Potwierdź hasło"
               id="password2"
-              onChange={(e) => setPassword2(e.target.value)}
+              onChange={e => confirmPassword(e.target.value)}
               margin="dense"></TextField>
-              <TextField
-                fullWidth
-                required
-                className="textField"
-                variant="outlined"
-                label="Email"
-                margin="dense"></TextField>
+            <TextField
+              fullWidth
+              required
+              className="textField"
+              variant="outlined"
+              label="Email"
+              margin="dense"></TextField>
             <Button type="submit" variant="contained">
               Załóż konto
             </Button>
