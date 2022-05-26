@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'finanse',
     'frontend',
     'compressor',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -118,11 +119,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
+# STATICFILES_FINDERS = [
+#     'compressor.finders.CompressorFinder'  
+# ]
 STATICFILES_FINDERS = [
-    'compressor.finders.CompressorFinder'  
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 ]
-STATIC_ROOT = 'frontend/static'
-STATIC_URL = '/static/'
+STATIC_ROOT = 'frontend/static/'
+STATIC_URL = 'frontend/static/'
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
@@ -140,3 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         'rest_framework.renderers.JSONRenderer',
 #     )
 # }
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework.authentication.TokenAuthentication',
+    )
+}

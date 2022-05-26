@@ -1,20 +1,79 @@
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import { useRef, useState, useEffect } from "react";
+import Container from "@mui/system/Container";
 
 function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+
+  const [user, setUser] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/register", JSON.stringify({ username, password }), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
   return (
     <>
       <div>
-        <form>
-          <label>
-            <input type="text" name="username" placeholder="Nazwa użytkownika" />
-            <input type="password" name="password" placeholder="Hasło" />
-            <input type="email" name="email" placeholder="Adres email" />
-            <input type="text" name="description" placeholder="Napisz nam coś o sobie..." />
-          </label>
-          <Button variant="text">Halo</Button>
-          <Typography variant="h4">Witoj przybyszu, czy aby na pewno chcesz założyć konto?</Typography>
-        </form>
+        <Container align="center">
+          <form onSubmit={handleSubmit}>
+            <Typography variant="h4">Rejestracja</Typography>
+            <TextField
+              fullWidth
+              className="textField"
+              required
+              autoComplete="off"
+              variant="outlined"
+              label="Nazwa użytkownika"
+              id="username"
+              onChange={(e) => setUsername(e.target.value)}
+              margin="dense"></TextField>
+            <TextField
+              fullWidth
+              className="textField"
+              required
+              variant="outlined"
+              type="password"
+              label="Hasło"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              margin="dense"></TextField>
+            <TextField
+              fullWidth
+              className="textField"
+              required
+              variant="outlined"
+              type="password"
+              label="Potwierdź hasło"
+              id="password2"
+              onChange={(e) => setPassword2(e.target.value)}
+              margin="dense"></TextField>
+              <TextField
+                fullWidth
+                required
+                className="textField"
+                variant="outlined"
+                label="Email"
+                margin="dense"></TextField>
+            <Button type="submit" variant="contained">
+              Załóż konto
+            </Button>
+          </form>
+        </Container>
       </div>
     </>
   );
