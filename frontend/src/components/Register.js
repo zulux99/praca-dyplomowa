@@ -4,30 +4,36 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import Container from "@mui/system/Container";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [password1, setPassword1] = useState("");
+  const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   const confirmPassword = (password2) => {
-    password1 !== password2 ? Error : "";
-  }
+    password !== password2 ? setPasswordMatch(false) : setPasswordMatch(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("/api/register", JSON.stringify({ username, password }), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response.data);
-    } catch (err) {
-      console.log(err.response.data);
+    if (passwordMatch) {
+      try {
+        const response = await axios.post("/api/register", JSON.stringify({ username, password }), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.data);
+        navigate("/");
+      } catch (err) {
+        console.log("nie udało się");
+        console.log(err.response.data);
+      }
     }
   };
 
@@ -55,18 +61,19 @@ function Register() {
               type="password"
               label="Hasło"
               id="password"
-              onChange={(e) => setPassword1(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               margin="dense"></TextField>
             <TextField
               fullWidth
               className="textField"
               required
-              error
+              error={passwordMatch ? false : true}
+              helperText={passwordMatch ? false : "Hasła się nie zgadzają"}
               variant="outlined"
               type="password"
               label="Potwierdź hasło"
               id="password2"
-              onChange={e => confirmPassword(e.target.value)}
+              onChange={(e) => confirmPassword(e.target.value)}
               margin="dense"></TextField>
             <TextField
               fullWidth
@@ -74,6 +81,7 @@ function Register() {
               className="textField"
               variant="outlined"
               label="Email"
+              onChange={(e) => setEmail(e.target.value)}
               margin="dense"></TextField>
             <Button type="submit" variant="contained">
               Załóż konto
