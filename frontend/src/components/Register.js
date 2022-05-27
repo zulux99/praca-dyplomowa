@@ -15,9 +15,9 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  const confirmPassword = (password2) => {
-    password !== password2 ? setPasswordMatch(false) : setPasswordMatch(true);
-  };
+  useEffect(() => {
+    password !== password2 && password2 !== "" ? setPasswordMatch(false) : setPasswordMatch(true);
+  }, [password, password2]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +31,6 @@ function Register() {
         console.log(response.data);
         navigate("/");
       } catch (err) {
-        console.log("nie udało się");
         console.log(err.response.data);
       }
     }
@@ -47,7 +46,7 @@ function Register() {
               fullWidth
               className="textField"
               required
-              autoComplete="off"
+              autoComplete="username"
               variant="outlined"
               label="Nazwa użytkownika"
               id="username"
@@ -61,6 +60,7 @@ function Register() {
               type="password"
               label="Hasło"
               id="password"
+              autoComplete="new-password"
               onChange={(e) => setPassword(e.target.value)}
               margin="dense"></TextField>
             <TextField
@@ -73,14 +73,17 @@ function Register() {
               type="password"
               label="Potwierdź hasło"
               id="password2"
-              onChange={(e) => confirmPassword(e.target.value)}
+              autoComplete="new-password"
+              onChange={(e) => setPassword2(e.target.value)}
               margin="dense"></TextField>
             <TextField
               fullWidth
-              required
               className="textField"
+              required
               variant="outlined"
               label="Email"
+              type="email"
+              autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
               margin="dense"></TextField>
             <Button type="submit" variant="contained">
