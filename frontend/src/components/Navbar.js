@@ -7,7 +7,7 @@ function Navbar() {
     { link: "/", name: "Strona główna" },
     { link: "/bills", name: "Rachunki" },
     { link: "/register", name: "Zarejestruj się" },
-    { link: "/materialui", name: "Testowanie material-ui" },
+    { link: "/login", name: "Zaloguj się" },
   ];
   return (
     <>

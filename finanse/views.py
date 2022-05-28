@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework import status
 from finanse.serializers import UserSerializer
 from .models import User
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class UserListCreate(generics.ListCreateAPIView):
@@ -17,3 +18,8 @@ class UserCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
