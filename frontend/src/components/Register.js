@@ -56,7 +56,8 @@ function Register() {
               label="Nazwa użytkownika"
               id="username"
               onChange={(e) => setUsername(e.target.value)}
-              margin="dense"></TextField>
+              margin="dense"
+            />
             <TextField
               fullWidth
               className="textField"
@@ -67,7 +68,8 @@ function Register() {
               id="password"
               autoComplete="new-password"
               onChange={(e) => setPassword(e.target.value)}
-              margin="dense"></TextField>
+              margin="dense"
+            />
             <TextField
               fullWidth
               className="textField"
@@ -80,7 +82,8 @@ function Register() {
               id="password2"
               autoComplete="new-password"
               onChange={(e) => setPassword2(e.target.value)}
-              margin="dense"></TextField>
+              margin="dense"
+            />
             <TextField
               fullWidth
               className="textField"
@@ -93,7 +96,8 @@ function Register() {
               autoComplete="email"
               id="email"
               onChange={(e) => setEmail(e.target.value)}
-              margin="dense"></TextField>
+              margin="dense"
+            />
             <Button type="submit" variant="contained">
               Załóż konto
             </Button>
