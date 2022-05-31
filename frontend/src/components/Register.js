@@ -49,6 +49,7 @@ function Register() {
               fullWidth
               className="textField"
               required
+              type="text"
               error={usernameExists ? true : false}
               helperText={usernameExists ? "Użytkownik o tej nazwie już istnieje" : ""}
               autoComplete="username"

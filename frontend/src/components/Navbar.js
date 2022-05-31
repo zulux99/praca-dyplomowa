@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 function Navbar() {
+  let { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const [onMobile, setOnMobile] = useState(false);
   const navBarPagesArray = [
@@ -12,6 +14,11 @@ function Navbar() {
   return (
     <>
       <div className="main">
+        {user && (
+          <a onClick={logoutUser}>
+            Logout
+          </a>
+        )}
         <div
           className="closing_side_bar"
           style={isNavExpanded ? { display: "block" } : { display: "none" }}

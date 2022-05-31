@@ -1,46 +1,37 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 function Login() {
-  const navigate = useNavigate();
+  const { loginUser } = useContext(AuthContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
     setErrMsg("");
   }, [username, password]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    try {
-      // const response = await axios.post("/api/token", JSON.stringify({email, password}))
-    } catch {
-      
-    }
-  };
-
   return (
     <>
       <Container align="center">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={loginUser}>
           <Typography variant="h4">Logowanie</Typography>
           <TextField
-            type="email"
+            type="text"
             fullWidth
             required
             variant="outlined"
-            label="Email"
-            autoComplete="email"
-            id="email"
+            label="Nazwa użytkownika"
+            autoComplete="username"
+            name="username"
+            id="username"
             margin="normal"
-            onChange={setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             type="password"
@@ -48,10 +39,11 @@ function Login() {
             required
             variant="outlined"
             label="Password"
+            name="password"
             autoComplete="current-password"
             id="current-password"
             margin="normal"
-            onChange={setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Button type="submit" variant="contained">
             Zaloguj się
