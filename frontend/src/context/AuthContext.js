@@ -41,9 +41,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutUser = () => {
-    setAuthTokens(null);
-    setUser(null);
-    localStorage.removeItem("authTokens");
     navigate("/");
   };
 
@@ -58,7 +55,9 @@ export const AuthProvider = ({ children }) => {
       setUser(jwt_decode(response.data.access));
       localStorage.setItem("authTokens", JSON.stringify(response.data));
     } catch (err) {
-      logoutUser();
+      setAuthTokens(null);
+      setUser(null);
+      localStorage.removeItem("authTokens");
     }
     if (loading) {
       setLoading(false);
@@ -72,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     const fourMinutes = 1000 * 60 * 4;
     const interval = setInterval(() => {
       if (authTokens) {
-        // updateToken();
+        updateToken();
       }
     }, fourMinutes);
     return () => {

@@ -5,9 +5,7 @@ function HomePage() {
   const { user } = useContext(AuthContext);
   return (
     <>
-      <div>
-        Witoj przybyszu na stronie głównej
-      </div>
+      <div>Witoj przybyszu na stronie głównej</div>
       {user && <p>Hello {user.username}</p>}
     </>
   );

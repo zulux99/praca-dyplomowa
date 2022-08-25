@@ -38,7 +38,7 @@ function Login() {
             fullWidth
             required
             variant="outlined"
-            label="Password"
+            label="Hasło"
             name="password"
             autoComplete="current-password"
             id="current-password"
