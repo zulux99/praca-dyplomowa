@@ -1,0 +1,116 @@
+/* line 6, frontend/static/css/styles.scss */
+* {
+  margin: 0;
+  padding: 0; }
+
+/* line 11, frontend/static/css/styles.scss */
+.main {
+  height: 100%;
+  width: 100%; }
+
+/* line 16, frontend/static/css/styles.scss */
+.closing_side_bar {
+  display: none;
+  position: fixed;
+  width: calc(100% - 20rem);
+  height: 100%;
+  right: 0;
+  z-index: 2; }
+
+/* line 25, frontend/static/css/styles.scss */
+.brand {
+  font-size: 1.5rem;
+  color: black;
+  margin: 10px;
+  text-decoration: none; }
+
+/* line 32, frontend/static/css/styles.scss */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 2rem);
+  height: 3rem;
+  align-items: center; }
+
+/* line 41, frontend/static/css/styles.scss */
+.side_nav {
+  display: none; }
+
+/* line 45, frontend/static/css/styles.scss */
+.nav_toggler {
+  display: block;
+  transition: 0.3s; }
+
+/* line 50, frontend/static/css/styles.scss */
+.nav_menu {
+  left: -150%;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  align-items: center; }
+
+/* line 59, frontend/static/css/styles.scss */
+.side_nav_collapsed {
+  display: column;
+  gap: 2rem;
+  position: fixed;
+  height: calc(100% - 3rem);
+  width: 60%;
+  background: lightgray;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s ease;
+  overflow-y: scroll; }
+
+/* line 75, frontend/static/css/styles.scss */
+.side_nav_close {
+  top: 1rem;
+  position: fixed;
+  width: 100%;
+  display: flex;
+  z-index: 2; }
+
+/* line 83, frontend/static/css/styles.scss */
+.side_nav ul {
+  list-style: none;
+  flex-direction: column; }
+
+/* line 88, frontend/static/css/styles.scss */
+.side_nav_list {
+  width: 100%; }
+
+/* line 92, frontend/static/css/styles.scss */
+.side_nav_link {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem; }
+
+/* line 99, frontend/static/css/styles.scss */
+.side_nav_link:hover,
+.side_nav_close:hover {
+  background: darkgray;
+  cursor: pointer; }
+
+/* line 106, frontend/static/css/styles.scss */
+.side_nav a {
+  text-decoration: none;
+  color: black; }
+
+/* line 110, frontend/static/css/styles.scss */
+.line2:nth-child(1) {
+  transform: rotate(45deg);
+  transform-origin: top left; }
+
+/* line 114, frontend/static/css/styles.scss */
+.line2:nth-child(2) {
+  opacity: 0; }
+
+/* line 117, frontend/static/css/styles.scss */
+.line2:nth-child(3) {
+  transform: rotate(-45deg);
+  transform-origin: bottom left; }

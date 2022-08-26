@@ -3,13 +3,19 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EarbudsIcon from "@mui/icons-material/Earbuds";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import Divider from "@mui/material/Divider";
+import { ListItemText, SwipeableDrawer } from "@mui/material";
 function Navbar() {
   const { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
@@ -22,7 +28,7 @@ function Navbar() {
   const handleMenu = () => {};
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -34,7 +40,9 @@ function Navbar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Photos
+              <Link to="/" underline="none" style={{ textDecoration: "none", color: "black" }}>
+                Budżet domowy
+              </Link>
             </Typography>
             <IconButton
               size="large"
@@ -44,58 +52,43 @@ function Navbar() {
               align="right"
               onClick={handleMenu}
               color="inherit">
-              <AccountCircle />
+              {user ? (
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  {user.username}
+                </Typography>
+              ) : (
+                <AccountCircle />
+              )}
             </IconButton>
           </Toolbar>
         </AppBar>
-      </Box>
-      <div className="main">
-        {user && <a onClick={logoutUser}>Logout</a>}
-        <div
-          className="closing_side_bar"
-          style={isNavExpanded ? { display: "block" } : { display: "none" }}
-          onClick={() => setIsNavExpanded(false)}></div>
-        <nav className="nav">
-          <a href="#" className="brand">
-            Budżet domowy
-          </a>
-          <ul className="nav_menu">
-            {navBarPagesArray.map((item, index) => {
-              return (
-                <div className="nav_link" key={index}>
-                  <li key={index}>
-                    <Link to={item.link}>{item.name}</Link>
-                  </li>
-                </div>
-              );
-            })}
-          </ul>
-          <div
-            className="nav_toggler"
-            onClick={() => {
-              isNavExpanded ? setIsNavExpanded(false) : setIsNavExpanded(true);
-            }}>
-            {[...Array(3)].map((x, index) => (
-              <div className={isNavExpanded ? "line line2" : "line"} key={index}></div>
+        <SwipeableDrawer
+          open={isNavExpanded}
+          onClose={() => setIsNavExpanded(false)}
+          onOpen={() => setIsNavExpanded(true)}>
+          <Box onClick={() => setIsNavExpanded(!isNavExpanded)} sx={{ justifyContent: "right" }}>
+            <IconButton>
+              <ArrowBackIcon />
+            </IconButton>
+          </Box>
+          <Divider />
+          <List>
+            {navBarPagesArray.map((page, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton sx={{ justifyContent: "center" }}>
+                  <ListItemIcon>
+                    <EarbudsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={page.name}
+                    style={isNavExpanded ? { display: "block" } : { display: "none" }}
+                  />
+                </ListItemButton>
+              </ListItem>
             ))}
-          </div>
-        </nav>
-        <div className="side_nav" style={isNavExpanded ? { width: "60%" } : { right: "-70%" }}>
-          <div className="side_nav_list">
-            <ul>
-              {navBarPagesArray.map((item, index) => {
-                return (
-                  <div className="side_nav_link" onClick={() => setIsNavExpanded(false)} key={index}>
-                    <li key={index}>
-                      <Link to={item.link}>{item.name}</Link>
-                    </li>
-                  </div>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      </div>
+          </List>
+        </SwipeableDrawer>
+      </Box>
     </>
   );
 }

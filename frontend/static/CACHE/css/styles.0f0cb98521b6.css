@@ -1,0 +1,54 @@
+/* line 6, frontend/static/css/styles.scss */
+* {
+  margin: 0;
+  padding: 0; }
+
+/* line 11, frontend/static/css/styles.scss */
+.main {
+  position: static;
+  height: calc(100% - navBarHeight);
+  width: calc(100% - 2rem); }
+
+/* line 17, frontend/static/css/styles.scss */
+.closing_side_bar {
+  display: none;
+  position: fixed;
+  width: calc(100% - 20rem);
+  height: 100%;
+  right: 0;
+  z-index: 2; }
+
+/* line 26, frontend/static/css/styles.scss */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 2rem);
+  height: 3rem;
+  align-items: center; }
+
+/* line 35, frontend/static/css/styles.scss */
+.side_nav_collapsed {
+  display: column;
+  gap: 2rem;
+  position: fixed;
+  height: 100%;
+  width: 3rem;
+  background: lightgray;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  transition: 0.3s ease;
+  overflow-y: scroll; }
+
+/* line 49, frontend/static/css/styles.scss */
+.side_nav_expanded {
+  width: 7rem;
+  position: fixed; }
+
+/* line 53, frontend/static/css/styles.scss */
+.side_nav_close {
+  top: 1rem;
+  position: fixed;
+  width: 100%;
+  display: flex;
+  z-index: 2; }
