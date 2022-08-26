@@ -1,3 +1,5 @@
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,11 +13,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Divider from "@mui/material/Divider";
-import { ListItemText, SwipeableDrawer } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { Button } from "@mui/material";
 function Navbar() {
   const { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
@@ -32,7 +34,7 @@ function Navbar() {
         <AppBar position="static">
           <Toolbar>
             <IconButton
-              size="medium"
+              size="large"
               edge="start"
               color="inherit"
               aria-label="menu"
@@ -40,26 +42,30 @@ function Navbar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link to="/" underline="none" style={{ textDecoration: "none", color: "black" }}>
-                Budżet domowy
-              </Link>
+              <Link to="/">Budżet domowy</Link>
             </Typography>
-            <IconButton
-              size="large"
-              aria-label="konto aktualnego użytkownika"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              align="right"
-              onClick={handleMenu}
-              color="inherit">
-              {user ? (
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {user ? (
+              <IconButton
+                size="large"
+                aria-label="konto aktualnego użytkownika"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                align="right"
+                onClick={handleMenu}
+                color="inherit">
+                <Typography variant="h6" component="div">
                   {user.username}
                 </Typography>
-              ) : (
-                <AccountCircle />
-              )}
-            </IconButton>
+              </IconButton>
+            ) : (
+              <Button sx={{ height: "100%" }}>
+                <Typography variant="h6" component="div">
+                  <Link to="/login" className="link">
+                    Zaloguj się
+                  </Link>
+                </Typography>
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
         <SwipeableDrawer
@@ -75,17 +81,24 @@ function Navbar() {
           <List>
             {navBarPagesArray.map((page, index) => (
               <ListItem key={index} disablePadding>
-                <ListItemButton sx={{ justifyContent: "center" }}>
-                  <ListItemIcon>
-                    <EarbudsIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={page.name}
-                    style={isNavExpanded ? { display: "block" } : { display: "none" }}
-                  />
-                </ListItemButton>
+                <Link key={index} to={page.link} onClick={() => setIsNavExpanded(false)}>
+                  <ListItemButton sx={{ justifyContent: "center" }}>
+                    <ListItemIcon>
+                      <EarbudsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={page.name} />
+                  </ListItemButton>
+                </Link>
               </ListItem>
             ))}
+            <ListItem disablePadding onClick={logoutUser}>
+              <ListItemButton sx={{ justifyContent: "center" }} onClick={() => setIsNavExpanded(false)}>
+                <ListItemIcon>
+                  <EarbudsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Wyloguj się" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </SwipeableDrawer>
       </Box>

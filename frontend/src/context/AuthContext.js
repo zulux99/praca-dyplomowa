@@ -41,6 +41,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutUser = () => {
+    setAuthTokens(null);
+    setUser(null);
+    localStorage.removeItem("authTokens");
     navigate("/");
   };
 
