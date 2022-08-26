@@ -46,7 +46,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route
-              path="bills"
+              path="rachunki"
               element={
                 <PrivateRoute>
                   <Bills />

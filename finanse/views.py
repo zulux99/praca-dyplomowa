@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
 from finanse.serializers import UserSerializer
-from .models import User
+from finanse.serializers import RachunekSerializer
+from .models import Rachunek
+from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -37,3 +39,26 @@ class UserViewSet(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+
+class RachunekCreate(APIView):
+    def post(self, request):
+        serializer = RachunekSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RachunekUpdate(APIView):
+    def put(self, request, pk):
+        rachunek = Rachunek.objects.get(pk=pk)
+        serializer = RachunekSerializer(rachunek, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RachunekDelete(APIView):
+    def delete(self, request, pk):
+        rachunek = Rachunek.objects.get(pk=pk)
+        rachunek.delete()
+        return Response(status=status.HTTP_200_OK)

@@ -23,7 +23,7 @@ function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const navBarPagesArray = [
     { link: "/", name: "Strona główna" },
-    { link: "/bills", name: "Rachunki" },
+    { link: "/rachunki", name: "Rachunki" },
     { link: "/register", name: "Zarejestruj się" },
     { link: "/login", name: "Zaloguj się" },
   ];
@@ -53,9 +53,7 @@ function Navbar() {
                 align="right"
                 onClick={handleMenu}
                 color="inherit">
-                <Typography variant="h6" component="div">
-                  {user.username}
-                </Typography>
+                <AccountCircle />
               </IconButton>
             ) : (
               <Button sx={{ height: "100%" }}>
