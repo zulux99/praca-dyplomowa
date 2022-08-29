@@ -42,7 +42,7 @@ class RachunekViewSet(APIView):
     queryset = Rachunek.objects.all()
     serializer_class = RachunekSerializer
     def get(self, request):
-        rachunki = Rachunek.objects.filter(id=request.user.id)
+        rachunki = Rachunek.objects.filter(user=request.user.id)
         serializer = RachunekSerializer(rachunki, many=True)
         return Response(serializer.data)
     def post(self, request):

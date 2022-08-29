@@ -1,4 +1,3 @@
-import datetime
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
@@ -21,7 +20,7 @@ class RachunekSerializer(serializers.ModelSerializer):
     nazwa = serializers.CharField(max_length=200)
     class Meta:
         model = Rachunek
-        fields = ('id', 'nazwa', 'user')
+        fields = ('id', 'nazwa', 'user', 'data_utworzenia', 'data_modyfikacji', 'kwota', 'kategoria')
     def create(self, validated_data):
         return super(RachunekSerializer, self).create(validated_data)
     def update(self, instance, validated_data):
