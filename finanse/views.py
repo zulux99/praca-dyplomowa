@@ -15,9 +15,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        # Add custom claims
         token['username'] = user.username
-        # ...
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -40,15 +38,19 @@ class UserViewSet(APIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-class RachunekCreate(APIView):
+class RachunekViewSet(APIView):
+    queryset = Rachunek.objects.all()
+    serializer_class = RachunekSerializer
+    def get(self, request):
+        rachunki = Rachunek.objects.filter(id=request.user.id)
+        serializer = RachunekSerializer(rachunki, many=True)
+        return Response(serializer.data)
     def post(self, request):
         serializer = RachunekSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class RachunekUpdate(APIView):
     def put(self, request, pk):
         rachunek = Rachunek.objects.get(pk=pk)
         serializer = RachunekSerializer(rachunek, data=request.data)
@@ -56,9 +58,7 @@ class RachunekUpdate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class RachunekDelete(APIView):
     def delete(self, request, pk):
         rachunek = Rachunek.objects.get(pk=pk)
         rachunek.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
