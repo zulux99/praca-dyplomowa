@@ -21,11 +21,18 @@ import { Button } from "@mui/material";
 function Navbar() {
   const { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const navBarPagesArray = [
+  const [userOrGuest, setUserOrGuest] = user ? useState(navBarPagesArrayUser) : useState(navBarPagesArrayGuest);
+  const navBarPagesArrayGuest = [
     { link: "/", name: "Strona główna" },
-    { link: "/rachunki", name: "Rachunki" },
     { link: "/register", name: "Zarejestruj się" },
     { link: "/login", name: "Zaloguj się" },
+  ];
+  const navBarPagesArrayUser = [
+    { link: "/", name: "Strona główna" },
+    { link: "/rachunki", name: "Rachunki" },
+    { link: "/wydatki", name: "Wydatki" },
+    { link: "/dodaj-wydatek", name: "Dodaj wydatek" },
+    { link: "/dodaj-rachunek", name: "Dodaj rachunek" },
   ];
   const handleMenu = () => {};
   return (
@@ -77,26 +84,41 @@ function Navbar() {
           </Box>
           <Divider />
           <List>
-            {navBarPagesArray.map((page, index) => (
-              <ListItem key={index} disablePadding>
-                <Link key={index} to={page.link} onClick={() => setIsNavExpanded(false)}>
-                  <ListItemButton sx={{ justifyContent: "center" }}>
-                    <ListItemIcon>
-                      <EarbudsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={page.name} />
-                  </ListItemButton>
-                </Link>
+            {user
+              ? navBarPagesArrayUser.map((page, index) => (
+                  <ListItem key={index} disablePadding>
+                    <Link key={index} to={page.link} onClick={() => setIsNavExpanded(false)}>
+                      <ListItemButton sx={{ justifyContent: "center" }}>
+                        <ListItemIcon>
+                          <EarbudsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={page.name} />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                ))
+              : navBarPagesArrayGuest.map((page, index) => (
+                  <ListItem key={index} disablePadding>
+                    <Link key={index} to={page.link} onClick={() => setIsNavExpanded(false)}>
+                      <ListItemButton sx={{ justifyContent: "center" }}>
+                        <ListItemIcon>
+                          <EarbudsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={page.name} />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                ))}
+            {user && (
+              <ListItem disablePadding onClick={logoutUser}>
+                <ListItemButton sx={{ justifyContent: "center" }} onClick={() => setIsNavExpanded(false)}>
+                  <ListItemIcon>
+                    <EarbudsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Wyloguj się" />
+                </ListItemButton>
               </ListItem>
-            ))}
-            <ListItem disablePadding onClick={logoutUser}>
-              <ListItemButton sx={{ justifyContent: "center" }} onClick={() => setIsNavExpanded(false)}>
-                <ListItemIcon>
-                  <EarbudsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Wyloguj się" />
-              </ListItemButton>
-            </ListItem>
+            )}
           </List>
         </SwipeableDrawer>
       </Box>

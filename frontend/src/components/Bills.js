@@ -112,7 +112,7 @@ function Bills() {
                 <InputLabel
                   sx={{
                     display: billsEditingNow.find((id) => id === index + 1) ? "none" : "block",
-                    border: "1 px solid black",
+                    border: "1px solid black",
                   }}>
                   {bill.nazwa}
                 </InputLabel>
