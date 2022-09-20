@@ -24,15 +24,12 @@ function Navbar() {
   const [userOrGuest, setUserOrGuest] = user ? useState(navBarPagesArrayUser) : useState(navBarPagesArrayGuest);
   const navBarPagesArrayGuest = [
     { link: "/", name: "Strona główna" },
-    { link: "/register", name: "Zarejestruj się" },
     { link: "/login", name: "Zaloguj się" },
   ];
   const navBarPagesArrayUser = [
     { link: "/", name: "Strona główna" },
     { link: "/rachunki", name: "Rachunki" },
     { link: "/wydatki", name: "Wydatki" },
-    { link: "/dodaj-wydatek", name: "Dodaj wydatek" },
-    { link: "/dodaj-rachunek", name: "Dodaj rachunek" },
   ];
   const handleMenu = () => {};
   return (
@@ -49,7 +46,7 @@ function Navbar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link to="/">Budżet domowy</Link>
+              <Link to="/">Aplikacja webowa</Link>
             </Typography>
             {user ? (
               <IconButton
@@ -63,7 +60,7 @@ function Navbar() {
                 <AccountCircle />
               </IconButton>
             ) : (
-              <Button sx={{ height: "100%" }}>
+              <Button>
                 <Typography variant="h6" component="div">
                   <Link to="/login" className="link">
                     Zaloguj się

@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function Login() {
@@ -49,6 +50,10 @@ function Login() {
             Zaloguj się
           </Button>
         </form>
+        Nie masz jeszcze konta?
+        <Link to="/register">
+          <Typography variant="h6">Zarejestruj się</Typography>
+        </Link>
       </Container>
     </>
   );

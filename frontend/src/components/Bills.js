@@ -2,9 +2,13 @@ import AuthContext from "../context/AuthContext";
 import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
-import { Button, IconButton, InputLabel, List, ListItem, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, InputLabel, List, ListItem, TextField } from "@mui/material";
 import { Box, Container, width } from "@mui/system";
 import { useEffect } from "react";
+import { Doughnut } from "react-chartjs-2";
+import {} from "chart.js";
+import { Chart, ArcElement, Legend, Title } from "chart.js";
+Chart.register(ArcElement, Legend, Title);
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Check from "@mui/icons-material/Check";
@@ -15,7 +19,14 @@ function Bills() {
   const [bills, setBills] = useState([]);
   const [billAlreadyExists, setBillAlreadyExists] = useState(false);
   const [billsEditingNow, setBillsEditingNow] = useState([]);
+  const [amount, setAmount] = useState(0);
+  const [isAmountValid, setIsAmountValid] = useState(true);
   const user_id = user.user.user_id;
+  const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
+
+  useEffect(() => {
+    validAmount.test(amount) ? setIsAmountValid(true) : setIsAmountValid(false);
+  }, [amount]);
 
   useEffect(() => {
     showBills();
@@ -26,6 +37,25 @@ function Bills() {
   useEffect(() => {
     bills.find((bill) => bill.nazwa === nazwa) ? setBillAlreadyExists(true) : setBillAlreadyExists(false);
   }, [nazwa, bills]);
+
+  const addBill = async (e) => {
+    e.preventDefault();
+    if (!billAlreadyExists) {
+      try {
+        const response = await axios.post("/api/bills", JSON.stringify({ user: user_id, nazwa, kwota: amount }), {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.authTokens.access}`,
+          },
+        });
+        e.target.reset();
+        setNazwa("");
+        showBills();
+      } catch (err) {
+        err.response.data.kwota ? setIsAmountValid(false) : setIsAmountValid(true);
+      }
+    }
+  };
 
   const showBills = async () => {
     try {
@@ -77,28 +107,36 @@ function Bills() {
       console.log(err);
     }
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!billAlreadyExists) {
-      try {
-        const response = await axios.post("/api/bills", JSON.stringify({ user: user_id, nazwa }), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.authTokens.access}`,
-          },
-        });
-        e.target.reset();
-        setNazwa("");
-        showBills();
-      } catch (err) {
-        console.log(err.response.data);
-      }
-    }
-  };
   return (
     <>
       <Container align="center">
+        <Box sx={{ height: 300 }}>
+          <Doughnut
+            options={{
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                },
+                title: {
+                  display: true,
+                  text: "Wydatki",
+                },
+              },
+            }}
+            data={{
+              labels: bills.map((bill) => bill.nazwa),
+              datasets: [
+                {
+                  label: "Rachunki",
+                  data: bills.map((bill) => bill.kwota),
+                  backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+                },
+              ],
+            }}
+          />
+        </Box>
         <List>
           {bills.map((bill, index) => (
             <Box key={index}>
@@ -112,9 +150,14 @@ function Bills() {
                 <InputLabel
                   sx={{
                     display: billsEditingNow.find((id) => id === index + 1) ? "none" : "block",
-                    border: "1px solid black",
                   }}>
                   {bill.nazwa}
+                </InputLabel>
+                <InputLabel
+                  sx={{
+                    display: billsEditingNow.find((id) => id === index + 1) ? "none" : "block",
+                  }}>
+                  {bill.kwota} zł
                 </InputLabel>
                 <Box sx={{ display: billsEditingNow.find((id) => id === index + 1) ? "none" : "block" }}>
                   <IconButton onClick={() => setBillsEditingNow(billsEditingNow.concat(index + 1))}>
@@ -133,13 +176,13 @@ function Bills() {
             </Box>
           ))}
         </List>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={addBill}>
           <TextField
             type="text"
             variant="outlined"
             label="Nowa nazwa rachunku"
             error={billAlreadyExists ? true : false}
-            helperText={billAlreadyExists ? "Rachunek o tej nazwie już istnieje" : ""}
+            helperText={billAlreadyExists && "Rachunek o tej nazwie już istnieje"}
             fullWidth
             id="nazwa"
             margin="normal"
@@ -148,7 +191,24 @@ function Bills() {
               setBillAlreadyExists(false);
             }}
           />
-          <Button variant="contained" type="submit" disabled={nazwa == "" ? true : false}>
+          <TextField
+            type="text"
+            variant="outlined"
+            label="Kwota"
+            fullWidth
+            id="kwota"
+            error={isAmountValid ? false : true}
+            helperText={isAmountValid ? "" : "Niepoprawna kwota"}
+            margin="normal"
+            value={amount}
+            pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$"
+            onChange={(e) => setAmount(e.target.value)}
+            onFocus={(e) => e.target.value == 0 && setAmount("")}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
+            }}
+          />
+          <Button variant="contained" type="submit" disabled={nazwa == "" || !isAmountValid ? true : false}>
             Dodaj rachunek
           </Button>
         </form>
