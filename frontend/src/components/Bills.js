@@ -1,14 +1,15 @@
+import React from "react";
 import AuthContext from "../context/AuthContext";
 import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { Button, IconButton, InputAdornment, InputLabel, List, ListItem, TextField } from "@mui/material";
-import { Box, Container, width } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import { useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
-import {} from "chart.js";
-import { Chart, ArcElement, Legend, Title } from "chart.js";
-Chart.register(ArcElement, Legend, Title);
+import { BarElement } from "chart.js";
+import { Chart, ArcElement, Legend, Title, CategoryScale, LinearScale } from "chart.js";
+Chart.register(ArcElement, BarElement, Legend, Title, CategoryScale, LinearScale);
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Check from "@mui/icons-material/Check";
@@ -42,7 +43,7 @@ function Bills() {
     e.preventDefault();
     if (!billAlreadyExists) {
       try {
-        const response = await axios.post("/api/bills", JSON.stringify({ user: user_id, nazwa, kwota: amount }), {
+        await axios.post("/api/bills", JSON.stringify({ user: user_id, nazwa, kwota: amount }), {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.authTokens.access}`,
@@ -95,7 +96,7 @@ function Bills() {
 
   const deleteBill = async (id) => {
     try {
-      const response = await axios.delete(`/api/bills/delete/${id}`, {
+      await axios.delete(`/api/bills/delete/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.authTokens.access}`,
@@ -121,7 +122,7 @@ function Bills() {
                 },
                 title: {
                   display: true,
-                  text: "Wydatki",
+                  text: "Rachunki",
                 },
               },
             }}
@@ -151,7 +152,7 @@ function Bills() {
                   sx={{
                     display: billsEditingNow.find((id) => id === index + 1) ? "none" : "block",
                   }}>
-                  {bill.nazwa}
+                  {bill.nazwa + " "}
                 </InputLabel>
                 <InputLabel
                   sx={{

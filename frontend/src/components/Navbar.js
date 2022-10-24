@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -21,7 +22,7 @@ import { Button } from "@mui/material";
 function Navbar() {
   const { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const [userOrGuest, setUserOrGuest] = user ? useState(navBarPagesArrayUser) : useState(navBarPagesArrayGuest);
+  // const [userOrGuest, setUserOrGuest] = user ? useState(navBarPagesArrayUser) : useState(navBarPagesArrayGuest);
   const navBarPagesArrayGuest = [
     { link: "/", name: "Strona główna" },
     { link: "/login", name: "Zaloguj się" },
@@ -29,6 +30,7 @@ function Navbar() {
   const navBarPagesArrayUser = [
     { link: "/", name: "Strona główna" },
     { link: "/rachunki", name: "Rachunki" },
+    { link: "/przychody", name: "Przychody" },
     { link: "/wydatki", name: "Wydatki" },
   ];
   const handleMenu = () => {};

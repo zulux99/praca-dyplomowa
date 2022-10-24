@@ -1,3 +1,4 @@
+import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -14,7 +15,7 @@ function Register() {
   const [password2, setPassword2] = useState("");
   const [email, setEmail] = useState("");
   const [emailExists, setEmailExists] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   useEffect(() => {
