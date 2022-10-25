@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import axios from "axios";
-import Bills from "./Bills";
+import Bills from "./bills/Bills";
 import HomePage from "./HomePage";
 import Navbar from "./Navbar";
 import Register from "./Register";

@@ -8,8 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --watch --mode development --entry ./src/index.js --output-path ./static/frontend",
     "build": "webpack --mode production --entry ./src/index.js --output-path ./static/frontend",
-    "lint": "eslint ./src/**/*.js",
-    "lint-fix": "eslint ./src/**/*.js --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,6 @@
     "@babel/preset-env": "^7.17.12",
     "@babel/preset-react": "^7.17.12",
     "babel-loader": "^8.2.5",
-    "eslint": "^8.26.0",
     "eslint-plugin-react": "^7.31.10",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
