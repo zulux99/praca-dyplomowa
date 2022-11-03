@@ -1,7 +1,6 @@
-import React from "react";
-import AuthContext from "../context/AuthContext";
-import { useContext } from "react";
-import Typography from "@mui/material/Typography";
+import AuthContext from '../context/AuthContext';
+import { useContext } from 'react';
+import Typography from '@mui/material/Typography';
 
 function Income() {
   const user = useContext(AuthContext);
