@@ -30,6 +30,13 @@ function Menu3Dots(props) {
           }}>
           Usuń
         </MenuItem>
+        <MenuItem
+          onClick={() => {
+            props.makeDefault(props.bill);
+            handleClose();
+          }}>
+          Ustaw jako dymyślne
+        </MenuItem>
       </Menu>
     </Box>
   );

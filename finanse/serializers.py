@@ -20,7 +20,7 @@ class RachunekSerializer(serializers.ModelSerializer):
     nazwa = serializers.CharField(max_length=200)
     class Meta:
         model = Rachunek
-        fields = ('id', 'nazwa', 'user', 'data_utworzenia', 'data_modyfikacji', 'kwota', 'kategoria')
+        fields = ('id', 'nazwa', 'user', 'data_utworzenia', 'data_modyfikacji', 'kwota', 'kategoria', 'domyslne')
     def create(self, validated_data):
         return super(RachunekSerializer, self).create(validated_data)
     def update(self, instance, validated_data):

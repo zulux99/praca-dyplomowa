@@ -74,6 +74,27 @@ function Bills() {
       console.log(err);
     }
   };
+  const makeDefault = async (bill) => {
+    if (bill.domyślne === 1) {
+      return;
+    }
+    try {
+      await axios.put(
+        `/api/bills/update/${bill.id}`,
+        JSON.stringify({ user: user_id, nazwa: bill.nazwa, domyslne: true }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.authTokens.access}`,
+            id: user_id
+          }
+        }
+      );
+      getBills();
+    } catch (err) {
+      alert('Nie udało się ustawić domyślnego konta');
+    }
+  };
 
   return (
     <>
@@ -98,7 +119,9 @@ function Bills() {
                     }}
                   />
                 </form>
-                <Box className="konto">
+                <Box
+                  className="konto"
+                  sx={bill.domyslne ? { backgroundColor: 'lightgreen' } : null}>
                   <Box className="konto_nazwa_kwota">
                     <InputLabel className="konto_nazwa">{bill.nazwa + ' '}</InputLabel>
                     <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>
@@ -120,7 +143,12 @@ function Bills() {
                       <DeleteIcon color="error" />
                     </IconButton>
                   </Box>
-                  <Menu3Dots id={bill.id} deleteBill={deleteBill} />
+                  <Menu3Dots
+                    bill={bill}
+                    id={bill.id}
+                    makeDefault={makeDefault}
+                    deleteBill={deleteBill}
+                  />
                 </Box>
               </ListItem>
             </Box>
