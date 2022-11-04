@@ -9,6 +9,7 @@ import Login from './Login';
 import PrivateRoute from './PrivateRoute';
 import { CssBaseline } from '@mui/material';
 import Income from './Income';
+import Kategorie from './Kategorie';
 
 function App() {
   // const [user, setUser] = useState([]);
@@ -49,6 +50,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Income />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="kategorie"
+              element={
+                <PrivateRoute>
+                  <Kategorie />
                 </PrivateRoute>
               }
             />

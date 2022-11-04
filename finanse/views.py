@@ -4,7 +4,9 @@ from rest_framework import generics
 from rest_framework import status
 from finanse.serializers import UserSerializer
 from finanse.serializers import RachunekSerializer
+from finanse.serializers import KategoriaSerializer
 from .models import Rachunek
+from .models import Kategoria
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -61,4 +63,29 @@ class RachunekViewSet(APIView):
     def delete(self, request, pk):
         rachunek = Rachunek.objects.get(pk=pk)
         rachunek.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+class KategoriaViewSet(APIView):
+    queryset = Kategoria.objects.all()
+    serializer_class = KategoriaSerializer
+    def get(self, request):
+        kategorie = Kategoria.objects.filter(public=True)
+        serializer = KategoriaSerializer(kategorie, many=True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = KategoriaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk):
+        kategoria = Kategoria.objects.get(pk=pk)
+        serializer = KategoriaSerializer(kategoria, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        kategoria = Kategoria.objects.get(pk=pk)
+        kategoria.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

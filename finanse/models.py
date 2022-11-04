@@ -22,3 +22,25 @@ class Rachunek(models.Model):
         if not Rachunek.objects.filter(domyslne=True).exists():
             self.domyslne = True
         super(Rachunek, self).save(*args, **kwargs)
+
+class Kategoria(models.Model):
+    nazwa = models.CharField(max_length=200)
+    public = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        try:
+            temp = Kategoria.objects.get(nazwa=self.nazwa)
+            if self != temp:
+                self.pk = temp.pk
+        except Kategoria.DoesNotExist:
+            super(Kategoria, self).save(*args, **kwargs)   
+
+class KategoriaUser(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    kategoria = models.ForeignKey(Kategoria, on_delete=models.CASCADE)
+    def save(self, *args, **kwargs):
+        try:
+            temp = Kategoria.objects.get(nazwa=self.kategoria.nazwa)
+            self.kategoria = temp
+        except Kategoria.DoesNotExist:
+            self.kategoria.save()
+        super(KategoriaUser, self).save(*args, **kwargs)

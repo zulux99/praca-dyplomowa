@@ -30,7 +30,8 @@ function Navbar() {
     { link: '/', name: 'Strona główna' },
     { link: '/rachunki', name: 'Rachunki' },
     { link: '/przychody', name: 'Przychody' },
-    { link: '/wydatki', name: 'Wydatki' }
+    { link: '/wydatki', name: 'Wydatki' },
+    { link: '/kategorie', name: 'Kategorie' }
   ];
   const handleMenu = () => {};
   return (

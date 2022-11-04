@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from finanse.models import Rachunek
+from finanse.models import Kategoria
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
@@ -27,4 +28,16 @@ class RachunekSerializer(serializers.ModelSerializer):
         return super(RachunekSerializer, self).update(instance, validated_data)
     def delete(self, instance):
         return super(RachunekSerializer, self).delete(instance)
-    
+
+class KategoriaSerializer(serializers.ModelSerializer):
+    nazwa = serializers.CharField(max_length=200)
+    public = serializers.BooleanField(default=False)
+    class Meta:
+        model = Kategoria
+        fields = ('id', 'nazwa', 'public')
+    def create(self, validated_data):
+        return super(KategoriaSerializer, self).create(validated_data)
+    def update(self, instance, validated_data):
+        return super(KategoriaSerializer, self).update(instance, validated_data)
+    def delete(self, instance):
+        return super(KategoriaSerializer, self).delete(instance)
