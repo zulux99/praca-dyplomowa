@@ -17,7 +17,8 @@ import AuthContext from '../context/AuthContext';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
+
 function Navbar() {
   const { user, logoutUser } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);

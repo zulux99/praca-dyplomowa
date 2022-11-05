@@ -1,21 +1,26 @@
+import { useNavigate, Navigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Container from '@mui/system/Container';
-import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 function Register() {
   const navigate = useNavigate();
+  const user = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [usernameExists, setUsernameExists] = useState(false);
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
   const [emailExists, setEmailExists] = useState(false);
-  // const [showPassword, setShowPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  if (user.user) {
+    return <Navigate to="/" />;
+  }
 
   useEffect(() => {
     password !== password2 && password2 !== '' ? setPasswordMatch(false) : setPasswordMatch(true);
@@ -50,7 +55,6 @@ function Register() {
           <form onSubmit={handleSubmit}>
             <Typography variant="h4">Rejestracja</Typography>
             <TextField
-              fullWidth
               className="textField"
               required
               type="text"
@@ -64,7 +68,6 @@ function Register() {
               margin="dense"
             />
             <TextField
-              fullWidth
               className="textField"
               required
               variant="outlined"
@@ -76,7 +79,6 @@ function Register() {
               margin="dense"
             />
             <TextField
-              fullWidth
               className="textField"
               required
               error={passwordMatch ? false : true}
@@ -90,7 +92,6 @@ function Register() {
               margin="dense"
             />
             <TextField
-              fullWidth
               className="textField"
               required
               error={emailExists ? true : false}
