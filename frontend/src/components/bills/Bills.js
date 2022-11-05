@@ -29,8 +29,7 @@ function Bills() {
       const response = await axios.get(`/api/bills`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`,
-          id: user_id
+          Authorization: `Bearer ${user.authTokens.access}`
         }
       });
       setBills(response.data);
@@ -47,8 +46,7 @@ function Bills() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.authTokens.access}`,
-            id: user_id
+            Authorization: `Bearer ${user.authTokens.access}`
           }
         }
       );
@@ -65,8 +63,7 @@ function Bills() {
       await axios.delete(`/api/bills/delete/${id}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`,
-          id: user_id
+          Authorization: `Bearer ${user.authTokens.access}`
         }
       });
       getBills();

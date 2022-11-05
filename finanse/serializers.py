@@ -21,7 +21,7 @@ class RachunekSerializer(serializers.ModelSerializer):
     nazwa = serializers.CharField(max_length=200)
     class Meta:
         model = Rachunek
-        fields = ('id', 'nazwa', 'user', 'data_utworzenia', 'data_modyfikacji', 'kwota', 'kategoria', 'domyslne')
+        fields = ('id', 'nazwa', 'user', 'data_utworzenia', 'data_modyfikacji', 'kwota', 'domyslne')
     def create(self, validated_data):
         return super(RachunekSerializer, self).create(validated_data)
     def update(self, instance, validated_data):
@@ -30,11 +30,11 @@ class RachunekSerializer(serializers.ModelSerializer):
         return super(RachunekSerializer, self).delete(instance)
 
 class KategoriaSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     nazwa = serializers.CharField(max_length=200)
-    public = serializers.BooleanField(default=False)
     class Meta:
         model = Kategoria
-        fields = ('id', 'nazwa', 'public')
+        fields = ('id', 'user', 'nazwa')
     def create(self, validated_data):
         return super(KategoriaSerializer, self).create(validated_data)
     def update(self, instance, validated_data):

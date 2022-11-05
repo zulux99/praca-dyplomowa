@@ -9,6 +9,7 @@ from .models import Rachunek
 from .models import Kategoria
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -43,6 +44,7 @@ class UserViewSet(APIView):
 class RachunekViewSet(APIView):
     queryset = Rachunek.objects.all()
     serializer_class = RachunekSerializer
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         rachunki = Rachunek.objects.filter(user=request.user.id)
         serializer = RachunekSerializer(rachunki, many=True)
@@ -58,7 +60,7 @@ class RachunekViewSet(APIView):
         serializer = RachunekSerializer(rachunek, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         rachunek = Rachunek.objects.get(pk=pk)
@@ -68,8 +70,9 @@ class RachunekViewSet(APIView):
 class KategoriaViewSet(APIView):
     queryset = Kategoria.objects.all()
     serializer_class = KategoriaSerializer
+    permission_classes = [IsAuthenticated]
     def get(self, request):
-        kategorie = Kategoria.objects.filter(public=True)
+        kategorie = Kategoria.objects.filter(user=request.user.id)
         serializer = KategoriaSerializer(kategorie, many=True)
         return Response(serializer.data)
     def post(self, request):
@@ -83,7 +86,7 @@ class KategoriaViewSet(APIView):
         serializer = KategoriaSerializer(kategoria, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         kategoria = Kategoria.objects.get(pk=pk)
