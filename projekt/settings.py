@@ -12,9 +12,57 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'frontend/src', 'service-worker.js')
+PWA_APP_NAME = 'Budżet Domowy'
+PWA_APP_DESCRIPTION = 'Aplikacja do zarządzania budżetem domowym'
+PWA_APP_THEME_COLOR = '#1976d2'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': 'frontend/static/img/apple-touch-icon.png',
+        'sizes': '180x180'
+    },
+    {
+        'src': 'frontend/static/img/favicon.ico',
+        'sizes': '48x48'
+    },
+    {
+        'src': 'frontend/static/img/logo192.png',
+        'sizes': '192x192'
+    },
+    {
+        'src': 'frontend/static/img/logo512.png',
+        'sizes': '512x512'
+    },
+    {
+        'src': 'frontend/static/img/maskable_icon.png',
+        'sizes': '196x196',
+        'purpose': 'maskable'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': 'frontend/static/img/logo192.png',
+        'sizes': '192x192'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': 'frontend/static/img/logo512.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,6 +92,7 @@ INSTALLED_APPS = [
     'compressor',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
+    'pwa',
 ]
 
 MIDDLEWARE = [
