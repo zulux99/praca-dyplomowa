@@ -17,7 +17,7 @@ import { MobileView, isMobile } from 'react-device-detect';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter> 
         <AuthProvider>
           <div>
             <CssBaseline />
