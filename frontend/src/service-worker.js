@@ -1,4 +1,4 @@
-var staticCacheName = 'budzet-domowy-v5';
+var staticCacheName = 'budzet-domowy-v1';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -17,6 +17,7 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+
 
 self.addEventListener('activate', function(event) {
   event.waitUntil(

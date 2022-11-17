@@ -46,6 +46,7 @@ function Categories() {
       console.log(response.data);
       e.target.reset();
       setCategoryName('');
+      getCategories();
     } catch (err) {
       console.log(err.response.data);
       alert('Nie udało się dodać kategorii');

@@ -16,4 +16,7 @@ urlpatterns = [
     path("api/categories", views.KategoriaViewSet.as_view()),
     path("api/categories/update/<int:pk>", views.KategoriaViewSet.as_view()),
     path("api/categories/delete/<int:pk>", views.KategoriaViewSet.as_view()),
+    path("api/debtors", views.DluznikViewSet.as_view()),
+    path("api/debtors/update/<int:pk>", views.DluznikViewSet.as_view()),
+    path("api/debtors/delete/<int:pk>", views.DluznikViewSet.as_view()),
 ]

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function BottomMenu() {
   const menuItems = [
     { name: 'Przychody', link: '/przychody' },
-    { name: 'Wydatki', link: '/wydatki' },
+    { name: 'Konta', link: '/konta' },
     { name: 'Home', link: '/' },
     { name: 'Profil', link: '/' }
   ];

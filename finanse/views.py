@@ -5,8 +5,12 @@ from rest_framework import status
 from finanse.serializers import UserSerializer
 from finanse.serializers import RachunekSerializer
 from finanse.serializers import KategoriaSerializer
+from finanse.serializers import DluznikSerializer
+from finanse.serializers import DluznikSplataSerializer
 from .models import Rachunek
 from .models import Kategoria
+from .models import Dluznik
+from .models import DluznikSplata
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAdminUser
@@ -91,4 +95,56 @@ class KategoriaViewSet(APIView):
     def delete(self, request, pk):
         kategoria = Kategoria.objects.get(pk=pk)
         kategoria.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class DluznikViewSet(APIView):
+    queryset = Dluznik.objects.all()
+    serializer_class = DluznikSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        dluznicy = Dluznik.objects.filter(user=request.user.id)
+        serializer = DluznikSerializer(dluznicy, many=True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = DluznikSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk):
+        dluznik = Dluznik.objects.get(pk=pk)
+        serializer = DluznikSerializer(dluznik, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        dluznik = Dluznik.objects.get(pk=pk)
+        dluznik.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class DluznikSplataView(APIView):
+    queryset = DluznikSplata.objects.all()
+    serializer_class = DluznikSplataSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        splaty = DluznikSplata.objects.filter(user=request.user.id)
+        serializer = DluznikSplataSerializer(splaty, many=True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = DluznikSplataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk):
+        splata = DluznikSplata.objects.get(pk=pk)
+        serializer = DluznikSplataSerializer(splata, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        splata = DluznikSplata.objects.get(pk=pk)
+        splata.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

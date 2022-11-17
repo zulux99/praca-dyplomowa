@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from finanse.models import Rachunek
 from finanse.models import Kategoria
+from finanse.models import Dluznik
+from finanse.models import DluznikSplata
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
@@ -41,3 +43,30 @@ class KategoriaSerializer(serializers.ModelSerializer):
         return super(KategoriaSerializer, self).update(instance, validated_data)
     def delete(self, instance):
         return super(KategoriaSerializer, self).delete(instance)
+
+class DluznikSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    nazwa = serializers.CharField(max_length=200)
+    kwota = serializers.DecimalField(max_digits=10, decimal_places=2)
+    class Meta:
+        model = Dluznik
+        fields = ('id', 'user', 'nazwa', 'kwota_do_splaty', 'splacony')
+    def create(self, validated_data):
+        return super(DluznikSerializer, self).create(validated_data)
+    def update(self, instance, validated_data):
+        return super(DluznikSerializer, self).update(instance, validated_data)
+    def delete(self, instance):
+        return super(DluznikSerializer, self).delete(instance)
+
+class DluznikSplataSerializer(serializers.ModelSerializer):
+    dluznik = serializers.PrimaryKeyRelatedField(queryset=Dluznik.objects.all())
+    kwota = serializers.DecimalField(max_digits=10, decimal_places=2)
+    class Meta:
+        model = DluznikSplata
+        fields = ('id', 'dluznik', 'kwota', 'data_splaty')
+    def create(self, validated_data):
+        return super(DluznikSplataSerializer, self).create(validated_data)
+    def update(self, instance, validated_data):
+        return super(DluznikSplataSerializer, self).update(instance, validated_data)
+    def delete(self, instance):
+        return super(DluznikSplataSerializer, self).delete(instance)

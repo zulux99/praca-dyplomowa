@@ -15,9 +15,13 @@
               href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <link rel="stylesheet" href="{% static 'css/ReactToastify.css' %}"/>
         <link rel="manifest" href="{% static 'manifest.json' %}">
         <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
         <link rel="apple-touch-icon" href="{% static "img/apple-touch-icon.png" %}">
+        <link rel="stylesheet"
+              type="text/css"
+              href="{% static 'css/notifications.css' %}">
         {% compress css %}
             <link type="text/x-scss"
                   rel="stylesheet"
@@ -26,7 +30,6 @@
         <title>Projekt</title>
     </head>
     <body>
-        <div id="navbar"></div>
         <div id="index"></div>
     </body>
     <script src="{% static "frontend/main.js" %}"></script>

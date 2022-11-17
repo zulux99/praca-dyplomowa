@@ -27,3 +27,14 @@ class Kategoria(models.Model):
     nazwa = models.CharField(max_length=200)
     class Meta:
         unique_together = ('user', 'nazwa')
+
+class Dluznik(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    nazwa = models.CharField(max_length=200)
+    kwota_do_splaty = models.DecimalField(max_digits=10, decimal_places=2)
+    splacony = models.BooleanField(default=False)
+
+class DluznikSplata(models.Model):
+    dluznik = models.ForeignKey(Dluznik, on_delete=models.CASCADE)
+    kwota = models.DecimalField(max_digits=10, decimal_places=2)
+    data_splaty = models.DateTimeField(auto_now_add=True)

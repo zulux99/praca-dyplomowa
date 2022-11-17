@@ -15,7 +15,7 @@ function DoughnutChart(props) {
             },
             title: {
               display: true,
-              text: 'Rachunki'
+              text: 'Konta'
             }
           }
         }}
@@ -23,7 +23,7 @@ function DoughnutChart(props) {
           labels: props.bills.map((bill) => bill.nazwa),
           datasets: [
             {
-              label: 'Rachunki',
+              label: 'Konta',
               data: props.bills.map((bill) => bill.kwota),
               backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
             }
