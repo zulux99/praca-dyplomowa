@@ -7,8 +7,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import BottomMenu from './BottomMenu';
 import { MobileView, isMobile } from 'react-device-detect';
 import MyRoutes from './MyRoutes';
+import OfflinePage from './OfflinePage';
 
 function App() {
+  if (navigator.onLine) {
+    null;
+  } else {
+    return <OfflinePage />;
+  }
   return (
     <>
       <BrowserRouter>

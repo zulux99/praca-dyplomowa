@@ -1,35 +1,24 @@
-var staticCacheName = 'budzet-domowy-v1';
+var staticCacheName = 'djangopwa-v4';
 
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function (event) {
   event.waitUntil(
-    caches.open(staticCacheName).then(function(cache) {
-      return cache.addAll([
-        '/',
-      ]);
+    caches.open(staticCacheName).then(function (cache) {
+      return cache.addAll(['/', '/offline']);
     })
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function (event) {
+  var requestUrl = new URL(event.request.url);
+  if (requestUrl.origin === location.origin) {
+    if (requestUrl.pathname === '/') {
+      event.respondWith(caches.match('/'));
+      return;
+    }
+  }
   event.respondWith(
-    caches.match(event.request).then(function(response) {
+    caches.match(event.request).then(function (response) {
       return response || fetch(event.request);
-    })
-  );
-});
-
-
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function(cacheName) {
-          return cacheName.startsWith('budzet-domowy-') &&
-                  cacheName != staticCacheName;
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
-        })
-      );
     })
   );
 });
