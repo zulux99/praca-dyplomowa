@@ -33,3 +33,30 @@ ul.gorne-menu {
   width: 100%;
 }
 
+.modal {
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .modal-box {
+  background-color: white;
+  margin: 32px;
+  border-radius: 5px;
+  padding: 20px;
+  width: 500px;
+}
+
+.modal .modal-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal .modal-box form h2 {
+  display: flex;
+  justify-content: center;
+}
+
+.modal .modal-box form .input {
+  margin: 10px;
+}

@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from finanse.models import Rachunek
 from finanse.models import Kategoria
-from finanse.models import Dluznik
-from finanse.models import DluznikSplata
+from finanse.models import Dlug
+from finanse.models import DlugSplata
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
@@ -44,29 +44,35 @@ class KategoriaSerializer(serializers.ModelSerializer):
     def delete(self, instance):
         return super(KategoriaSerializer, self).delete(instance)
 
-class DluznikSerializer(serializers.ModelSerializer):
+class DlugSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    nazwa = serializers.CharField(max_length=200)
-    kwota = serializers.DecimalField(max_digits=10, decimal_places=2)
+    nazwa_dluznika = serializers.CharField(max_length=200)
+    cel = serializers.CharField(max_length=200, required=False)
+    kwota_do_splaty = serializers.DecimalField(max_digits=12, decimal_places=2)
+    rachunek = serializers.PrimaryKeyRelatedField(queryset=Rachunek.objects.all())
+    splacony = serializers.BooleanField(default=False)
     class Meta:
-        model = Dluznik
-        fields = ('id', 'user', 'nazwa', 'kwota_do_splaty', 'splacony')
+        model = Dlug
+        fields = ('id', 'user', 'nazwa_dluznika', 'cel', 'kwota_do_splaty', 'rachunek', 'splacony')
     def create(self, validated_data):
-        return super(DluznikSerializer, self).create(validated_data)
+        return super(DlugSerializer, self).create(validated_data)
     def update(self, instance, validated_data):
-        return super(DluznikSerializer, self).update(instance, validated_data)
+        return super(DlugSerializer, self).update(instance, validated_data)
     def delete(self, instance):
-        return super(DluznikSerializer, self).delete(instance)
+        return super(DlugSerializer, self).delete(instance)
 
-class DluznikSplataSerializer(serializers.ModelSerializer):
-    dluznik = serializers.PrimaryKeyRelatedField(queryset=Dluznik.objects.all())
-    kwota = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+class DlugSplataSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    dlug = serializers.PrimaryKeyRelatedField(queryset=Dlug.objects.all())
+    kwota = serializers.DecimalField(max_digits=12, decimal_places=2)
     class Meta:
-        model = DluznikSplata
-        fields = ('id', 'dluznik', 'kwota', 'data_splaty')
+        model = DlugSplata
+        fields = ('id', 'user', 'dlug', 'kwota', 'data_splaty')
     def create(self, validated_data):
-        return super(DluznikSplataSerializer, self).create(validated_data)
+        return super(DlugSplataSerializer, self).create(validated_data)
     def update(self, instance, validated_data):
-        return super(DluznikSplataSerializer, self).update(instance, validated_data)
+        return super(DlugSplataSerializer, self).update(instance, validated_data)
     def delete(self, instance):
-        return super(DluznikSplataSerializer, self).delete(instance)
+        return super(DlugSplataSerializer, self).delete(instance)
+

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 # Create your models here.
     
@@ -28,13 +29,16 @@ class Kategoria(models.Model):
     class Meta:
         unique_together = ('user', 'nazwa')
 
-class Dluznik(models.Model):
+class Dlug(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    nazwa = models.CharField(max_length=200)
-    kwota_do_splaty = models.DecimalField(max_digits=10, decimal_places=2)
+    nazwa_dluznika = models.CharField(max_length=200)
+    cel = models.CharField(max_length=200, blank=True)
+    kwota_do_splaty = models.DecimalField(max_digits=12, decimal_places=2)
+    rachunek = models.ForeignKey(Rachunek, on_delete=models.CASCADE)
     splacony = models.BooleanField(default=False)
 
-class DluznikSplata(models.Model):
-    dluznik = models.ForeignKey(Dluznik, on_delete=models.CASCADE)
-    kwota = models.DecimalField(max_digits=10, decimal_places=2)
+class DlugSplata(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    dlug = models.ForeignKey(Dlug, on_delete=models.CASCADE)
+    kwota = models.DecimalField(max_digits=12, decimal_places=2)
     data_splaty = models.DateTimeField(auto_now_add=True)

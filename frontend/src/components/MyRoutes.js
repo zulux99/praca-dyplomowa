@@ -3,7 +3,7 @@ import Bills from './bills/Bills';
 import HomePage from './HomePage';
 import Register from './Register';
 import Login from './Login';
-import Debtors from './Debtors';
+import Debtors from './debtors/Debtors';
 import PrivateRoute from './PrivateRoute';
 import Income from './Income';
 import Categories from './Categories';
