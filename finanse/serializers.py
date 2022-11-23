@@ -66,6 +66,7 @@ class DlugSplataSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     dlug = serializers.PrimaryKeyRelatedField(queryset=Dlug.objects.all())
     kwota = serializers.DecimalField(max_digits=12, decimal_places=2)
+    data_splaty = serializers.DateField()
     class Meta:
         model = DlugSplata
         fields = ('id', 'user', 'dlug', 'kwota', 'data_splaty')

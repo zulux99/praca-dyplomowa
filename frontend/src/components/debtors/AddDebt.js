@@ -66,8 +66,8 @@ function AddDebt(props) {
 
   const addDebt = async (e) => {
     e.preventDefault();
-    if (debtValue == 0) return toast.error('Wartość długu musi być większa od 0');
-    if (!debtValueValid) return toast.error('Wartość długu jest nieprawidłowa');
+    if (debtValue == 0) return toast.error('Kwota musi być większa od 0');
+    if (!debtValueValid) return toast.error('Kwota jest nieprawidłowa');
     try {
       const response = await axios.post(
         '/api/debts',

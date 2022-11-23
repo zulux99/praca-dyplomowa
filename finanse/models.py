@@ -41,4 +41,4 @@ class DlugSplata(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     dlug = models.ForeignKey(Dlug, on_delete=models.CASCADE)
     kwota = models.DecimalField(max_digits=12, decimal_places=2)
-    data_splaty = models.DateTimeField(auto_now_add=True)
+    data_splaty = models.DateField()
