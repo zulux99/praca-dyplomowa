@@ -66,3 +66,15 @@ ul.gorne-menu {
 .modal .modal-box form .input {
   margin: 10px;
 }
+
+.dlugi {
+  display: flex;
+  flex-direction: column;
+}
+
+.dlugi ul {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  list-style-type: none;
+}

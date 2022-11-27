@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import InputAdornment from '@mui/material/InputAdornment';
+import Box from '@mui/material/Box';
 
 function debts() {
   const user = useContext(AuthContext);
@@ -66,10 +67,6 @@ function debts() {
 
   const addPayment = async (e, debt_id) => {
     e.preventDefault();
-    console.log('user_id: ' + user_id);
-    console.log('Payment Value: ' + paymentValue);
-    console.log('Payment Date: ' + paymentDate);
-    console.log('Debt ID: ' + debt_id);
     try {
       const response = await axios.post(
         '/api/debts/payments',
@@ -89,11 +86,20 @@ function debts() {
       console.log(response.data);
       e.target.reset();
       setPaymentValue('');
+      getPayments();
       toast.success('Dodano wpłatę');
     } catch (err) {
-      console.log(err.response.data);
-      toast.error('Wystąpił błąd');
+      toast.error(err.response.data.non_field_errors[0]);
+      // console.log(err.response.data);
+      // toast.error('Wystąpił błąd');
     }
+  };
+
+  const getTotalPayments = (debt) => {
+    return payments
+      .filter((payment) => payment.dlug === debt.id)
+      .reduce((acc, payment) => acc + parseFloat(payment.kwota), 0)
+      .toFixed(2);
   };
 
   const openModal = () => setOpen(true);
@@ -108,23 +114,40 @@ function debts() {
       <AddDebt open={open} closeModal={closeModal} getDebts={getDebts} />
       <Container>
         <h1>Lista długów</h1>
-        {debts.map((debt) => (
-          <ul className="dlugi" key={debt.id}>
-            <li>
-              <div className="nazwa_dluznika">{debt.nazwa_dluznika}</div>
-              <div className="cel">{debt.cel}</div>
-              <div className="kwota_do_splaty">{debt.kwota_do_splaty}</div>
+        <Box className="dlugi">
+          {debts.map((debt) => (
+            <div key={debt.id} className="dlug">
+              <ul key={debt.id}>
+                <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
+                <li className="cel">{debt.cel}</li>
+                <li className="kwota_do_splaty">
+                  {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
+                  &nbsp;/&nbsp;{debt.kwota_do_splaty}
+                </li>
+                {debt.splacony && <li className="splacony">Splacony</li>}
+              </ul>
+              <div className="splaty">
+                {payments
+                  .filter((payment) => payment.dlug === debt.id)
+                  .map((payment) => (
+                    <ul className="splata" key={payment.id}>
+                      <li className="kwota">{payment.kwota}</li>
+                      <li className="data_splaty">{payment.data_splaty}</li>
+                    </ul>
+                  ))}
+              </div>
               <form onSubmit={(e) => addPayment(e, debt.id)}>
                 <TextField
                   type="number"
                   className="input"
                   id="kwota"
+                  required
                   label="Kwota wpłaty"
                   error={!paymentValueValid}
                   onChange={(e) => setPaymentValue(e.target.value)}
                   InputProps={{
                     inputProps: {
-                      max: 100,
+                      // max: 100,
                       inputMode: 'numeric'
                     },
                     endAdornment: <InputAdornment position="end">PLN</InputAdornment>
@@ -148,9 +171,9 @@ function debts() {
                   Dodaj wpłatę
                 </Button>
               </form>
-            </li>
-          </ul>
-        ))}
+            </div>
+          ))}
+        </Box>
       </Container>
     </>
   );
