@@ -77,7 +77,7 @@ class DlugSplataSerializer(serializers.ModelSerializer):
         for splata in splaty:
             kwota_splaty += splata.kwota
         if kwota > dlug.kwota_do_splaty - kwota_splaty:
-            raise serializers.ValidationError("Kwota splaty nie może być większa niż kwota do spłaty")
+            raise serializers.ValidationError("Kwota nie może być większa niż kwota do spłaty")
         return data
     def save(self, **kwargs):
         super(DlugSplataSerializer, self).save(**kwargs)

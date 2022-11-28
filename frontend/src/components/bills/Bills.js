@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import Check from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Menu3Dots from './Menu3Dots';
+import Menu3Dots from '../Menu3Dots';
 
 function Bills() {
   const user = useContext(AuthContext);

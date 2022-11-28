@@ -1,27 +1,24 @@
 import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../context/AuthContext';
+import Menu3Dots from '../Menu3Dots';
 import axios from 'axios';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { ToastContainer, toast } from 'react-toastify';
 import AddDebt from './AddDebt';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import InputAdornment from '@mui/material/InputAdornment';
+import AddPayment from './AddPayment';
 import Box from '@mui/material/Box';
+import List from '@mui/material/List';
 
 function debts() {
   const user = useContext(AuthContext);
   const user_id = user.user.user_id;
-  const [open, setOpen] = useState(false);
+  const [openAddDebtor, setOpenAddDebtor] = useState(false);
+  const [openAddPayment, setOpenAddPayment] = useState(false);
   const [debts, setDebts] = useState([]);
   const [payments, setPayments] = useState([]);
-  const [paymentValue, setPaymentValue] = useState('');
-  const [paymentValueValid, setPaymentValueValid] = useState(true);
-  const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
-  const validAmount = new RegExp('^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$');
+  const [debtId, setDebtId] = useState(null);
+  const [sortType, setSortType] = useState('id');
 
   useEffect(() => {
     getDebts();
@@ -31,9 +28,25 @@ function debts() {
     };
   }, []);
 
-  useEffect(() => {
-    validAmount.test(paymentValue) ? setPaymentValueValid(true) : setPaymentValueValid(false);
-  }, [paymentValue]);
+  // TODO: Sort debts
+
+  // useEffect(() => {
+  //   const types = {
+  //     kwota: 'kwota_do_splaty',
+  //     nazwa: 'nazwa_dluznika',
+  //     id: 'id'
+  //   };
+  //   const property = types[sortType];
+  //   const sortedDebts = [...debts].sort((a, b) => {
+  //     return a[property] - b[property];
+  //   });
+  //   // if id is selected, sort by id in descending order
+  //   if (sortType === 'id') {
+  //     sortedDebts.reverse();
+  //   }
+  //   setDebts(sortedDebts);
+  //   console.log(sortedDebts);
+  // }, [sortType]);
 
   const getDebts = async () => {
     try {
@@ -65,36 +78,6 @@ function debts() {
     }
   };
 
-  const addPayment = async (e, debt_id) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        '/api/debts/payments',
-        JSON.stringify({
-          user: user_id,
-          dlug: debt_id,
-          kwota: paymentValue,
-          data_splaty: paymentDate
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.authTokens.access}`
-          }
-        }
-      );
-      console.log(response.data);
-      e.target.reset();
-      setPaymentValue('');
-      getPayments();
-      toast.success('Dodano wpłatę');
-    } catch (err) {
-      toast.error(err.response.data.non_field_errors[0]);
-      // console.log(err.response.data);
-      // toast.error('Wystąpił błąd');
-    }
-  };
-
   const getTotalPayments = (debt) => {
     return payments
       .filter((payment) => payment.dlug === debt.id)
@@ -102,77 +85,98 @@ function debts() {
       .toFixed(2);
   };
 
-  const openModal = () => setOpen(true);
-  const closeModal = () => setOpen(false);
+  const openModalAddDebtor = () => setOpenAddDebtor(true);
+  const closeModalAddDebtor = () => setOpenAddDebtor(false);
+
+  const openModalAddPayment = (debt_id) => {
+    setOpenAddPayment(true);
+    setDebtId(debt_id);
+  };
+  const closeModalAddPayment = () => {
+    setOpenAddPayment(false);
+    setDebtId(null);
+  };
 
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-      <Button variant="contained" onClick={openModal}>
-        Dodaj dłużnika
+      <Button variant="contained" onClick={openModalAddDebtor}>
+        Dodaj
       </Button>
-      <AddDebt open={open} closeModal={closeModal} getDebts={getDebts} />
+      <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
+      <AddPayment
+        open={openAddPayment}
+        closeModal={closeModalAddPayment}
+        payments={payments}
+        getPayments={getPayments}
+        getTotalPayments={getTotalPayments}
+        debts={debts}
+        debtId={debtId}
+      />
       <Container>
-        <h1>Lista długów</h1>
+        <h1>Lista dłużników</h1>
+        <Box>
+          <Button variant="contained" onClick={() => setSortType('nazwa')}>
+            Sortuj po nazwie
+          </Button>
+          <Button variant="contained" onClick={() => setSortType('kwota')}>
+            Sortuj po kwocie
+          </Button>
+        </Box>
         <Box className="dlugi">
-          {debts.map((debt) => (
-            <div key={debt.id} className="dlug">
-              <ul key={debt.id}>
-                <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
-                <li className="cel">{debt.cel}</li>
-                <li className="kwota_do_splaty">
-                  {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
-                  &nbsp;/&nbsp;{debt.kwota_do_splaty}
-                </li>
-                {debt.splacony && <li className="splacony">Splacony</li>}
-              </ul>
-              <div className="splaty">
-                {payments
-                  .filter((payment) => payment.dlug === debt.id)
-                  .map((payment) => (
-                    <ul className="splata" key={payment.id}>
-                      <li className="kwota">{payment.kwota}</li>
-                      <li className="data_splaty">{payment.data_splaty}</li>
-                    </ul>
-                  ))}
+          {debts
+            .sort((a, b) => {
+              if (a.splacony === b.splacony) {
+                return b.id - a.id;
+              } else {
+                return a.splacony - b.splacony;
+              }
+            })
+            .map((debt) => (
+              <div key={debt.id} className="dlug">
+                <List
+                  key={debt.id}
+                  className={
+                    debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty
+                      ? 'dlug-splacony'
+                      : 'dlug-niesplacony'
+                  }
+                  sx={{
+                    background: `linear-gradient(90deg, rgba(0, 255, 0, 0.5) ${
+                      (getTotalPayments(debt) / debt.kwota_do_splaty) * 100
+                    }%, rgba(255, 0, 0, 0.5) ${
+                      (getTotalPayments(debt) / debt.kwota_do_splaty) * 100
+                    }%)`
+                  }}>
+                  <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
+                  <li className="cel">{debt.cel}</li>
+                  <li className="kwota_do_splaty">
+                    {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
+                    &nbsp;/&nbsp;{debt.kwota_do_splaty}
+                  </li>
+                  {getTotalPayments(debt) < debt.kwota_do_splaty && (
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        openModalAddPayment(debt.id);
+                      }}>
+                      Dodaj wpłatę
+                    </Button>
+                  )}
+                  <Menu3Dots />
+                </List>
+                <div className="splaty">
+                  {payments
+                    .filter((payment) => payment.dlug === debt.id)
+                    .map((payment) => (
+                      <ul className="splata" key={payment.id}>
+                        <li className="kwota">{payment.kwota}</li>
+                        <li className="data_splaty">{payment.data_splaty}</li>
+                      </ul>
+                    ))}
+                </div>
               </div>
-              <form onSubmit={(e) => addPayment(e, debt.id)}>
-                <TextField
-                  type="number"
-                  className="input"
-                  id="kwota"
-                  required
-                  label="Kwota wpłaty"
-                  error={!paymentValueValid}
-                  onChange={(e) => setPaymentValue(e.target.value)}
-                  InputProps={{
-                    inputProps: {
-                      // max: 100,
-                      inputMode: 'numeric'
-                    },
-                    endAdornment: <InputAdornment position="end">PLN</InputAdornment>
-                  }}
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Basic example"
-                    className="input"
-                    inputFormat="DD/MM/YYYY"
-                    value={paymentDate}
-                    onChange={(newValue) => {
-                      setPaymentDate(
-                        newValue.$y + '-' + parseInt(newValue.$M + 1) + '-' + newValue.$D
-                      );
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-                <Button variant="contained" type="submit">
-                  Dodaj wpłatę
-                </Button>
-              </form>
-            </div>
-          ))}
+            ))}
         </Box>
       </Container>
     </>

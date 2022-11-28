@@ -20,6 +20,5 @@ urlpatterns = [
     path("api/debts/update/<int:pk>", views.DlugViewSet.as_view()),
     path("api/debts/delete/<int:pk>", views.DlugViewSet.as_view()),
     path("api/debts/payments", views.DlugSplataViewSet.as_view()),
-    path("api/debts/payments/update/<int:pk>", views.DlugSplataViewSet.as_view()),
-    path("api/debts/payments/delete/<int:pk>", views.DlugSplataViewSet.as_view()),
+    path("api/debts/payments/<int:pk>", views.DlugSplataViewSet.as_view()),
 ]

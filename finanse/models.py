@@ -36,9 +36,25 @@ class Dlug(models.Model):
     kwota_do_splaty = models.DecimalField(max_digits=12, decimal_places=2)
     rachunek = models.ForeignKey(Rachunek, on_delete=models.CASCADE)
     splacony = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        self.rachunek.kwota -= self.kwota_do_splaty
+        self.rachunek.save()
+        super(Dlug, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        self.rachunek.kwota += self.kwota_do_splaty
+        self.rachunek.save()
+        super(Dlug, self).delete(*args, **kwargs)
 
 class DlugSplata(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     dlug = models.ForeignKey(Dlug, on_delete=models.CASCADE)
     kwota = models.DecimalField(max_digits=12, decimal_places=2)
     data_splaty = models.DateField()
+    def save(self, *args, **kwargs):
+        self.dlug.rachunek.kwota += self.kwota
+        self.dlug.rachunek.save()
+        super(DlugSplata, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        self.dlug.rachunek.kwota -= self.kwota
+        self.dlug.rachunek.save()
+        super(DlugSplata, self).delete(*args, **kwargs)

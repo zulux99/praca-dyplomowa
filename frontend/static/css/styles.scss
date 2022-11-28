@@ -75,6 +75,16 @@ ul.gorne-menu {
 .dlugi ul {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   flex-direction: row;
   list-style-type: none;
 }
+
+.dlugi .dlug>ul {
+  background-color: white;
+  height: 48px;
+}
+
+// .dlugi .dlug .splaty{
+//   display: none;
+// }

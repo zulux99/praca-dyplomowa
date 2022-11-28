@@ -75,7 +75,7 @@ function AddDebt(props) {
           user: user_id,
           nazwa_dluznika: debtorName,
           kwota_do_splaty: debtValue,
-          cel_dlugu: debtPurpose,
+          cel: debtPurpose,
           rachunek: billId
         }),
         {
@@ -111,7 +111,6 @@ function AddDebt(props) {
               <h2>Dodaj dług</h2>
               <TextField
                 className="input"
-                id="outlined-basic"
                 label="Nazwa dłużnika"
                 required
                 variant="outlined"
@@ -121,8 +120,7 @@ function AddDebt(props) {
               <TextField
                 type="text"
                 className="input"
-                id="kwota"
-                label="Kwota do spłaty"
+                label="Pożyczona kwota"
                 required
                 error={!debtValueValid}
                 variant="outlined"
@@ -139,7 +137,6 @@ function AddDebt(props) {
                 className="input"
                 select
                 required
-                id="demo-simple-select"
                 label="Konto"
                 value={billId}
                 onChange={(e) => setBillId(e.target.value)}>
@@ -163,6 +160,16 @@ function AddDebt(props) {
                 type="submit"
                 disabled={debtorName == '' || debtValue == ''}>
                 Dodaj
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  setDebtorName('');
+                  setDebtValue('');
+                  setDebtPurpose('');
+                }}>
+                Wyczyść
               </Button>
             </form>
           </Box>
