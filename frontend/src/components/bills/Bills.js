@@ -1,19 +1,19 @@
-import AuthContext from '../../context/AuthContext';
-import AddBill from './AddBill';
-import DoughnutChart from './DoughnutChart';
-import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import Check from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Menu3Dots from '../Menu3Dots';
+import AuthContext from "../../context/AuthContext";
+import AddBill from "./AddBill";
+import DoughnutChart from "./DoughnutChart";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Check from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Menu3Dots from "../Menu3Dots";
 
 function Bills() {
   const user = useContext(AuthContext);
@@ -30,11 +30,11 @@ function Bills() {
 
   const getBills = async () => {
     try {
-      const response = await axios.get(`/api/bills`, {
+      const response = await axios.get(`/api/bills/`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
       });
       setBills(response.data);
     } catch (err) {
@@ -49,9 +49,9 @@ function Bills() {
         JSON.stringify({ user: user_id, nazwa: bill.nazwa }),
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.authTokens.access}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.authTokens.access}`,
+          },
         }
       );
       console.log(response.data);
@@ -66,9 +66,9 @@ function Bills() {
     try {
       await axios.delete(`/api/bills/delete/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
       });
       getBills();
     } catch (err) {
@@ -85,15 +85,15 @@ function Bills() {
         JSON.stringify({ user: user_id, nazwa: bill.nazwa, domyslne: true }),
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.authTokens.access}`,
-            id: user_id
-          }
+            id: user_id,
+          },
         }
       );
       getBills();
     } catch (err) {
-      alert('Nie udało się ustawić domyślnego konta');
+      alert("Nie udało się ustawić domyślnego konta");
     }
   };
 
@@ -113,18 +113,16 @@ function Bills() {
                     variant="standard"
                     onChange={(e) => ((bills[index].nazwa = e.target.value), console.log(bills))}
                     onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         changeBillName(bills[index]);
                         e.target.blur();
                       }
                     }}
                   />
                 </form>
-                <Box
-                  className="konto"
-                  sx={bill.domyslne ? { backgroundColor: 'lightgreen' } : null}>
+                <Box className="konto" sx={bill.domyslne ? { backgroundColor: "lightgreen" } : null}>
                   <Box className="konto_nazwa_kwota">
-                    <InputLabel className="konto_nazwa">{bill.nazwa + ' '}</InputLabel>
+                    <InputLabel className="konto_nazwa">{bill.nazwa + " "}</InputLabel>
                     <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>
                   </Box>
                   <Box className="konto_edytuj" onClick={() => setBillEditing(bill.id)}>
@@ -134,7 +132,7 @@ function Bills() {
                   </Box>
                   <Box
                     className="konto_zatwierdz"
-                    sx={billEditing == bill.id ? { display: 'block' } : { display: 'none' }}>
+                    sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
                     <IconButton onClick={() => changeBillName(bill)}>
                       <Check color="success" />
                     </IconButton>
@@ -144,12 +142,7 @@ function Bills() {
                       <DeleteIcon color="error" />
                     </IconButton>
                   </Box>
-                  <Menu3Dots
-                    bill={bill}
-                    id={bill.id}
-                    makeDefault={makeDefault}
-                    deleteBill={deleteBill}
-                  />
+                  <Menu3Dots bill={bill} id={bill.id} makeDefault={makeDefault} deleteBill={deleteBill} />
                 </Box>
               </ListItem>
             </Box>

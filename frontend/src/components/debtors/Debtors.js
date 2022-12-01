@@ -1,16 +1,22 @@
-import { useContext, useState, useEffect } from 'react';
-import AuthContext from '../../context/AuthContext';
-import Menu3Dots from '../Menu3Dots';
-import axios from 'axios';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import { ToastContainer, toast } from 'react-toastify';
-import AddDebt from './AddDebt';
-import AddPayment from './AddPayment';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
+import { useContext, useState, useEffect } from "react";
+import AuthContext from "../../context/AuthContext";
+import Menu3Dots from "../Menu3Dots";
+import axios from "axios";
+import base_url from "../../UrlAndPort";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import { ToastContainer, toast } from "react-toastify";
+import AddDebt from "./AddDebt";
+import AddPayment from "./AddPayment";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BorderLinearProgress from "@mui/material/LinearProgress";
 
-function debts() {
+function Debtors() {
   const user = useContext(AuthContext);
   const user_id = user.user.user_id;
   const [openAddDebtor, setOpenAddDebtor] = useState(false);
@@ -18,11 +24,13 @@ function debts() {
   const [debts, setDebts] = useState([]);
   const [payments, setPayments] = useState([]);
   const [debtId, setDebtId] = useState(null);
-  const [sortType, setSortType] = useState('id');
+  const [sortType, setSortType] = useState("id");
+  const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
     getDebts();
     getPayments();
+    console.log(base_url);
     return () => {
       setDebts([]);
     };
@@ -50,11 +58,11 @@ function debts() {
 
   const getDebts = async () => {
     try {
-      const response = await axios.get(`/api/debts`, {
+      const response = await axios.get(`/api/debts/`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
       });
       setDebts(response.data);
       console.log(response.data);
@@ -65,11 +73,11 @@ function debts() {
 
   const getPayments = async () => {
     try {
-      const response = await axios.get(`/api/debts/payments`, {
+      const response = await axios.get(`/api/debts/payments/`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
       });
       setPayments(response.data);
       console.log(response.data);
@@ -116,10 +124,10 @@ function debts() {
       <Container>
         <h1>Lista dłużników</h1>
         <Box>
-          <Button variant="contained" onClick={() => setSortType('nazwa')}>
+          <Button variant="contained" onClick={() => setSortType("nazwa")}>
             Sortuj po nazwie
           </Button>
-          <Button variant="contained" onClick={() => setSortType('kwota')}>
+          <Button variant="contained" onClick={() => setSortType("kwota")}>
             Sortuj po kwocie
           </Button>
         </Box>
@@ -133,49 +141,57 @@ function debts() {
               }
             })
             .map((debt) => (
-              <div key={debt.id} className="dlug">
-                <List
-                  key={debt.id}
-                  className={
-                    debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty
-                      ? 'dlug-splacony'
-                      : 'dlug-niesplacony'
+              <Accordion
+                key={debt.id}
+                className="dlug"
+                expanded={expanded === debt.id}
+                // dont expand on button click
+                onChange={(event, isExpanded) => {
+                  if (event.target.tagName !== "BUTTON") {
+                    setExpanded(isExpanded ? debt.id : false);
                   }
-                  sx={{
-                    background: `linear-gradient(90deg, rgba(0, 255, 0, 0.5) ${
-                      (getTotalPayments(debt) / debt.kwota_do_splaty) * 100
-                    }%, rgba(255, 0, 0, 0.5) ${
-                      (getTotalPayments(debt) / debt.kwota_do_splaty) * 100
-                    }%)`
-                  }}>
-                  <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
-                  <li className="cel">{debt.cel}</li>
-                  <li className="kwota_do_splaty">
-                    {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
-                    &nbsp;/&nbsp;{debt.kwota_do_splaty}
-                  </li>
-                  {getTotalPayments(debt) < debt.kwota_do_splaty && (
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        openModalAddPayment(debt.id);
-                      }}>
-                      Dodaj wpłatę
-                    </Button>
-                  )}
-                  <Menu3Dots />
-                </List>
-                <div className="splaty">
-                  {payments
-                    .filter((payment) => payment.dlug === debt.id)
-                    .map((payment) => (
-                      <ul className="splata" key={payment.id}>
-                        <li className="kwota">{payment.kwota}</li>
-                        <li className="data_splaty">{payment.data_splaty}</li>
-                      </ul>
-                    ))}
-                </div>
-              </div>
+                }}>
+                <AccordionSummary
+                  className="accordion-summary"
+                  expandIcon={<ExpandMoreIcon />}
+                  disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
+                  <List key={debt.id}>
+                    <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
+                    <li className="cel">{debt.cel}</li>
+                    <li className="kwota_do_splaty">
+                      {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
+                      &nbsp;/&nbsp;{debt.kwota_do_splaty}
+                    </li>
+                    {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          openModalAddPayment(debt.id);
+                        }}>
+                        Dodaj wpłatę
+                      </Button>
+                    )}
+                    <Menu3Dots />
+                  </List>
+                  <BorderLinearProgress
+                    className="progress-bar"
+                    variant="determinate"
+                    value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
+                  />
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div className="splaty">
+                    {payments
+                      .filter((payment) => payment.dlug === debt.id)
+                      .map((payment) => (
+                        <ul className="splata" key={payment.id}>
+                          <li className="kwota">{payment.kwota}</li>
+                          <li className="data_splaty">{payment.data_splaty}</li>
+                        </ul>
+                      ))}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
             ))}
         </Box>
       </Container>
@@ -183,4 +199,4 @@ function debts() {
   );
 }
 
-export default debts;
+export default Debtors;

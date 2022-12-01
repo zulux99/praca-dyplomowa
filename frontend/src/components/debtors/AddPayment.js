@@ -1,31 +1,33 @@
-import { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import AuthContext from '../../context/AuthContext';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import { ToastContainer, toast } from 'react-toastify';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { FormControlLabel } from '@mui/material';
+import { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import AuthContext from "../../context/AuthContext";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import { ToastContainer, toast } from "react-toastify";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { FormControlLabel } from "@mui/material";
 
 function AddPayment(props) {
   const user = useContext(AuthContext);
   const user_id = user.user.user_id;
-  const [paymentValue, setPaymentValue] = useState('');
+  const [paymentValue, setPaymentValue] = useState("");
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [fullPayment, setFullPayment] = useState(false);
   const [paymentValueValid, setPaymentValueValid] = useState(true);
-  const validAmount = new RegExp('^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$');
+  const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
 
   useEffect(() => {
     validAmount.test(paymentValue) ? setPaymentValueValid(true) : setPaymentValueValid(false);
-    paymentValue === '' ? setPaymentValueValid(true) : null;
+    if (paymentValue === "") {
+      setPaymentValueValid(true);
+    }
   }, [paymentValue]);
 
   const getValueLeftToPay = (debt_id) => {
@@ -39,36 +41,37 @@ function AddPayment(props) {
 
   const addPayment = async (e, debt_id) => {
     e.preventDefault();
-    console.log('user: ' + user_id);
-    console.log('dlug: ' + debt_id);
-    console.log('kwota: ' + paymentValue);
-    console.log('data_splaty: ' + paymentDate);
-    console.log('fullPayment: ' + fullPayment);
-    // try {
-    //   const response = await axios.post(
-    //     '/api/debts/payments',
-    //     JSON.stringify({
-    //       user: user_id,
-    //       dlug: debt_id,
-    //       kwota: paymentValue,
-    //       data_splaty: paymentDate
-    //     }),
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: `Bearer ${user.authTokens.access}`
-    //       }
-    //     }
-    //   );
-    //   console.log(response.data);
-    //   e.target.reset();
-    //   setPaymentValue('');
-    //   props.getPayments();
-    //   props.closeModal();
-    //   toast.success('Dodano wpłatę');
-    // } catch (err) {
-    //   toast.error(err.response.data.non_field_errors[0]);
-    // }
+    console.log("user: " + user_id);
+    console.log("dlug: " + debt_id);
+    console.log("kwota: " + paymentValue);
+    console.log("data_splaty: " + paymentDate);
+    console.log("fullPayment: " + fullPayment);
+    try {
+      const response = await axios.post(
+        "/api/debts/payments/",
+        JSON.stringify({
+          user: user_id,
+          dlug: debt_id,
+          kwota: paymentValue,
+          data_splaty: paymentDate,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.authTokens.access}`,
+          },
+        }
+      );
+      console.log(response.data);
+      e.target.reset();
+      setPaymentValue("");
+      props.getPayments();
+      props.closeModal();
+      toast.success("Dodano wpłatę");
+      props.setDebts(props.debts);
+    } catch (err) {
+      toast.error(err.response.data.non_field_errors[0]);
+    }
   };
 
   const handleChange = () => {
@@ -76,7 +79,7 @@ function AddPayment(props) {
       setPaymentValue(getValueLeftToPay(props.debtId));
       setFullPayment(true);
     } else {
-      setPaymentValue('');
+      setPaymentValue("");
       setFullPayment(false);
     }
   };
@@ -89,7 +92,7 @@ function AddPayment(props) {
         open={props.open}
         onClose={() => {
           props.closeModal();
-          setPaymentValue('');
+          setPaymentValue("");
           setFullPayment(false);
         }}>
         <Fade in={props.open}>
@@ -106,9 +109,9 @@ function AddPayment(props) {
                 onChange={(e) => setPaymentValue(e.target.value)}
                 InputProps={{
                   inputProps: {
-                    inputMode: 'numeric'
+                    inputMode: "numeric",
                   },
-                  endAdornment: <InputAdornment position="end">PLN</InputAdornment>
+                  endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
                 }}
               />
               <FormControlLabel
@@ -122,9 +125,7 @@ function AddPayment(props) {
                   inputFormat="DD/MM/YYYY"
                   value={paymentDate}
                   onChange={(newValue) => {
-                    setPaymentDate(
-                      newValue.$y + '-' + parseInt(newValue.$M + 1) + '-' + newValue.$D
-                    );
+                    setPaymentDate(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />

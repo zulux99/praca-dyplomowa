@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { useContext, useState, useEffect } from 'react';
-import AuthContext from '../context/AuthContext';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import axios from "axios";
+import { useContext, useState, useEffect } from "react";
+import AuthContext from "../context/AuthContext";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 function Categories() {
   const user = useContext(AuthContext);
   const user_id = user.user.user_id;
-  const [categoryName, setCategoryName] = useState('');
+  const [categoryName, setCategoryName] = useState("");
   const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
@@ -17,11 +17,11 @@ function Categories() {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get('/api/categories', {
+      const response = await axios.get("/api/categories/", {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.authTokens.access}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
       });
       console.log(response.data);
       setCategoryList(response.data);
@@ -33,23 +33,19 @@ function Categories() {
   const addCategory = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        '/api/categories',
-        JSON.stringify({ user: user_id, nazwa: categoryName }),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.authTokens.access}`
-          }
-        }
-      );
+      const response = await axios.post("/api/categories/", JSON.stringify({ user: user_id, nazwa: categoryName }), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authTokens.access}`,
+        },
+      });
       console.log(response.data);
       e.target.reset();
-      setCategoryName('');
+      setCategoryName("");
       getCategories();
     } catch (err) {
       console.log(err.response.data);
-      alert('Nie udało się dodać kategorii');
+      alert("Nie udało się dodać kategorii");
     }
   };
 
@@ -64,10 +60,7 @@ function Categories() {
         ))}
       </Box>
       <form onSubmit={addCategory}>
-        <TextField
-          type="text"
-          label="Nazwa kategorii"
-          onChange={(e) => setCategoryName(e.target.value)}></TextField>
+        <TextField type="text" label="Nazwa kategorii" onChange={(e) => setCategoryName(e.target.value)}></TextField>
         <Button type="submit" variant="contained">
           Dodaj
         </Button>

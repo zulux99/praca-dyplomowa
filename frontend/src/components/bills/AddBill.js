@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import axios from 'axios';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
 
 function AddBill(props) {
-  const [nazwa, setNazwa] = useState('');
+  const [nazwa, setNazwa] = useState("");
   const [billAlreadyExists, setBillAlreadyExists] = useState(false);
   const [isAmountValid, setIsAmountValid] = useState(true);
   const [amount, setAmount] = useState(0);
-  const validAmount = new RegExp('^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$');
+  const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
   const user_id = props.user.user.user_id;
 
   useEffect(() => {
@@ -18,23 +18,21 @@ function AddBill(props) {
   }, [amount]);
 
   useEffect(() => {
-    props.bills.find((bill) => bill.nazwa === nazwa)
-      ? setBillAlreadyExists(true)
-      : setBillAlreadyExists(false);
+    props.bills.find((bill) => bill.nazwa === nazwa) ? setBillAlreadyExists(true) : setBillAlreadyExists(false);
   }, [nazwa, props.bills]);
 
   const addBill = async (e) => {
     e.preventDefault();
     if (!billAlreadyExists) {
       try {
-        await axios.post('/api/bills', JSON.stringify({ user: user_id, nazwa, kwota: amount }), {
+        await axios.post("/api/bills/", JSON.stringify({ user: user_id, nazwa, kwota: amount }), {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.user.authTokens.access}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${props.user.authTokens.access}`,
+          },
         });
         e.target.reset();
-        setNazwa('');
+        setNazwa("");
         setAmount(0);
         props.getBills();
       } catch (err) {
@@ -49,7 +47,7 @@ function AddBill(props) {
         variant="outlined"
         label="Nowa nazwa rachunku"
         error={billAlreadyExists ? true : false}
-        helperText={billAlreadyExists && 'Rachunek o tej nazwie już istnieje'}
+        helperText={billAlreadyExists && "Rachunek o tej nazwie już istnieje"}
         id="nazwa"
         margin="normal"
         onChange={(e) => {
@@ -63,23 +61,20 @@ function AddBill(props) {
         label="Kwota"
         id="kwota"
         error={isAmountValid ? false : true}
-        helperText={isAmountValid ? '' : 'Niepoprawna kwota'}
+        helperText={isAmountValid ? "" : "Niepoprawna kwota"}
         margin="normal"
         value={amount}
         pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$"
         onChange={(e) => setAmount(e.target.value)}
-        onFocus={(e) => e.target.value == 0 && setAmount('')}
+        onFocus={(e) => e.target.value == 0 && setAmount("")}
         inputProps={{
-          inputMode: 'numeric'
+          inputMode: "numeric",
         }}
         InputProps={{
-          endAdornment: <InputAdornment position="end">PLN</InputAdornment>
+          endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
         }}
       />
-      <Button
-        variant="contained"
-        type="submit"
-        disabled={nazwa == '' || !isAmountValid ? true : false}>
+      <Button variant="contained" type="submit" disabled={nazwa == "" || !isAmountValid ? true : false}>
         Dodaj rachunek
       </Button>
     </form>
