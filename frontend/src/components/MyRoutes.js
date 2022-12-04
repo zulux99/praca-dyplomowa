@@ -1,12 +1,12 @@
-import { Route, Routes } from 'react-router-dom';
-import Bills from './bills/Bills';
-import HomePage from './HomePage';
-import Register from './Register';
-import Login from './Login';
-import Debtors from './debtors/Debtors';
-import PrivateRoute from './PrivateRoute';
-import Income from './Income';
-import Categories from './Categories';
+import { Route, Routes } from "react-router-dom";
+import Bills from "./bills/Bills";
+import HomePage from "./HomePage";
+import Register from "./Register";
+import Login from "./Login";
+import Debtors from "./debtors/Debtors";
+import PrivateRoute from "./PrivateRoute";
+import Income from "./Income";
+import Categories from "./categories/Categories";
 
 function MyRoutes() {
   return (
