@@ -3,12 +3,13 @@ import { AuthProvider } from "../context/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/Main.css";
 import Container from "@mui/material/Container";
-import Navbar from "./Navbar";
+import ToolbarComponent from "./ToolbarComponent";
 import CssBaseline from "@mui/material/CssBaseline";
 import BottomMenu from "./BottomMenu";
-import { MobileView, isMobile } from "react-device-detect";
+import { MobileView, isMobile, isBrowser } from "react-device-detect";
 import MyRoutes from "./MyRoutes";
 import OfflinePage from "./OfflinePage";
+import DrawerComponent from "./DrawerComponent";
 
 function App() {
   if (navigator.onLine) {
@@ -21,15 +22,17 @@ function App() {
         <AuthProvider>
           <div>
             <CssBaseline />
-            <Navbar />
+            <ToolbarComponent />
+            <DrawerComponent />
           </div>
           <Container
             className="main"
             maxWidth={false}
             sx={{
-              marginTop: "64px",
+              marginLeft: isBrowser && "256px",
               padding: "16px",
               marginBottom: isMobile ? "56px" : "0",
+              width: isMobile ? "100%" : "calc(100% - 256px)",
             }}>
             <MyRoutes />
             <footer>

@@ -16,6 +16,7 @@ function AddCategoryForm(props) {
       } else {
         setCategoryName("");
         props.setCategoryList([...props.categoryList, response]);
+        toast.success("Dodano kategorię");
       }
     });
     e.target.reset();

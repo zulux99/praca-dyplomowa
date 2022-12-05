@@ -13,7 +13,7 @@ function MyRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route
-        path="konta"
+        path="accounts"
         element={
           <PrivateRoute>
             <Bills />
@@ -21,7 +21,7 @@ function MyRoutes() {
         }
       />
       <Route
-        path="przychody"
+        path="incomes"
         element={
           <PrivateRoute>
             <Income />
@@ -29,7 +29,7 @@ function MyRoutes() {
         }
       />
       <Route
-        path="kategorie"
+        path="categories"
         element={
           <PrivateRoute>
             <Categories />
@@ -37,7 +37,7 @@ function MyRoutes() {
         }
       />
       <Route
-        path="dluznicy"
+        path="debtors"
         element={
           <PrivateRoute>
             <Debtors />

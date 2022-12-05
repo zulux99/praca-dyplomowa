@@ -1,7 +1,7 @@
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 a {
@@ -10,8 +10,8 @@ a {
 }
 
 body {
-  background-color: lightgray !important;
-  font-family: 'Open Sans', sans-serif;
+  background-color: #e8e8e8 !important;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #333;
@@ -27,6 +27,14 @@ ul.gorne-menu {
   margin: auto;
 }
 
+.MuiPaper-root {
+  box-shadow: none !important;
+}
+
+.MuiToolbar-root {
+  background-color: #e8e8e8 !important;
+}
+
 .pasek-gorny-tytul {
   font-size: 1.5em;
   font-weight: 600;
@@ -35,14 +43,46 @@ ul.gorne-menu {
   max-width: fit-content;
 }
 
+
 .boczne-menu-link {
   width: 100%;
 }
 
-.modal {
-  display: flex; 
+.boczne-menu-link .css-158rodi-MuiButtonBase-root-MuiListItemButton-root:hover {
+  background-color: transparent;
+}
+
+.boczne-menu-naglowek-tlo {
+  display: flex;
   justify-content: center;
   align-items: center;
+  height: 64px;
+}
+
+h2.boczne-menu-naglowek {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.boczne-menu>div ul li {}
+
+.boczne-menu .MuiDrawer-paper {
+  width: 256px;
+}
+
+.boczne-menu>div .css-10hburv-MuiTypography-root {
+  font-size: 14px;
+  color: gray;
+}
+
+.boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected .css-10hburv-MuiTypography-root {
+  font-weight: bold;
+  color: #0b3d45;
+}
+
+.boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected {
+  font-weight: bold;
+  background-color: transparent;
 }
 
 .modal .modal-box {
