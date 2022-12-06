@@ -24,11 +24,6 @@ function ToolbarComponent() {
                 return item.name;
               }
             })}
-            {mainMenuPagesArrayGuest.map((item) => {
-              if (item.link === currentPath) {
-                return item.name;
-              }
-            })}
           </Typography>
         </Toolbar>
       </Box>

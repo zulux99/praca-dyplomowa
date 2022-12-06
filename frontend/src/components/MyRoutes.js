@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Bills from "./bills/Bills";
-import HomePage from "./HomePage";
+import DashBoard from "./DashBoard";
 import Register from "./Register";
 import Login from "./Login";
 import Debtors from "./debtors/Debtors";
@@ -11,7 +11,14 @@ import Categories from "./categories/Categories";
 function MyRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <DashBoard />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="accounts"
         element={

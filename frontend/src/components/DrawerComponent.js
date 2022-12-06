@@ -12,8 +12,6 @@ import { isBrowser } from "react-device-detect";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-export const mainMenuPagesArrayGuest = [{ link: "/login", name: "Zaloguj się" }];
-
 export const mainMenuPagesArrayUser = [
   { link: "/", name: "Strona główna" },
   { link: "/accounts", name: "Konta" },
@@ -40,38 +38,26 @@ export default function DrawerComponent() {
         </Typography>
       </Box>
       <List>
-        {user
-          ? mainMenuPagesArrayUser.map((page, index) => (
-              <ListItem key={index} disablePadding selected={selectedMenuItem === page.link}>
-                <Link
-                  key={index}
-                  to={page.link}
-                  onClick={() => {
-                    setIsNavExpanded(false);
-                    setSelectedMenuItem(page.link);
-                  }}
-                  className="boczne-menu-link">
-                  <ListItemButton sx={{ justifyContent: "center" }}>
-                    <ListItemIcon>
-                      <EarbudsIcon sx={selectedMenuItem === page.link ? { color: "lime" } : {}} />
-                    </ListItemIcon>
-                    <ListItemText primary={page.name} />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            ))
-          : mainMenuPagesArrayGuest.map((page, index) => (
-              <Link key={index} to={page.link} onClick={() => setIsNavExpanded(false)} className="boczne-menu-link">
-                <ListItem key={index} disablePadding selected={selectedMenuItem === page.link}>
-                  <ListItemButton sx={{ justifyContent: "center" }}>
-                    <ListItemIcon>
-                      <EarbudsIcon sx={selectedMenuItem === page.link ? { color: "lime" } : {}} />
-                    </ListItemIcon>
-                    <ListItemText primary={page.name} />
-                  </ListItemButton>
-                </ListItem>
+        {user &&
+          mainMenuPagesArrayUser.map((page, index) => (
+            <ListItem key={index} disablePadding selected={selectedMenuItem === page.link}>
+              <Link
+                key={index}
+                to={page.link}
+                onClick={() => {
+                  setIsNavExpanded(false);
+                  setSelectedMenuItem(page.link);
+                }}
+                className="boczne-menu-link">
+                <ListItemButton sx={{ justifyContent: "center" }}>
+                  <ListItemIcon>
+                    <EarbudsIcon sx={selectedMenuItem === page.link ? { color: "lime" } : {}} />
+                  </ListItemIcon>
+                  <ListItemText primary={page.name} />
+                </ListItemButton>
               </Link>
-            ))}
+            </ListItem>
+          ))}
         {user && (
           <ListItem disablePadding onClick={logoutUser}>
             <ListItemButton sx={{ justifyContent: "center" }} onClick={() => setIsNavExpanded(false)}>

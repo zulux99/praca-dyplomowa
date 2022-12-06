@@ -5,7 +5,7 @@ import App from "./components/App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
-import "typeface-roboto";
+import "@fontsource/roboto";
 
 axios.defaults.baseURL = "http://localhost:8000";
 const root = ReactDOM.createRoot(document.getElementById("root"));

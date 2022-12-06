@@ -4,7 +4,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import Container from "@mui/system/Container";
+import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 function Register() {
@@ -47,68 +48,79 @@ function Register() {
   };
 
   return (
-    <>
-      <div>
-        <Container align="center">
-          <form onSubmit={handleSubmit}>
-            <Typography variant="h4">Rejestracja</Typography>
-            <TextField
-              className="textField"
-              required
-              type="text"
-              error={usernameExists ? true : false}
-              helperText={usernameExists ? "Użytkownik o tej nazwie już istnieje" : ""}
-              autoComplete="username"
-              variant="outlined"
-              label="Nazwa użytkownika"
-              id="username"
-              onChange={(e) => setUsername(e.target.value)}
-              margin="dense"
-            />
-            <TextField
-              className="textField"
-              required
-              variant="outlined"
-              type="password"
-              label="Hasło"
-              id="password"
-              autoComplete="new-password"
-              onChange={(e) => setPassword(e.target.value)}
-              margin="dense"
-            />
-            <TextField
-              className="textField"
-              required
-              error={passwordMatch ? false : true}
-              helperText={passwordMatch ? false : "Hasła się nie zgadzają"}
-              variant="outlined"
-              type="password"
-              label="Potwierdź hasło"
-              id="password2"
-              autoComplete="new-password"
-              onChange={(e) => setPassword2(e.target.value)}
-              margin="dense"
-            />
-            <TextField
-              className="textField"
-              required
-              error={emailExists ? true : false}
-              helperText={emailExists ? "Ten email jest już zarejestrowany" : ""}
-              variant="outlined"
-              label="Email"
-              type="email"
-              autoComplete="email"
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              margin="dense"
-            />
-            <Button type="submit" variant="contained">
-              Załóż konto
-            </Button>
-          </form>
-        </Container>
-      </div>
-    </>
+    <Box className="tlo">
+      <form onSubmit={handleSubmit}>
+        <Typography variant="h1">Załóż konto</Typography>
+        <Typography variant="h2">Zacznij korzystać już teraz!</Typography>
+        <TextField
+          className="textField"
+          required
+          type="text"
+          error={usernameExists ? true : false}
+          helperText={usernameExists ? "Użytkownik o tej nazwie już istnieje" : ""}
+          autoComplete="username"
+          variant="outlined"
+          label="Nazwa użytkownika"
+          id="username"
+          onChange={(e) => setUsername(e.target.value)}
+          margin="dense"
+          size="small"
+          fullWidth
+        />
+        <TextField
+          className="textField"
+          required
+          variant="outlined"
+          type="password"
+          label="Hasło"
+          id="password"
+          autoComplete="new-password"
+          onChange={(e) => setPassword(e.target.value)}
+          margin="dense"
+          size="small"
+          fullWidth
+        />
+        <TextField
+          className="textField"
+          required
+          error={passwordMatch ? false : true}
+          helperText={passwordMatch ? false : "Hasła się nie zgadzają"}
+          variant="outlined"
+          type="password"
+          label="Potwierdź hasło"
+          id="password2"
+          autoComplete="new-password"
+          onChange={(e) => setPassword2(e.target.value)}
+          margin="dense"
+          size="small"
+          fullWidth
+        />
+        <TextField
+          className="textField"
+          required
+          error={emailExists ? true : false}
+          helperText={emailExists ? "Ten email jest już zarejestrowany" : ""}
+          variant="outlined"
+          label="Email"
+          type="email"
+          autoComplete="email"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          margin="dense"
+          size="small"
+          fullWidth
+        />
+        <Button type="submit" variant="contained" fullWidth>
+          Załóż konto
+        </Button>
+        <Box className="adnotacja">
+          <Typography variant="h3">Masz już konto?</Typography>
+          <Link to="/login">
+            <Typography variant="h3">&nbsp;Zaloguj się</Typography>
+          </Link>
+        </Box>
+      </form>
+    </Box>
   );
 }
 export default Register;
