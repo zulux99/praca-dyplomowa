@@ -16,9 +16,9 @@ export default function AppForGuest() {
       <>
         <Container className="startowa-mobile">
           <CssBaseline />
-          {location.pathname === "/" && <StartingPage />}
           {location.pathname === "/login" && <Login />}
           {location.pathname === "/register" && <Register />}
+          {location.pathname !== "/login" && location.pathname !== "/register" && <StartingPage />}
         </Container>
       </>
     );
@@ -31,8 +31,7 @@ export default function AppForGuest() {
         <Container className="startowa-browser">
           <Box className="strona">
             <StartingPage />
-            {(location.pathname === "/login" || location.pathname === "/") && <Login />}
-            {location.pathname === "/register" && <Register />}
+            {location.pathname === "/register" ? <Register /> : <Login />}
           </Box>
         </Container>
       </>

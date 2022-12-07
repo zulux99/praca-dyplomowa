@@ -22,7 +22,7 @@ export const mainMenuPagesArrayUser = [
 ];
 
 export default function DrawerComponent() {
-  const { user, logoutUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(window.location.pathname);
   return (
@@ -40,7 +40,7 @@ export default function DrawerComponent() {
       <List>
         {user &&
           mainMenuPagesArrayUser.map((page, index) => (
-            <ListItem key={index} disablePadding selected={selectedMenuItem === page.link}>
+            <ListItem key={index} disablePadding selected={window.location.pathname === page.link}>
               <Link
                 key={index}
                 to={page.link}
@@ -51,23 +51,13 @@ export default function DrawerComponent() {
                 className="boczne-menu-link">
                 <ListItemButton sx={{ justifyContent: "center" }}>
                   <ListItemIcon>
-                    <EarbudsIcon sx={selectedMenuItem === page.link ? { color: "lime" } : {}} />
+                    <EarbudsIcon sx={window.location.pathname === page.link ? { color: "lime" } : {}} />
                   </ListItemIcon>
                   <ListItemText primary={page.name} />
                 </ListItemButton>
               </Link>
             </ListItem>
           ))}
-        {user && (
-          <ListItem disablePadding onClick={logoutUser}>
-            <ListItemButton sx={{ justifyContent: "center" }} onClick={() => setIsNavExpanded(false)}>
-              <ListItemIcon>
-                <EarbudsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Wyloguj się" />
-            </ListItemButton>
-          </ListItem>
-        )}
       </List>
     </Drawer>
   );

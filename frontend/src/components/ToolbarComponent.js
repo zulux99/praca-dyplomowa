@@ -10,11 +10,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ProfileMenu from "./menus/ProfileMenu";
 
 function ToolbarComponent() {
   let location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
   const [name, setName] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     setCurrentPath(location.pathname);
@@ -29,6 +31,10 @@ function ToolbarComponent() {
       setName(JSON.parse(data).username);
     }
   }, []);
+
+  const clickOnProfile = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <>
@@ -47,7 +53,7 @@ function ToolbarComponent() {
           <IconButton>
             <NotificationsIcon />
           </IconButton>
-          <Box className="profil" onClick={() => console.log("klik")} sx={{ cursor: "pointer" }}>
+          <Box className="profil" sx={{ cursor: "pointer" }} onClick={clickOnProfile}>
             <IconButton>
               <PersonIcon />
             </IconButton>
@@ -56,6 +62,7 @@ function ToolbarComponent() {
             </Typography>
             <ExpandMoreIcon />
           </Box>
+          <ProfileMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
         </Toolbar>
       </Box>
     </>
