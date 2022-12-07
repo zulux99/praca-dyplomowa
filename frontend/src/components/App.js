@@ -3,7 +3,7 @@ import { AuthProvider } from "../context/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/Main.css";
 import OfflinePage from "./OfflinePage";
-import AppForUser from "./AppForUser";
+import AppForUser from "./apps/AppForUser";
 
 function App() {
   if (navigator.onLine) {

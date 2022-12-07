@@ -57,6 +57,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class UserListCreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        users = User.objects.filter(id=request.user.id)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 
 

@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 import Container from "@mui/material/Container";
-import ToolbarComponent from "./ToolbarComponent";
+import ToolbarComponent from "../ToolbarComponent";
 import CssBaseline from "@mui/material/CssBaseline";
-import BottomMenu from "./BottomMenu";
+import BottomMenu from "../BottomMenu";
 import { MobileView, isMobile, isBrowser } from "react-device-detect";
-import MyRoutes from "./MyRoutes";
-import DrawerComponent from "./DrawerComponent";
+import MyRoutes from "../MyRoutes";
+import DrawerComponent from "../DrawerComponent";
 import AppForGuest from "./AppForGuest";
 
 export default function AppForUser() {
@@ -28,10 +28,10 @@ export default function AppForUser() {
         className="main"
         maxWidth={false}
         sx={{
-          marginLeft: isBrowser && "256px",
+          marginLeft: isBrowser && "280px",
           padding: "16px",
           marginBottom: isMobile ? "56px" : "0",
-          width: isMobile ? "100%" : "calc(100% - 256px)",
+          width: isMobile ? "100%" : "calc(100% - 280px - 24px)",
         }}>
         <MyRoutes />
         <footer>

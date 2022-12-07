@@ -18,6 +18,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [firstName, setFirstName] = useState("");
 
   useEffect(() => {
     if (user.user) {
@@ -31,13 +32,18 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("first name: ", firstName);
     if (passwordMatch) {
       try {
-        const response = await axios.post("/api/register/", JSON.stringify({ username, password, email }), {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.post(
+          "/api/register/",
+          JSON.stringify({ username, password, email, first_name: firstName }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(response.data);
         navigate("/");
       } catch (err) {
@@ -52,6 +58,18 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <Typography variant="h1">Załóż konto</Typography>
         <Typography variant="h2">Zacznij korzystać już teraz!</Typography>
+        <TextField
+          className="textField"
+          type="text"
+          autoComplete="name"
+          variant="outlined"
+          label="Imię (opcjonalne)"
+          id="name"
+          onChange={(e) => setFirstName(e.target.value)}
+          margin="dense"
+          size="small"
+          fullWidth
+        />
         <TextField
           className="textField"
           required

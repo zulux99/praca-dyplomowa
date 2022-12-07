@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       setAuthTokens(response.data);
       setUser(jwt_decode(response.data.access));
       localStorage.setItem("authTokens", JSON.stringify(response.data));
-      navigate("/");
+      getUserData(response.data.access);
     } catch (err) {
       console.log(err.response);
       if (err.response.status !== 200) {
@@ -40,10 +40,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getUserData = async (accessToken) => {
+    try {
+      const response = await axios.get("/api/user/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      localStorage.setItem("user", JSON.stringify(response.data[0]));
+      navigate("/");
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
   const logoutUser = () => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
@@ -62,6 +78,7 @@ export const AuthProvider = ({ children }) => {
       setAuthTokens(null);
       setUser(null);
       localStorage.removeItem("authTokens");
+      localStorage.removeItem("user");
     }
     if (loading) {
       setLoading(false);

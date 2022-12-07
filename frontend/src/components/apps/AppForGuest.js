@@ -2,11 +2,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useLocation } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import "../css/Guest.css";
-import Login from "./Login";
-import Register from "./Register";
+import "../../css/Guest.css";
+import Login from "../Login";
+import Register from "../Register";
 import { isMobile, isBrowser } from "react-device-detect";
-import StartingPage from "./StartingPage";
+import StartingPage from "../StartingPage";
 
 export default function AppForGuest() {
   const location = useLocation();

@@ -1,12 +1,6 @@
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
-
-function DashBoard() {
-  const { user } = useContext(AuthContext);
-
+export default function DashBoard() {
   return (
     <>
-      {user && <p>Hello {user.username}</p>}
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac posuere erat. Suspendisse potenti. Orci
         varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec sit amet dui semper,
@@ -60,5 +54,3 @@ function DashBoard() {
     </>
   );
 }
-
-export default DashBoard;
