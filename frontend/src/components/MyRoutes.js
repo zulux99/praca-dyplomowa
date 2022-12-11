@@ -5,7 +5,7 @@ import Register from "./Register";
 import Login from "./Login";
 import Debtors from "./debtors/Debtors";
 import PrivateRoute from "./PrivateRoute";
-import Income from "./Income";
+import Incomes from "./incomes/Incomes";
 import Categories from "./categories/Categories";
 import ProfilePage from "./profile/ProfilePage";
 
@@ -32,7 +32,7 @@ function MyRoutes() {
         path="incomes"
         element={
           <PrivateRoute>
-            <Income />
+            <Incomes />
           </PrivateRoute>
         }
       />

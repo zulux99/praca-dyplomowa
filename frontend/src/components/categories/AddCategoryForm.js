@@ -26,7 +26,7 @@ function AddCategoryForm(props) {
     <Box className="kategorie_dodaj">
       <form onSubmit={handleSubmit}>
         <TextField type="text" label="Nazwa kategorii" onChange={(e) => setCategoryName(e.target.value)}></TextField>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" color="success">
           Dodaj
         </Button>
       </form>

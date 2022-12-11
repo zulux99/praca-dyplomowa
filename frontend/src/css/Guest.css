@@ -120,7 +120,8 @@
     font-weight: bold;
 }
 
-.MuiFormLabel-root {
+.startowa-browser .MuiFormLabel-root,
+.startowa-mobile .MuiFormLabel-root {
     font-size: 14px !important;
     font-weight: bold;
     margin-top: 2px;

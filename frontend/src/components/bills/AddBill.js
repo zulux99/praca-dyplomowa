@@ -74,7 +74,7 @@ function AddBill(props) {
           endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
         }}
       />
-      <Button variant="contained" type="submit" disabled={nazwa == "" || !isAmountValid ? true : false}>
+      <Button variant="contained" type="submit" disabled={nazwa == "" || !isAmountValid ? true : false} color="success">
         Dodaj rachunek
       </Button>
     </form>

@@ -30,10 +30,9 @@ body {
 }
 
 .scroll-bar>div:last-child>div {
-  background-color: #1976d2 !important;
+  background-color: #2e7d32 !important;
   opacity: 0.7;
 }
-
 
 ul.gorne-menu {
   display: flex;
@@ -48,9 +47,7 @@ ul.gorne-menu {
   border-radius: 24px;
 }
 
-.MuiPaper-root {
-  box-shadow: none !important;
-}
+.MuiDrawer-root .MuiPaper-root {}
 
 .MuiToolbar-root {
   background-color: #e8e8e8 !important;
@@ -185,4 +182,11 @@ h2.boczne-menu-naglowek {
   width: 100%;
   border-radius: 5px;
   background-color: lightgray;
+}
+
+.MuiBox-root.profil-akcja {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
 }

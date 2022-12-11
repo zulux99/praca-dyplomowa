@@ -108,7 +108,7 @@ function Debtors() {
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-      <Button variant="contained" onClick={openModalAddDebtor}>
+      <Button variant="contained" onClick={openModalAddDebtor} color="success">
         Dodaj
       </Button>
       <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
@@ -124,10 +124,10 @@ function Debtors() {
       <Container>
         <h1>Lista dłużników</h1>
         <Box>
-          <Button variant="contained" onClick={() => setSortType("nazwa")}>
+          <Button variant="contained" onClick={() => setSortType("nazwa")} color="success">
             Sortuj po nazwie
           </Button>
-          <Button variant="contained" onClick={() => setSortType("kwota")}>
+          <Button variant="contained" onClick={() => setSortType("kwota")} color="success">
             Sortuj po kwocie
           </Button>
         </Box>
@@ -165,6 +165,7 @@ function Debtors() {
                     {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
                       <Button
                         variant="contained"
+                        color="success"
                         onClick={() => {
                           openModalAddPayment(debt.id);
                         }}>
@@ -176,6 +177,7 @@ function Debtors() {
                   <BorderLinearProgress
                     className="progress-bar"
                     variant="determinate"
+                    color="success"
                     value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
                   />
                 </AccordionSummary>

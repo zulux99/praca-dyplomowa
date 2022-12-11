@@ -45,7 +45,7 @@ function Bills() {
   const changeBillName = async (bill) => {
     try {
       const response = await axios.put(
-        `/api/bills/update/${bill.id}`,
+        `/api/bills/update/${bill.id}/`,
         JSON.stringify({ user: user_id, nazwa: bill.nazwa }),
         {
           headers: {
@@ -64,7 +64,7 @@ function Bills() {
 
   const deleteBill = async (id) => {
     try {
-      await axios.delete(`/api/bills/delete/${id}`, {
+      await axios.delete(`/api/bills/delete/${id}/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.authTokens.access}`,
@@ -81,13 +81,12 @@ function Bills() {
     }
     try {
       await axios.put(
-        `/api/bills/update/${bill.id}`,
+        `/api/bills/update/${bill.id}/`,
         JSON.stringify({ user: user_id, nazwa: bill.nazwa, domyslne: true }),
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.authTokens.access}`,
-            id: user_id,
           },
         }
       );

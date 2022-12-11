@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from "react";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function Menu3Dots(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,7 +18,7 @@ function Menu3Dots(props) {
   };
 
   return (
-    <Box sx={{ display: 'block' }}>
+    <Box sx={{ display: "block" }}>
       <IconButton onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>

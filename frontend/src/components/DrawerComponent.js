@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EarbudsIcon from "@mui/icons-material/Earbuds";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -13,16 +13,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export const mainMenuPagesArrayUser = [
-  { link: "/", name: "Strona główna" },
-  { link: "/accounts", name: "Konta" },
+  { link: "/", name: "Panel" },
   { link: "/incomes", name: "Przychody" },
   { link: "/expenses", name: "Wydatki" },
-  { link: "/debtors", name: "Dłużnicy" },
   { link: "/categories", name: "Kategorie" },
+  { link: "/accounts", name: "Konta" },
+  { link: "/debtors", name: "Dłużnicy" },
 ];
 
 export default function DrawerComponent() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(window.location.pathname);
   return (
@@ -30,12 +31,14 @@ export default function DrawerComponent() {
       variant={isBrowser ? "permanent" : "temporary"}
       open={isNavExpanded}
       onClose={() => setIsNavExpanded(false)}
-      onOpen={() => setIsNavExpanded(true)}
+      // onOpen={() => setIsNavExpanded(true)}
       className="boczne-menu">
-      <Box className="boczne-menu-naglowek-tlo" onClick={() => setIsNavExpanded(!isNavExpanded)}>
-        <Typography variant="h2" className="boczne-menu-naglowek">
-          e-Budget
-        </Typography>
+      <Box className="boczne-menu-naglowek-tlo" onClick={() => navigate("/")} sx={{ cursor: "pointer" }}>
+        <ListItemButton sx={{ justifyContent: "center" }}>
+          <Typography variant="h2" className="boczne-menu-naglowek">
+            e-Budget
+          </Typography>
+        </ListItemButton>
       </Box>
       <List>
         {user &&

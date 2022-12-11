@@ -23,9 +23,8 @@ function ToolbarComponent() {
   }, [location]);
 
   useEffect(() => {
-    // get user data from localStorage
     const data = localStorage.getItem("user");
-    if (JSON.parse(data).first_name !== null) {
+    if (JSON.parse(data).first_name !== "") {
       setName(JSON.parse(data).first_name);
     } else {
       setName(JSON.parse(data).username);

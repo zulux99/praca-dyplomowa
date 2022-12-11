@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
+import { GetDefaultBill } from "../bills/GetDefaultBill";
 
 function AddDebt(props) {
   const user = useContext(AuthContext);
@@ -22,7 +23,11 @@ function AddDebt(props) {
   const user_id = user.user.user_id;
 
   useEffect(() => {
-    getDefaultBill();
+    GetDefaultBill(user).then((bill) => {
+      if (bill.domyslne) {
+        setBillId(bill.id);
+      }
+    });
     getBills();
     console.log(props.open);
   }, []);
@@ -46,21 +51,6 @@ function AddDebt(props) {
       setBills(response.data);
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const getDefaultBill = async () => {
-    try {
-      const response = await axios.get("/api/bills/", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.authTokens.access}`,
-        },
-      });
-      const defaultBill = response.data.find((bill) => bill.domyslne === true);
-      setBillId(defaultBill.id);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -151,7 +141,7 @@ function AddDebt(props) {
                 placeholder="np. zakup samochodu"
                 onChange={(e) => setDebtPurpose(e.target.value)}
               />
-              <Button variant="contained" type="submit" disabled={debtorName == "" || debtValue == ""}>
+              <Button variant="contained" type="submit" disabled={debtorName == "" || debtValue == ""} color="success">
                 Dodaj
               </Button>
               <Button
