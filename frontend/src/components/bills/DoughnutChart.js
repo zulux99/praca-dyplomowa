@@ -1,5 +1,5 @@
-import { Doughnut } from 'react-chartjs-2';
-import { Chart, ArcElement, Legend, Title } from 'chart.js';
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Legend, Title } from "chart.js";
 Chart.register(ArcElement, Legend, Title);
 
 function DoughnutChart(props) {
@@ -11,23 +11,23 @@ function DoughnutChart(props) {
           plugins: {
             legend: {
               display: true,
-              position: 'bottom'
+              position: "bottom",
             },
             title: {
               display: true,
-              text: 'Konta'
-            }
-          }
+              text: "Konta",
+            },
+          },
         }}
         data={{
           labels: props.bills.map((bill) => bill.nazwa),
           datasets: [
             {
-              label: 'Konta',
+              label: "Konta",
               data: props.bills.map((bill) => bill.kwota),
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }
-          ]
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            },
+          ],
         }}
       />
     </>

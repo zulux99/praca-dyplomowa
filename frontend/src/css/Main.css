@@ -42,9 +42,42 @@ ul.gorne-menu {
   margin: auto;
 }
 
-.MuiContainer-root.main {
+.MuiContainer-root.main {}
+
+.react-swipeable-view-container {}
+
+.startowa-mobile .MuiBox-root.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 48px;
+  min-width: 240px;
+  max-width: 320px;
+}
+
+.startowa-mobile .MuiBox-root.buttons a {
+  color: white;
+}
+
+.MuiBox-root.box {
   background-color: #f5f5f5;
   border-radius: 24px;
+  padding: 32px;
+  margin: 32px;
+}
+
+.MuiBox-root.box:first-child {
+  margin-top: 0;
+}
+
+.MuiBox-root.tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
 .MuiDrawer-root .MuiPaper-root {}

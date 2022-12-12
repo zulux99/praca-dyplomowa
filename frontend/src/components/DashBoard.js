@@ -1,7 +1,9 @@
+import Box from "@mui/material/Box";
+
 export default function DashBoard() {
   return (
     <>
-      <p>
+      <Box className="box">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac posuere erat. Suspendisse potenti. Orci
         varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec sit amet dui semper,
         tincidunt tellus eu, finibus quam. Donec vitae porttitor metus. Donec a libero et ligula venenatis porta.
@@ -50,7 +52,7 @@ export default function DashBoard() {
         lobortis ex risus, at commodo ligula dignissim eget. Fusce fermentum tempus vehicula. Aenean consectetur justo
         id diam suscipit semper. Vestibulum at suscipit orci. Morbi id turpis vel dolor iaculis vehicula. Aliquam erat
         volutpat. Ut eget imperdiet turpis. Phasellus sed efficitur ligula.
-      </p>
+      </Box>
     </>
   );
 }

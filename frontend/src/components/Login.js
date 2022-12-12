@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Link, Navigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import Divider from "@mui/material/Divider";
 
 function Login() {
   const { loginUser } = useContext(AuthContext);
@@ -19,14 +18,6 @@ function Login() {
     <Box className="tlo">
       <form onSubmit={loginUser}>
         <Typography variant="h1">Witaj!</Typography>
-        <Divider
-          sx={{
-            height: "1px",
-            backgroundColor: "#1976d2",
-            marginBottom: "16px",
-            width: "100%",
-          }}
-        />
         <Typography variant="h2">Podaj dane, aby zalogować się do aplikacji</Typography>
         <TextField
           type="text"

@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import Incomes from "./incomes/Incomes";
 import Categories from "./categories/Categories";
 import ProfilePage from "./profile/ProfilePage";
+import Expenses from "./expenses/Expenses";
 
 function MyRoutes() {
   return (
@@ -49,6 +50,14 @@ function MyRoutes() {
         element={
           <PrivateRoute>
             <Debtors />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="expenses"
+        element={
+          <PrivateRoute>
+            <Expenses />
           </PrivateRoute>
         }
       />

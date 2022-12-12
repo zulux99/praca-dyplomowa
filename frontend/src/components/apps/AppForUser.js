@@ -28,10 +28,9 @@ export default function AppForUser() {
         className="main"
         maxWidth={false}
         sx={{
-          marginLeft: isBrowser && "304px",
-          padding: "16px",
+          marginLeft: isBrowser && "256px",
           marginBottom: isMobile ? "56px" : "0",
-          width: isMobile ? "100%" : "calc(100% - 256px - 2 * 48px)",
+          width: isMobile ? "100%" : "calc(100% - 256px)",
         }}>
         <MyRoutes />
         <footer>
