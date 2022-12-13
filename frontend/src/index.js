@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
 import "@fontsource/roboto";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://192.168.31.30:8000";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

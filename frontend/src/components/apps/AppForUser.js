@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import Container from "@mui/material/Container";
 import ToolbarComponent from "../ToolbarComponent";
 import CssBaseline from "@mui/material/CssBaseline";
-import BottomMenu from "../BottomMenu";
+import BottomMenu from "../menus/BottomMenu";
 import { MobileView, isMobile, isBrowser } from "react-device-detect";
 import MyRoutes from "../MyRoutes";
 import DrawerComponent from "../DrawerComponent";
@@ -11,6 +11,7 @@ import AppForGuest from "./AppForGuest";
 
 export default function AppForUser() {
   const user = useContext(AuthContext);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   if (user.authTokens === null) {
     return (
@@ -22,8 +23,8 @@ export default function AppForUser() {
   return (
     <>
       <CssBaseline />
-      <ToolbarComponent />
-      <DrawerComponent />
+      <ToolbarComponent open={openDrawer} setOpen={setOpenDrawer} />
+      <DrawerComponent open={openDrawer} setOpen={setOpenDrawer} />
       <Container
         className="main"
         maxWidth={false}

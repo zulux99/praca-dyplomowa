@@ -3,16 +3,15 @@ import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { isBrowser } from "react-device-detect";
+import { isBrowser, BrowserView } from "react-device-detect";
 import { mainMenuPagesArrayUser } from "./DrawerComponent";
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonIcon from "@mui/icons-material/Person";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ProfileMenu from "./menus/ProfileMenu";
+import MenuIcon from "@mui/icons-material/Menu";
 
-function ToolbarComponent() {
+function ToolbarComponent(props) {
   let location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
   const [name, setName] = useState(null);
@@ -31,6 +30,10 @@ function ToolbarComponent() {
     }
   }, []);
 
+  useEffect(() => {
+    console.log("open: ", props.open);
+  }, [props.open]);
+
   const clickOnProfile = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -39,19 +42,27 @@ function ToolbarComponent() {
     <>
       <Box>
         <Toolbar className="pasek-gorny-zawartosc" sx={{ marginLeft: isBrowser && "256px" }}>
-          <Typography className="pasek-gorny-tytul" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {mainMenuPagesArrayUser.map((item) => {
-              if (item.link === currentPath) {
-                return item.name;
-              }
-            })}
-          </Typography>
-          <IconButton>
+          <IconButton
+            className="pasek-gorny-menu"
+            sx={{ display: isBrowser && "none" }}
+            onClick={() => props.setOpen(true)}>
+            <MenuIcon />
+          </IconButton>
+          <BrowserView>
+            <Typography className="pasek-gorny-tytul" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {mainMenuPagesArrayUser.map((item) => {
+                if (item.link === currentPath) {
+                  return item.name;
+                }
+              })}
+            </Typography>
+          </BrowserView>
+          {/* <IconButton>
             <SearchIcon />
           </IconButton>
           <IconButton>
             <NotificationsIcon />
-          </IconButton>
+          </IconButton> */}
           <Box className="profil" sx={{ cursor: "pointer" }} onClick={clickOnProfile}>
             <IconButton>
               <PersonIcon />

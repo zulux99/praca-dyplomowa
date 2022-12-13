@@ -21,19 +21,23 @@ export const mainMenuPagesArrayUser = [
   { link: "/debtors", name: "Dłużnicy" },
 ];
 
-export default function DrawerComponent() {
+export default function DrawerComponent(props) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isNavExpanded, setIsNavExpanded] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(window.location.pathname);
   return (
     <Drawer
       variant={isBrowser ? "permanent" : "temporary"}
-      open={isNavExpanded}
-      onClose={() => setIsNavExpanded(false)}
-      // onOpen={() => setIsNavExpanded(true)}
+      open={props.open}
+      onClose={() => props.setOpen(false)}
       className="boczne-menu">
-      <Box className="boczne-menu-naglowek-tlo" onClick={() => navigate("/")} sx={{ cursor: "pointer" }}>
+      <Box
+        className="boczne-menu-naglowek-tlo"
+        onClick={() => {
+          navigate("/");
+          props.setOpen(false);
+        }}
+        sx={{ cursor: "pointer" }}>
         <ListItemButton sx={{ justifyContent: "center" }}>
           <Typography variant="h2" className="boczne-menu-naglowek">
             e-Budget
@@ -48,7 +52,7 @@ export default function DrawerComponent() {
                 key={index}
                 to={page.link}
                 onClick={() => {
-                  setIsNavExpanded(false);
+                  props.setOpen(false);
                   setSelectedMenuItem(page.link);
                 }}
                 className="boczne-menu-link">

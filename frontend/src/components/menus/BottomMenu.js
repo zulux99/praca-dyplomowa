@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 import AppBar from "@mui/material/AppBar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -12,23 +12,17 @@ function BottomMenu() {
   useEffect(() => {
     if (user.authTokens) {
       setMenuItems([
-        { name: "Przychody", link: "/przychody" },
-        { name: "Konta", link: "/konta" },
-        { name: "Home", link: "/" },
-        { name: "Profil", link: "/" },
-      ]);
-    } else {
-      setMenuItems([
-        { name: "Strona główna", link: "/" },
-        { name: "Logowanie", link: "/login" },
-        { name: "Rejestracja", link: "/register" },
+        { name: "Przychody", link: "/incomes" },
+        { name: "Wydatki", link: "/expenses" },
+        { name: "Dłużnicy", link: "/debtors" },
+        { name: "Profil", link: "/profile" },
       ]);
     }
   }, [user]);
 
   return (
     <>
-      <AppBar className="bottom_menu" position="fixed" sx={{ bottom: 0, top: "auto" }}>
+      <AppBar className="bottom_menu" position="fixed" sx={{ bottom: 0, top: "auto" }} color="success">
         <List
           sx={{
             display: "flex",
