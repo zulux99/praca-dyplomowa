@@ -45,9 +45,6 @@ export default function IncomesChart() {
         />
       </BrowserView>
       <MobileView>
-        {
-          // vertical bar chart
-        }
         <Bar
           data={{
             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -75,7 +72,7 @@ export default function IncomesChart() {
               },
             ],
           }}
-          height={100}
+          height={200}
           options={{
             scales: {
               x: {

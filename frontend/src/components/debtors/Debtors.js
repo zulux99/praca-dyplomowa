@@ -15,6 +15,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BorderLinearProgress from "@mui/material/LinearProgress";
+import { GetAllDebts } from "./GetAllDebts";
 
 function Debtors() {
   const user = useContext(AuthContext);
@@ -36,6 +37,12 @@ function Debtors() {
     };
   }, []);
 
+  const getDebts = () => {
+    GetAllDebts(user).then((debts) => {
+      setDebts(debts);
+    });
+  };
+
   // TODO: Sort debts
 
   // useEffect(() => {
@@ -55,21 +62,6 @@ function Debtors() {
   //   setDebts(sortedDebts);
   //   console.log(sortedDebts);
   // }, [sortType]);
-
-  const getDebts = async () => {
-    try {
-      const response = await axios.get(`/api/debts/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.authTokens.access}`,
-        },
-      });
-      setDebts(response.data);
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const getPayments = async () => {
     try {

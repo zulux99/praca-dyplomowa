@@ -4,10 +4,14 @@ import AppBar from "@mui/material/AppBar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { Link } from "react-router-dom";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import IconButton from "@mui/material/IconButton";
+import BottomMenuAdd from "./BottomMenuAdd";
 
-function BottomMenu() {
+function BottomMenu(props) {
   const user = useContext(AuthContext);
   const [menuItems, setMenuItems] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     if (user.authTokens) {
@@ -20,28 +24,21 @@ function BottomMenu() {
     }
   }, [user]);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   return (
     <>
+      <BottomMenuAdd anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
       <AppBar className="bottom_menu" position="fixed" sx={{ bottom: 0, top: "auto" }} color="success">
         <List
           sx={{
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-            width: "100%",
+            height: "56px",
           }}>
           {menuItems.map((item, index) => (
-            <ListItem
-              button
-              key={index}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}>
+            <ListItem key={index} sx={{ padding: "0", justifyContent: "center" }}>
               <Link to={item.link}>{item.name}</Link>
             </ListItem>
           ))}

@@ -10,10 +10,12 @@ from rest.serializers import RachunekSerializer
 from rest.serializers import KategoriaSerializer
 from rest.serializers import DlugSerializer
 from rest.serializers import DlugSplataSerializer
+from rest.serializers import TransakcjaSerializer
 from .models import Rachunek
 from .models import Kategoria
 from .models import Dlug
 from .models import DlugSplata
+from .models import Transakcja
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAdminUser
@@ -190,4 +192,30 @@ class DlugSplataViewSet(APIView):
     def delete(self, request, pk):
         splata = DlugSplata.objects.get(pk=pk)
         splata.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TransakcjaViewSet(APIView):
+    queryset = Transakcja.objects.all()
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        transakcje = Transakcja.objects.filter(user=request.user.id)
+        serializer = TransakcjaSerializer(transakcje, many=True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = TransakcjaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk):
+        transakcja = Transakcja.objects.get(pk=pk)
+        serializer = TransakcjaSerializer(transakcja, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        transakcja = Transakcja.objects.get(pk=pk)
+        transakcja.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

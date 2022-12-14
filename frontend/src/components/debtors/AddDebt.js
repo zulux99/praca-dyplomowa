@@ -75,7 +75,6 @@ function AddDebt(props) {
           },
         }
       );
-      console.log(response.data);
       e.target.reset();
       setDebtorName("");
       props.getDebts();

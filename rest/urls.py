@@ -20,4 +20,6 @@ urlpatterns = [
     path("api/debts/delete/<int:pk>/", views.DlugViewSet.as_view()),
     path("api/debts/payments/", views.DlugSplataViewSet.as_view()),
     path("api/debts/payments/<int:pk>/", views.DlugSplataViewSet.as_view()),
+    path("api/transactions/", views.TransakcjaViewSet.as_view()),
+    path("api/transactions/<int:pk>/", views.TransakcjaViewSet.as_view()),
 ]

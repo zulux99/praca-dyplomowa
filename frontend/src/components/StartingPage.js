@@ -17,12 +17,16 @@ export default function StartingPage() {
       <Typography variant="h3">Zarejestruj się już dziś i miej kontrolę nad finansami!</Typography>
       {isMobile && (
         <Box className="buttons">
-          <Button variant="contained" color="success" href="/register" size="large" fullWidth>
-            <Link to="/register">Zarejestruj się</Link>
-          </Button>
-          <Button variant="contained" color="success" size="large" fullWidth>
-            <Link to="/login">Zaloguj się</Link>
-          </Button>
+          <Link to="/register">
+            <Button variant="contained" color="success" size="large" fullWidth>
+              Zarejestruj się
+            </Button>
+          </Link>
+          <Link to="/login">
+            <Button variant="contained" color="success" size="large" fullWidth>
+              Zaloguj się
+            </Button>
+          </Link>
         </Box>
       )}
     </Box>

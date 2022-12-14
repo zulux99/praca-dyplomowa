@@ -11,7 +11,7 @@ export default function Incomes() {
 
   return (
     <>
-      <Box className="tabs">
+      {/* <Box className="tabs">
         <Tabs value={activeTab} variant="scrollable" centered fullWidth>
           <Tab label="Lista" onClick={() => setActiveTab(0)} />
           <Tab label="Dodaj przychód" onClick={() => setActiveTab(1)} />
@@ -33,9 +33,9 @@ export default function Incomes() {
         <Box className="box">
           <IncomesChart />
         </Box>
-      </SwipeableViews>
+      </SwipeableViews> */}
 
-      {/* <Box className="box">
+      <Box className="box">
         <IncomesChart />
       </Box>
       <Box className="box">
@@ -44,7 +44,7 @@ export default function Incomes() {
       <Box className="box">
         <h2>Ostatnie przychody</h2>
         <p>W tym miejscu będą wyświetlane ostatnie przychody</p>
-      </Box> */}
+      </Box>
     </>
   );
 }

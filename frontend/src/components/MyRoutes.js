@@ -10,7 +10,7 @@ import Categories from "./categories/Categories";
 import ProfilePage from "./profile/ProfilePage";
 import Expenses from "./expenses/Expenses";
 
-function MyRoutes() {
+function MyRoutes(props) {
   return (
     <Routes>
       <Route

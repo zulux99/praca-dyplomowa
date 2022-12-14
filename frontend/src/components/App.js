@@ -15,14 +15,9 @@ function App() {
     <>
       <BrowserRouter>
         <AuthProvider>
-          {/* <Scrollbars
-            className="scroll-bar"
-            autoHide
-            style={{
-              height: "100vh",
-            }}> */}
-          <AppForUser />
-          {/* </Scrollbars> */}
+          <Scrollbars style={{ height: "100vh" }} className="scroll-bar" autoHide>
+            <AppForUser />
+          </Scrollbars>
         </AuthProvider>
       </BrowserRouter>
     </>

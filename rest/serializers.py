@@ -6,6 +6,7 @@ from rest.models import Rachunek
 from rest.models import Kategoria
 from rest.models import Dlug
 from rest.models import DlugSplata
+from rest.models import Transakcja
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
@@ -35,9 +36,10 @@ class RachunekSerializer(serializers.ModelSerializer):
 class KategoriaSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     nazwa = serializers.CharField(max_length=200)
+    przychod = serializers.BooleanField(default=False)
     class Meta:
         model = Kategoria
-        fields = ('id', 'user', 'nazwa')
+        fields = ('id', 'user', 'nazwa', 'przychod')
     def create(self, validated_data):
         return super(KategoriaSerializer, self).create(validated_data)
     def update(self, instance, validated_data):
@@ -99,3 +101,22 @@ class DlugSplataSerializer(serializers.ModelSerializer):
     def delete(self, instance):
         return super(DlugSplataSerializer, self).delete(instance)
 
+class TransakcjaSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    kwota = serializers.DecimalField(max_digits=12, decimal_places=2)
+    data = serializers.DateField()
+    rachunek = serializers.PrimaryKeyRelatedField(queryset=Rachunek.objects.all())
+    kategoria = serializers.PrimaryKeyRelatedField(queryset=Kategoria.objects.all())
+    przychod = serializers.BooleanField(default=False)
+    opis = serializers.CharField(max_length=500, required=False)
+    class Meta:
+        model = Transakcja
+        fields = ('id', 'user', 'kwota', 'data', 'rachunek', 'kategoria', 'przychod', 'opis')
+    def create(self, validated_data):
+        return super(TransakcjaSerializer, self).create(validated_data)
+    def update(self, instance, validated_data):
+        return super(TransakcjaSerializer, self).update(instance, validated_data)
+    def delete(self, instance):
+        return super(TransakcjaSerializer, self).delete(instance)
+
+    

@@ -18,7 +18,7 @@ export default function ProfilePage() {
   return (
     <>
       <h1>Twój profil</h1>
-      <Box component="span" fullWidth className="profil-akcja">
+      <Box component="span" className="profil-akcja">
         <Button
           variant="contained"
           sx={{

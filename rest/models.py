@@ -25,6 +25,7 @@ class Rachunek(models.Model):
 class Kategoria(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     nazwa = models.CharField(max_length=200)
+    przychod = models.BooleanField(default=False)
     class Meta:
         unique_together = ('user', 'nazwa')
 
@@ -57,3 +58,26 @@ class DlugSplata(models.Model):
         self.dlug.rachunek.kwota -= self.kwota
         self.dlug.rachunek.save()
         super(DlugSplata, self).delete(*args, **kwargs)
+
+class Transakcja(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    kwota = models.DecimalField(max_digits=12, decimal_places=2)
+    data = models.DateField()
+    rachunek = models.ForeignKey(Rachunek, on_delete=models.CASCADE)
+    kategoria = models.ForeignKey(Kategoria, on_delete=models.CASCADE)
+    przychod = models.BooleanField(default=False)
+    opis = models.CharField(max_length=500, blank=True)
+    def save(self, *args, **kwargs):
+        if self.kategoria.przychod:
+            self.rachunek.kwota += self.kwota
+        else:
+            self.rachunek.kwota -= self.kwota
+        self.rachunek.save()
+        super(Transakcja, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        if self.kategoria.przychod:
+            self.rachunek.kwota -= self.kwota
+        else:
+            self.rachunek.kwota += self.kwota
+        self.rachunek.save()
+        super(Transakcja, self).delete(*args, **kwargs)
