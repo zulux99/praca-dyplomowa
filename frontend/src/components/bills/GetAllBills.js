@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function GetALlBills(user) {
+export async function GetAllBills(user) {
   try {
     const response = await axios.get(`/api/bills/`, {
       headers: {

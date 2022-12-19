@@ -72,6 +72,13 @@ ul.gorne-menu {
   margin-top: 0;
 }
 
+.MuiBox-root.box form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
 .MuiBox-root.tabs {
   display: flex;
   justify-content: space-around;
@@ -118,6 +125,12 @@ ul.gorne-menu {
   margin: 0;
   padding: 0;
   max-width: fit-content;
+}
+
+.kategorie_dodaj>form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 

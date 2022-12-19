@@ -6,8 +6,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import { GetDefaultBill } from "../bills/GetDefaultBill";
+import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import { toast, ToastContainer } from "react-toastify";
 import { AddTransaction } from "../transactions/AddTransactionRequest";
@@ -18,10 +19,9 @@ import Fade from "@mui/material/Fade";
 import AddCategoryForm from "../categories/AddCategoryForm";
 import Box from "@mui/material/Box";
 
-const filter = createFilterOptions();
-
 export default function AddIncomeForm() {
   const user = useContext(AuthContext);
+  const [bills, setBills] = useState([]);
   const [billId, setBillId] = useState("");
   const [category, setCategory] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
@@ -31,12 +31,15 @@ export default function AddIncomeForm() {
   const [paymentValueValid, setPaymentValueValid] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
-  const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
 
   useEffect(() => {
-    GetDefaultBill(user).then((bill) => {
-      if (bill.domyslne) {
-        setBillId(bill.id);
+    GetAllBills(user).then((response) => {
+      if (response === -1) {
+        toast.error("Nie udało się pobrać listy rachunków");
+      } else {
+        setBills(response);
+        const defaultBill = response.find((bill) => bill.domyslne === true);
+        setBillId(defaultBill.id);
       }
     });
     GetAllCategories(user).then((response) => {
@@ -48,9 +51,10 @@ export default function AddIncomeForm() {
         );
       }
     });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
+    const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
     validAmount.test(paymentValue) ? setPaymentValueValid(true) : setPaymentValueValid(false);
     if (paymentValue === "") {
       setPaymentValueValid(true);
@@ -59,22 +63,6 @@ export default function AddIncomeForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (category !== null) {
-      if (category.nazwa !== inputValue) {
-        setCategory(null);
-      }
-    }
-    // if (categoryId === "") {
-    //   if (categoryName !== "") {
-    //     console.log("Nie ma takiej kategorii, dodajemy");
-    //   } else {
-    //     toast.error("Nie wybrano kategorii");
-    //     return;
-    //   }
-    // }
-  };
-
-  const handleAddingTransaction = (e) => {
     if (paymentValueValid) {
       AddTransaction(user, paymentValue, paymentDate, billId, category.id, true, description).then((response) => {
         if (response === -1) {
@@ -82,7 +70,9 @@ export default function AddIncomeForm() {
         } else {
           toast.success("Dodano przychód");
           e.target.reset();
-          setCategory("");
+          setInputValue("");
+          setCategory(null);
+          setDescription("");
         }
       });
     } else {
@@ -97,11 +87,12 @@ export default function AddIncomeForm() {
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-      <div>{`categoryID: ${category !== null ? `'${category.id}'` : "null"}`}</div>
+      {/* <div>{`categoryID: ${category !== null ? `'${category.id}'` : "null"}`}</div>
       <div>{`categoryName: ${category !== null ? `'${category.nazwa}'` : "null"}`}</div>
-      <div>{`inputValue: '${inputValue}'`}</div>
+      <div>{`inputValue: '${inputValue}'`}</div> */}
       <form onSubmit={handleSubmit}>
         <TextField
+          autoComplete="off"
           variant="outlined"
           label="Kwota"
           type="number"
@@ -134,32 +125,41 @@ export default function AddIncomeForm() {
           InputLabelProps={{ shrink: true }}
           value={billId}
           onChange={(e) => setBillId(e.target.value)}>
-          <MenuItem value={0}>Wybierz konto</MenuItem>
-          <MenuItem value={1}>Konto 1</MenuItem>
-          <MenuItem value={2}>Konto 2</MenuItem>
-          <MenuItem value={3}>Konto 3</MenuItem>
+          {bills.map((bill) => (
+            <MenuItem key={bill.id} value={bill.id}>
+              {bill.nazwa}
+            </MenuItem>
+          ))}
         </TextField>
-        <Autocomplete
-          className="input"
-          options={categoryList}
-          disablePortal
-          autoHighlight
-          clearOnBlur
-          freeSolo
-          getOptionLabel={(option) => option.nazwa}
-          value={category}
-          onChange={(e, newValue) => setCategory(newValue)}
-          inputValue={inputValue}
-          onInputChange={(e, newInputValue) => setInputValue(newInputValue)}
-          renderInput={(params) => <TextField {...params} label="Kategoria" />}
-        />
-        <IconButton onClick={() => setOpen(true)}>
-          <AddCircleOutlineIcon
-            style={{
-              fontSize: "2rem",
+        <Box
+          sx={{
+            display: "flex",
+          }}>
+          <Autocomplete
+            className="input"
+            options={categoryList}
+            disablePortal
+            autoHighlight
+            clearOnBlur
+            freeSolo
+            getOptionLabel={(option) => option.nazwa}
+            value={category}
+            onChange={(e, newValue) => setCategory(newValue)}
+            inputValue={inputValue}
+            onInputChange={(e, newInputValue) => setInputValue(newInputValue)}
+            renderInput={(params) => <TextField {...params} label="Kategoria" />}
+            sx={{
+              width: "100%",
             }}
           />
-        </IconButton>
+          <IconButton onClick={() => setOpen(true)}>
+            <AddCircleOutlineIcon
+              style={{
+                fontSize: "2rem",
+              }}
+            />
+          </IconButton>
+        </Box>
         <TextField
           className="input"
           label="Opis"

@@ -31,7 +31,13 @@ function AddCategoryForm(props) {
       <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="kategorie_dodaj">
         <form onSubmit={handleSubmit}>
-          <TextField type="text" label="Nazwa kategorii" required onChange={(e) => setCategoryName(e.target.value)} />
+          <TextField
+            autoComplete="off"
+            type="text"
+            label="Nazwa kategorii"
+            required
+            onChange={(e) => setCategoryName(e.target.value)}
+          />
           <Button type="submit" variant="contained" color="success">
             Dodaj
           </Button>

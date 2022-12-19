@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     password = serializers.CharField(min_length=0, write_only=True)
-    first_name = serializers.CharField(required=False)
+    first_name = serializers.CharField(allow_blank=True)
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login')
@@ -50,7 +50,7 @@ class KategoriaSerializer(serializers.ModelSerializer):
 class DlugSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     nazwa_dluznika = serializers.CharField(max_length=200)
-    cel = serializers.CharField(max_length=200, required=False)
+    cel = serializers.CharField(max_length=200, allow_blank=True)
     kwota_do_splaty = serializers.DecimalField(max_digits=12, decimal_places=2)
     rachunek = serializers.PrimaryKeyRelatedField(queryset=Rachunek.objects.all())
     splacony = serializers.BooleanField(default=False)
@@ -108,7 +108,7 @@ class TransakcjaSerializer(serializers.ModelSerializer):
     rachunek = serializers.PrimaryKeyRelatedField(queryset=Rachunek.objects.all())
     kategoria = serializers.PrimaryKeyRelatedField(queryset=Kategoria.objects.all())
     przychod = serializers.BooleanField(default=False)
-    opis = serializers.CharField(max_length=500, required=False)
+    opis = serializers.CharField(max_length=500, allow_blank=True)
     class Meta:
         model = Transakcja
         fields = ('id', 'user', 'kwota', 'data', 'rachunek', 'kategoria', 'przychod', 'opis')
