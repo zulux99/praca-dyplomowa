@@ -22,4 +22,6 @@ urlpatterns = [
     path("api/debts/payments/<int:pk>/", views.DlugSplataViewSet.as_view()),
     path("api/transactions/", views.TransakcjaViewSet.as_view()),
     path("api/transactions/<int:pk>/", views.TransakcjaViewSet.as_view()),
+    path("api/incomes/", views.PrzychodViewSet.as_view()),
+    path("api/expenses/", views.WydatekViewSet.as_view()),
 ]

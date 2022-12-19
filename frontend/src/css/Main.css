@@ -165,6 +165,19 @@ h2.boczne-menu-naglowek {
   color: gray;
 }
 
+list.lista-przychodow {
+  display: flex;
+  flex-direction: column;
+}
+
+list.lista-przychodow li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid lightgray;
+}
+
 .boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected .css-10hburv-MuiTypography-root {
   font-weight: bold;
   color: #0b3d45;

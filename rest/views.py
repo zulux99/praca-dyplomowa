@@ -219,3 +219,21 @@ class TransakcjaViewSet(APIView):
         transakcja = Transakcja.objects.get(pk=pk)
         transakcja.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PrzychodViewSet(APIView):
+    queryset = Transakcja.objects.filter(przychod=True)
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        przychody = Transakcja.objects.filter(user=request.user.id, przychod=True)
+        serializer = TransakcjaSerializer(przychody, many=True)
+        return Response(serializer.data)
+
+class WydatekViewSet(APIView):
+    queryset = Transakcja.objects.filter(przychod=False)
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        wydatki = Transakcja.objects.filter(user=request.user.id, przychod=False)
+        serializer = TransakcjaSerializer(wydatki, many=True)
+        return Response(serializer.data)

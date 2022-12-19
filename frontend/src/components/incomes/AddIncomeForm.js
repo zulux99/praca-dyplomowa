@@ -7,9 +7,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
-import { GetDefaultBill } from "../bills/GetDefaultBill";
-import { GetAllBills } from "../bills/GetAllBills";
-import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import { toast, ToastContainer } from "react-toastify";
 import { AddTransaction } from "../transactions/AddTransactionRequest";
 import IconButton from "@mui/material/IconButton";
@@ -19,39 +16,15 @@ import Fade from "@mui/material/Fade";
 import AddCategoryForm from "../categories/AddCategoryForm";
 import Box from "@mui/material/Box";
 
-export default function AddIncomeForm() {
+export default function AddIncomeForm(props) {
   const user = useContext(AuthContext);
-  const [bills, setBills] = useState([]);
-  const [billId, setBillId] = useState("");
   const [category, setCategory] = useState(null);
-  const [categoryList, setCategoryList] = useState([]);
   const [description, setDescription] = useState("");
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [paymentValue, setPaymentValue] = useState(0);
   const [paymentValueValid, setPaymentValueValid] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    GetAllBills(user).then((response) => {
-      if (response === -1) {
-        toast.error("Nie udało się pobrać listy rachunków");
-      } else {
-        setBills(response);
-        const defaultBill = response.find((bill) => bill.domyslne === true);
-        setBillId(defaultBill.id);
-      }
-    });
-    GetAllCategories(user).then((response) => {
-      if (response === -1) {
-        toast.error("Nie udało się pobrać listy kategorii");
-      } else {
-        setCategoryList(
-          response.filter((category) => category.przychod === true).sort((a, b) => (a.nazwa > b.nazwa ? 1 : -1))
-        );
-      }
-    });
-  }, [user]);
 
   useEffect(() => {
     const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
@@ -64,7 +37,7 @@ export default function AddIncomeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (paymentValueValid) {
-      AddTransaction(user, paymentValue, paymentDate, billId, category.id, true, description).then((response) => {
+      AddTransaction(user, paymentValue, paymentDate, props.billId, category.id, true, description).then((response) => {
         if (response === -1) {
           toast.error("Nie udało się dodać przychodu");
         } else {
@@ -87,9 +60,6 @@ export default function AddIncomeForm() {
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-      {/* <div>{`categoryID: ${category !== null ? `'${category.id}'` : "null"}`}</div>
-      <div>{`categoryName: ${category !== null ? `'${category.nazwa}'` : "null"}`}</div>
-      <div>{`inputValue: '${inputValue}'`}</div> */}
       <form onSubmit={handleSubmit}>
         <TextField
           autoComplete="off"
@@ -123,9 +93,9 @@ export default function AddIncomeForm() {
           required
           label="Konto"
           InputLabelProps={{ shrink: true }}
-          value={billId}
-          onChange={(e) => setBillId(e.target.value)}>
-          {bills.map((bill) => (
+          value={props.billId}
+          onChange={(e) => props.setBillId(e.target.value)}>
+          {props.bills.map((bill) => (
             <MenuItem key={bill.id} value={bill.id}>
               {bill.nazwa}
             </MenuItem>
@@ -137,7 +107,7 @@ export default function AddIncomeForm() {
           }}>
           <Autocomplete
             className="input"
-            options={categoryList}
+            options={props.categoryList}
             disablePortal
             autoHighlight
             clearOnBlur
@@ -178,8 +148,8 @@ export default function AddIncomeForm() {
           <Box className="modal-box">
             <AddCategoryForm
               user={user}
-              categoryList={categoryList}
-              setCategoryList={setCategoryList}
+              categoryList={props.categoryList}
+              setCategoryList={props.setCategoryList}
               isIncome={true}
               open={open}
               setOpen={setOpen}

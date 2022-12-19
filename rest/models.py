@@ -27,7 +27,7 @@ class Kategoria(models.Model):
     nazwa = models.CharField(max_length=200)
     przychod = models.BooleanField(default=False)
     class Meta:
-        unique_together = ('user', 'nazwa')
+        unique_together = ('user', 'nazwa', 'przychod')
 
 class Dlug(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
