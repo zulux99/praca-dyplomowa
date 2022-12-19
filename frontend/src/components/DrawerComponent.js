@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import EarbudsIcon from "@mui/icons-material/Earbuds";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -11,20 +10,25 @@ import Drawer from "@mui/material/Drawer";
 import { isBrowser } from "react-device-detect";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import WalletIcon from "@mui/icons-material/Wallet";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import CategoryIcon from "@mui/icons-material/Category";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 export const mainMenuPagesArrayUser = [
-  { link: "/", name: "Panel" },
-  { link: "/incomes", name: "Przychody" },
-  { link: "/expenses", name: "Wydatki" },
-  { link: "/categories", name: "Kategorie" },
-  { link: "/accounts", name: "Konta" },
-  { link: "/debtors", name: "Dłużnicy" },
+  { link: "/", name: "Panel", icon: <DashboardIcon /> },
+  { link: "/incomes", name: "Przychody", icon: <AddCircleIcon /> },
+  { link: "/expenses", name: "Wydatki", icon: <RemoveCircleIcon /> },
+  { link: "/categories", name: "Kategorie", icon: <CategoryIcon /> },
+  { link: "/accounts", name: "Konta", icon: <WalletIcon /> },
+  { link: "/debtors", name: "Dłużnicy", icon: <GroupsIcon /> },
 ];
 
 export default function DrawerComponent(props) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [selectedMenuItem, setSelectedMenuItem] = useState(window.location.pathname);
   return (
     <Drawer
       variant={isBrowser ? "permanent" : "temporary"}
@@ -47,19 +51,20 @@ export default function DrawerComponent(props) {
       <List>
         {user &&
           mainMenuPagesArrayUser.map((page, index) => (
-            <ListItem key={index} disablePadding selected={window.location.pathname === page.link}>
+            <ListItem
+              key={index}
+              disablePadding
+              selected={window.location.pathname === page.link}
+              className={window.location.pathname === page.link && "boczne-menu-link-aktywny"}>
               <Link
                 key={index}
                 to={page.link}
                 onClick={() => {
                   props.setOpen(false);
-                  setSelectedMenuItem(page.link);
                 }}
                 className="boczne-menu-link">
                 <ListItemButton sx={{ justifyContent: "center" }}>
-                  <ListItemIcon>
-                    <EarbudsIcon sx={window.location.pathname === page.link ? { color: "lime" } : {}} />
-                  </ListItemIcon>
+                  <ListItemIcon>{page.icon && page.icon}</ListItemIcon>
                   <ListItemText primary={page.name} />
                 </ListItemButton>
               </Link>

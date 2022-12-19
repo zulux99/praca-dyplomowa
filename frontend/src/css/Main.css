@@ -165,17 +165,28 @@ h2.boczne-menu-naglowek {
   color: gray;
 }
 
-list.lista-przychodow {
+ul.lista-przychodow {
   display: flex;
   flex-direction: column;
 }
 
-list.lista-przychodow li {
+ul.lista-przychodow li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  flex-wrap: wrap;
   border-bottom: 1px solid lightgray;
+  padding-right: 76px;
+}
+
+ul.lista-przychodow li>div:last-child {
+  position: absolute;
+  right: 16px;
+}
+
+ul.lista-przychodow li>label {
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected .css-10hburv-MuiTypography-root {
@@ -186,6 +197,10 @@ list.lista-przychodow li {
 .boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected {
   font-weight: bold;
   background-color: transparent;
+}
+
+.boczne-menu-link-aktywny svg {
+  color: lime;
 }
 
 .modal {
