@@ -1,13 +1,8 @@
-import { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Menu3Dots from "./Menu3Dots";
 
 export default function IncomesList(props) {
-  useEffect(() => {
-    console.log("props in IncomesList: ", props.incomes);
-  }, [props]);
-
   return (
     <>
       <h2>Ostatnie przychody</h2>

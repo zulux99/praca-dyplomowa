@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import AddIncomeForm from "./AddIncomeForm";
 import Box from "@mui/material/Box";
-import IncomesChart from "./IncomesChart";
+import IncomesChart from "./chart/IncomesChart";
 import IncomesList from "./IncomesList";
 import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
@@ -47,32 +47,9 @@ export default function Incomes() {
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-      {/* <Box className="tabs">
-        <Tabs value={activeTab} variant="scrollable" centered fullWidth>
-          <Tab label="Lista" onClick={() => setActiveTab(0)} />
-          <Tab label="Dodaj przychód" onClick={() => setActiveTab(1)} />
-          <Tab label="Wykres" onClick={() => setActiveTab(2)} />
-        </Tabs>
-      </Box>
-      <SwipeableViews
-        containerStyle={{
-          transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
-        }}
-        index={activeTab}
-        onChangeIndex={(index) => setActiveTab(index)}>
-        <Box className="box">
-          <p>W tym miejscu będą wyświetlane ostatnie przychody</p>
-        </Box>
-        <Box className="box">
-          <AddIncomeForm />
-        </Box>
-        <Box className="box">
-          <IncomesChart />
-        </Box>
-      </SwipeableViews> */}
 
       <Box className="box">
-        <IncomesChart />
+        <IncomesChart incomes={incomes} />
       </Box>
       <Box className="box">
         <AddIncomeForm

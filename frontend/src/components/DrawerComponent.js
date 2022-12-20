@@ -55,7 +55,7 @@ export default function DrawerComponent(props) {
               key={index}
               disablePadding
               selected={window.location.pathname === page.link}
-              className={window.location.pathname === page.link && "boczne-menu-link-aktywny"}>
+              className={window.location.pathname === page.link ? "boczne-menu-link-aktywny" : ""}>
               <Link
                 key={index}
                 to={page.link}
