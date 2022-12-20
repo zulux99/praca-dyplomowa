@@ -76,8 +76,48 @@ export function ChartSetData(props) {
     });
     return data;
   } else if (props.interval === 1) {
-    return [9, 5, 3, 5, 2, 3, 5, 12, 19, 3, 5, 2, 3, 5, 12, 19, 3, 5, 2, 3, 5, 12, 19, 3, 5, 2, 3, 5, 12, 19, 3];
+    let data = [];
+    let prevMonth = new Date();
+    let nextMonth = new Date();
+    prevMonth.setMonth(prevMonth.getMonth() + props.arrowValue);
+    nextMonth.setMonth(nextMonth.getMonth() + props.arrowValue + 1);
+    props.setStartDate(prevMonth.getMonth() + 1 + "." + prevMonth.getFullYear());
+    props.setEndDate("");
+    // go through all incomes
+    props.incomes.forEach((income) => {
+      // if income.data is not in current month or
+      if (
+        new Date(income.data).getMonth() !== prevMonth.getMonth() ||
+        new Date(income.data).getFullYear() !== prevMonth.getFullYear()
+      )
+        return;
+      // if first income.data is in current month, add income value to data
+      if (new Date(income.data).getMonth() === prevMonth.getMonth()) {
+        let day = new Date(income.data).getDate();
+        if (data[day - 1] === undefined) data[day - 1] = 0;
+        data[day - 1] += parseFloat(income.kwota);
+      }
+    });
+    return data;
   } else if (props.interval === 2) {
-    return [12, 19, 3, 5, 2, 3, 5, 12, 19, 3, 5, 2];
+    let data = [];
+    let prevYear = new Date();
+    let nextYear = new Date();
+    prevYear.setFullYear(prevYear.getFullYear() + props.arrowValue);
+    nextYear.setFullYear(nextYear.getFullYear() + props.arrowValue + 1);
+    props.setStartDate(prevYear.getFullYear());
+    props.setEndDate(nextYear.getFullYear());
+    // go through all incomes
+    props.incomes.forEach((income) => {
+      // if income.data is not in current year or
+      if (new Date(income.data).getFullYear() !== prevYear.getFullYear()) return;
+      // if first income.data is in current year, add income value to data
+      if (new Date(income.data).getFullYear() === prevYear.getFullYear()) {
+        let month = new Date(income.data).getMonth();
+        if (data[month] === undefined) data[month] = 0;
+        data[month] += parseFloat(income.kwota);
+      }
+    });
+    return data;
   }
 }

@@ -66,6 +66,7 @@ export default function IncomesChart(props) {
         height={100}
         options={{
           maintainAspectRatio: true,
+          responsive: true,
           scales: {
             y: {
               beginAtZero: true,
@@ -82,7 +83,9 @@ export default function IncomesChart(props) {
           },
         }}
       />
-      {startDate + " - " + endDate}
+      {interval === 0 && startDate + " - " + endDate}
+      {interval === 1 && startDate}
+      {interval === 2 && startDate}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <IconButton>
           <NavigateBeforeIcon onClick={() => setArrowValue(arrowValue - 1)} />
