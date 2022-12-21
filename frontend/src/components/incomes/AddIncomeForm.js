@@ -41,6 +41,12 @@ export default function AddIncomeForm(props) {
         if (response === -1) {
           toast.error("Nie udało się dodać przychodu");
         } else {
+          // put response in props.incomes sorted by date
+          props.setIncomes((prevIncomes) => {
+            const newIncomes = [...prevIncomes, response];
+            newIncomes.sort((a, b) => (a.data > b.data ? -1 : 1));
+            return newIncomes;
+          });
           toast.success("Dodano przychód");
           e.target.reset();
           setInputValue("");

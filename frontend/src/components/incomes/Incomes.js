@@ -59,10 +59,12 @@ export default function Incomes() {
           setBillId={setBillId}
           bills={bills}
           setBills={setBills}
+          incomes={incomes}
+          setIncomes={setIncomes}
         />
       </Box>
       <Box className="box">
-        <IncomesList incomes={incomes} setIncomes={setIncomes} categoryList={categoryList} bills={bills} />
+        <IncomesList incomes={incomes} setIncomes={setIncomes} categoryList={categoryList} bills={bills} user={user} />
       </Box>
     </>
   );

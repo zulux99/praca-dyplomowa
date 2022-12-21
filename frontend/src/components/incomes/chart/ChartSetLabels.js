@@ -2,39 +2,19 @@ export function ChartSetLabels(props) {
   if (props.interval === 0) {
     return ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
   } else if (props.interval === 1) {
-    return [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
-      "19",
-      "20",
-      "21",
-      "22",
-      "23",
-      "24",
-      "25",
-      "26",
-      "27",
-      "28",
-      "29",
-      "30",
-      "31",
-    ];
+    try {
+      let date = new Date(props.currentYear, props.currentMonth, 1);
+      let month = date.getMonth();
+      let year = date.getFullYear();
+      let daysInMonth = new Date(year, month + 1, 0).getDate();
+      let labels = [];
+      for (let i = 1; i <= daysInMonth; i++) {
+        labels.push(i);
+      }
+      return labels;
+    } catch (e) {
+      console.log(e);
+    }
   } else if (props.interval === 2) {
     return [
       "Styczeń",
@@ -82,6 +62,8 @@ export function ChartSetData(props) {
     prevMonth.setMonth(prevMonth.getMonth() + props.arrowValue);
     nextMonth.setMonth(nextMonth.getMonth() + props.arrowValue + 1);
     props.setStartDate(prevMonth.getMonth() + 1 + "." + prevMonth.getFullYear());
+    props.setCurrentMonth(prevMonth.getMonth());
+    props.setCurrentYear(prevMonth.getFullYear());
     props.setEndDate("");
     // go through all incomes
     props.incomes.forEach((income) => {

@@ -16,7 +16,7 @@ export default function IncomesList(props) {
                 {props.categoryList && props.categoryList.find((category) => category.id === income.kategoria).nazwa}
               </label>
               <label>{income.data}</label>
-              <Menu3Dots />
+              <Menu3Dots income={income} user={props.user} incomes={props.incomes} setIncomes={props.setIncomes} />
             </ListItem>
           ))}
       </List>

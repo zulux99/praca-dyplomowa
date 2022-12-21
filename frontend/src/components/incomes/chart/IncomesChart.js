@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ChartSetLabels, ChartSetData } from "./ChartSetLabels";
+import { isBrowser, isMobile } from "react-device-detect";
 
 import { Bar } from "react-chartjs-2";
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Title } from "chart.js";
@@ -15,6 +16,8 @@ export default function IncomesChart(props) {
   const [interval, setInterval] = useState(0);
   const [arrowValue, setArrowValue] = useState(0);
   const [data, setData] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [labels, setLabels] = useState([
@@ -28,7 +31,11 @@ export default function IncomesChart(props) {
   ]);
 
   useEffect(() => {
-    setLabels(ChartSetLabels({ interval: interval }));
+    setLabels(ChartSetLabels({ interval: interval, currentMonth: currentMonth, currentYear: currentYear }));
+  }, [interval, currentMonth, currentYear]);
+
+  useEffect(() => {
+    setArrowValue(0);
   }, [interval]);
 
   useEffect(() => {
@@ -39,6 +46,8 @@ export default function IncomesChart(props) {
         incomes: props.incomes,
         setStartDate: setStartDate,
         setEndDate: setEndDate,
+        setCurrentMonth: setCurrentMonth,
+        setCurrentYear: setCurrentYear,
       })
     );
   }, [interval, arrowValue, props]);
@@ -63,8 +72,10 @@ export default function IncomesChart(props) {
             },
           ],
         }}
-        height={100}
+        height={isMobile ? window.innerHeight * 0.5 : window.innerHeight * 0.2}
+        width={isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.4}
         options={{
+          indexAxis: isMobile ? "y" : "x",
           maintainAspectRatio: true,
           responsive: true,
           scales: {
@@ -83,15 +94,16 @@ export default function IncomesChart(props) {
           },
         }}
       />
+
       {interval === 0 && startDate + " - " + endDate}
       {interval === 1 && startDate}
       {interval === 2 && startDate}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <IconButton>
-          <NavigateBeforeIcon onClick={() => setArrowValue(arrowValue - 1)} />
+        <IconButton onClick={() => setArrowValue(arrowValue - 1)}>
+          <NavigateBeforeIcon />
         </IconButton>
-        <IconButton>
-          <NavigateNextIcon onClick={() => setArrowValue(arrowValue + 1)} />
+        <IconButton onClick={() => setArrowValue(arrowValue + 1)}>
+          <NavigateNextIcon />
         </IconButton>
       </Box>
     </>

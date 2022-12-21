@@ -4,6 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { DeleteTransaction } from "../transactions/DeleteTransactionRequest";
+import { toast, ToastContainer } from "react-toastify";
 
 function Menu3Dots(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -17,8 +19,20 @@ function Menu3Dots(props) {
     setAnchorEl(null);
   };
 
+  const handleDelete = () => {
+    DeleteTransaction({ id: props.income.id, user: props.user }).then((response) => {
+      if (response === -1) {
+        console.log("error");
+      } else {
+        props.setIncomes(props.incomes.filter((income) => income.id !== props.income.id));
+        toast.success("Usunięto transakcję");
+      }
+    });
+  };
+
   return (
     <Box sx={{ display: "block" }}>
+      <ToastContainer position="bottom-center" autoClose={2000} />
       <IconButton onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
@@ -31,6 +45,7 @@ function Menu3Dots(props) {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            handleDelete();
             handleClose();
           }}>
           Usuń

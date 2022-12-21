@@ -19,7 +19,6 @@ function Categories() {
         toast.error("Nie udało się pobrać kategorii");
       } else {
         setCategoryList(response);
-        console.log(response);
       }
     });
   }, []);

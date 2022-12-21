@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Bills from "./bills/Bills";
-import DashBoard from "./DashBoard";
+import DashBoard from "./dashboard/DashBoard";
 import Register from "./Register";
 import Login from "./Login";
 import Debtors from "./debtors/Debtors";

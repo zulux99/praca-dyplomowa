@@ -31,7 +31,6 @@ function Debtors() {
   useEffect(() => {
     getDebts();
     getPayments();
-    console.log(base_url);
     return () => {
       setDebts([]);
     };
@@ -72,7 +71,6 @@ function Debtors() {
         },
       });
       setPayments(response.data);
-      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
