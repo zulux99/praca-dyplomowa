@@ -20,6 +20,7 @@ export default function IncomesChart(props) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [sum, setSum] = useState(0);
   const [labels, setLabels] = useState([
     "Poniedziałek",
     "Wtorek",
@@ -48,6 +49,8 @@ export default function IncomesChart(props) {
         setEndDate: setEndDate,
         setCurrentMonth: setCurrentMonth,
         setCurrentYear: setCurrentYear,
+        sum: sum,
+        setSum: setSum,
       })
     );
   }, [interval, arrowValue, props]);
@@ -94,7 +97,6 @@ export default function IncomesChart(props) {
           },
         }}
       />
-
       {interval === 0 && startDate + " - " + endDate}
       {interval === 1 && startDate}
       {interval === 2 && startDate}
@@ -106,6 +108,7 @@ export default function IncomesChart(props) {
           <NavigateNextIcon />
         </IconButton>
       </Box>
+      Łączna kwota: {sum} zł
     </>
   );
 }

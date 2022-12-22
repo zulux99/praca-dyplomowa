@@ -43,6 +43,7 @@ export function ChartSetData(props) {
     props.setStartDate(prevSunday.getDate() + 1 + "." + (prevSunday.getMonth() + 1) + "." + prevSunday.getFullYear());
     props.setEndDate(nextSunday.getDate() + "." + (nextSunday.getMonth() + 1) + "." + nextSunday.getFullYear());
     // go through all incomes
+    let sum = 0;
     props.incomes.forEach((income) => {
       // if income.data is not in current week or
       if (new Date(income.data) < prevSunday || new Date(income.data) >= nextSunday) return;
@@ -52,8 +53,10 @@ export function ChartSetData(props) {
         if (day === 0) day = 6;
         else day = day - 1;
         data[day] += parseFloat(income.kwota);
+        sum += parseFloat(income.kwota);
       }
     });
+    props.setSum(sum);
     return data;
   } else if (props.interval === 1) {
     let data = [];
@@ -66,6 +69,7 @@ export function ChartSetData(props) {
     props.setCurrentYear(prevMonth.getFullYear());
     props.setEndDate("");
     // go through all incomes
+    let sum = 0;
     props.incomes.forEach((income) => {
       // if income.data is not in current month or
       if (
@@ -78,8 +82,10 @@ export function ChartSetData(props) {
         let day = new Date(income.data).getDate();
         if (data[day - 1] === undefined) data[day - 1] = 0;
         data[day - 1] += parseFloat(income.kwota);
+        sum += parseFloat(income.kwota);
       }
     });
+    props.setSum(sum);
     return data;
   } else if (props.interval === 2) {
     let data = [];
@@ -90,6 +96,7 @@ export function ChartSetData(props) {
     props.setStartDate(prevYear.getFullYear());
     props.setEndDate(nextYear.getFullYear());
     // go through all incomes
+    let sum = 0;
     props.incomes.forEach((income) => {
       // if income.data is not in current year or
       if (new Date(income.data).getFullYear() !== prevYear.getFullYear()) return;
@@ -98,8 +105,10 @@ export function ChartSetData(props) {
         let month = new Date(income.data).getMonth();
         if (data[month] === undefined) data[month] = 0;
         data[month] += parseFloat(income.kwota);
+        sum += parseFloat(income.kwota);
       }
     });
+    props.setSum(sum);
     return data;
   }
 }
