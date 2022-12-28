@@ -1,6 +1,9 @@
+import { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Menu3Dots from "./Menu3Dots";
+import InfiniteScroll from "react-infinite-scroller";
+import { GetTransactionsByPage } from "../transactions/GetTransactionsByPage";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -11,6 +14,28 @@ export const findCategoryName = (categoryList, categoryId) => {
 };
 
 export default function IncomesList(props) {
+  const [incomes, setIncomes] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMore = () => {
+    GetTransactionsByPage({
+      user: props.user,
+      url: "/api/transactions/?page=" + pageNumber,
+    }).then((response) => {
+      if (response === -1) {
+        console.log("Nie udało się pobrać listy przychodów");
+      } else {
+        console.log(response);
+        setIncomes(incomes.concat(response.results));
+        setPageNumber(pageNumber + 1);
+        if (response.next === null) {
+          setHasMore(false);
+        }
+      }
+    });
+  };
+
   return (
     <>
       <h2>Ostatnie przychody</h2>
@@ -26,30 +51,39 @@ export default function IncomesList(props) {
             <b>Data</b>
           </label>
         </ListItem>
-        {props.incomes
-          // sort by date then by id
-          .sort((a, b) => (a.data > b.data ? -1 : 1))
-          .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
-          .map((income) => (
-            <ListItem key={income.id}>
-              <label
-                style={{
-                  color: "green",
-                }}>
-                + {income.kwota} zł
-              </label>
-              <label>{findCategoryName(props.categoryList, income.kategoria)}</label>
-              <label>
-                {new Date(income.data).toLocaleDateString("pl-PL", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </label>
-              <Menu3Dots income={income} user={props.user} incomes={props.incomes} setIncomes={props.setIncomes} />
-            </ListItem>
-          ))}
+        <InfiniteScroll
+          loadMore={loadMore}
+          hasMore={hasMore}
+          loader={
+            <div className="loader" key={0}>
+              Ładowanie...
+            </div>
+          }>
+          {incomes
+            // sort by date then by id
+            .sort((a, b) => (a.data > b.data ? -1 : 1))
+            .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
+            .map((income) => (
+              <ListItem key={income.id}>
+                <label
+                  style={{
+                    color: "green",
+                  }}>
+                  + {income.kwota} zł
+                </label>
+                <label>{findCategoryName(props.categoryList, income.kategoria)}</label>
+                <label>
+                  {new Date(income.data).toLocaleDateString("pl-PL", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </label>
+                <Menu3Dots income={income} user={props.user} incomes={props.incomes} setIncomes={props.setIncomes} />
+              </ListItem>
+            ))}
+        </InfiniteScroll>
       </List>
     </>
   );

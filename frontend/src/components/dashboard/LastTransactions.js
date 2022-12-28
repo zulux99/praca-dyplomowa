@@ -28,6 +28,7 @@ export default function LastTransactions(props) {
         {props.transactions
           .sort((a, b) => (a.data > b.data ? -1 : 1))
           .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
+          .slice(0, 5)
           .map((income) => (
             <ListItem key={income.id}>
               <label

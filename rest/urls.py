@@ -24,5 +24,7 @@ urlpatterns = [
     path("api/transactions/<int:pk>/", views.TransakcjaViewSet.as_view()),
     path("api/transactions/<str:date_from>/<str:date_to>/", views.TransakcjaFromDateToDateViewSet.as_view()),
     path("api/incomes/", views.PrzychodViewSet.as_view()),
+    path("api/incomes/<str:date_from>/<str:date_to>/", views.PrzychodFromDateToDateViewSet.as_view()),
     path("api/expenses/", views.WydatekViewSet.as_view()),
+    path("api/expenses/<str:date_from>/<str:date_to>/", views.WydatekFromDateToDateViewSet.as_view()),
 ]

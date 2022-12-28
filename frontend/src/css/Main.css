@@ -2,11 +2,10 @@ html {
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  width: 100vw;
 }
 
-html::-webkit-scrollbar {
-  display: none;
-}
+html::-webkit-scrollbar {}
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -27,6 +26,14 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
+}
+
+div.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .scroll-bar>div:last-child>div {

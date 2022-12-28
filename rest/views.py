@@ -27,7 +27,7 @@ from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 2
     page_size_query_param = 'page_size'
     max_page_size = 50
 
@@ -251,11 +251,29 @@ class PrzychodViewSet(APIView):
         serializer = TransakcjaSerializer(przychody, many=True)
         return Response(serializer.data)
 
+class PrzychodFromDateToDateViewSet(APIView):
+    queryset = Transakcja.objects.filter(przychod=True)
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, date_from, date_to):
+        przychody = Transakcja.objects.filter(user=request.user.id, przychod=True, data__range=[date_from, date_to])
+        serializer = TransakcjaSerializer(przychody, many=True)
+        return Response(serializer.data)
+
 class WydatekViewSet(APIView):
     queryset = Transakcja.objects.filter(przychod=False)
     serializer_class = TransakcjaSerializer
     permission_classes = [IsAuthenticated]
     def get(self, request):
         wydatki = Transakcja.objects.filter(user=request.user.id, przychod=False)
+        serializer = TransakcjaSerializer(wydatki, many=True)
+        return Response(serializer.data)
+
+class WydatekFromDateToDateViewSet(APIView):
+    queryset = Transakcja.objects.filter(przychod=False)
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, date_from, date_to):
+        wydatki = Transakcja.objects.filter(user=request.user.id, przychod=False, data__range=[date_from, date_to])
         serializer = TransakcjaSerializer(wydatki, many=True)
         return Response(serializer.data)
