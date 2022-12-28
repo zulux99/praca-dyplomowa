@@ -2,6 +2,14 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Menu3Dots from "./Menu3Dots";
 
+export const findCategoryName = (categoryList, categoryId) => {
+  try {
+    return categoryList.find((category) => category.id === categoryId).nazwa;
+  } catch (err) {
+    return "Nieznana";
+  }
+};
+
 export default function IncomesList(props) {
   return (
     <>
@@ -30,9 +38,7 @@ export default function IncomesList(props) {
                 }}>
                 + {income.kwota} zł
               </label>
-              <label>
-                {props.categoryList && props.categoryList.find((category) => category.id === income.kategoria).nazwa}
-              </label>
+              <label>{findCategoryName(props.categoryList, income.kategoria)}</label>
               <label>
                 {new Date(income.data).toLocaleDateString("pl-PL", {
                   weekday: "long",
