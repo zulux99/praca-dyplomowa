@@ -187,6 +187,19 @@ ul.lista-przychodow li>div:last-child {
 ul.lista-przychodow li>label {
   padding-top: 16px;
   padding-bottom: 16px;
+  width: 33%;
+}
+
+ul.lista-przychodow li>label:nth-child(1) {
+  width: 30%;
+}
+
+ul.lista-przychodow li>label:nth-child(2) {
+  width: 35%;
+}
+
+ul.lista-przychodow li>label:nth-child(3) {
+  width: 35%;
 }
 
 .boczne-menu>div .css-1nxmd3h-MuiListItem-root.Mui-selected .css-10hburv-MuiTypography-root {

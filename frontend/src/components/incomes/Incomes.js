@@ -8,6 +8,9 @@ import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import { toast, ToastContainer } from "react-toastify";
 import { GetAllIncomes } from "./GetAllIncomes";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
 
 export default function Incomes() {
   const user = useContext(AuthContext);
@@ -15,6 +18,7 @@ export default function Incomes() {
   const [categoryList, setCategoryList] = useState([]);
   const [bills, setBills] = useState([]);
   const [billId, setBillId] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     GetAllBills(user).then((response) => {
@@ -44,28 +48,39 @@ export default function Incomes() {
     });
   }, [user]);
 
+  const closeModalAddIncome = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
-
       <Box className="box">
         <IncomesChart incomes={incomes} />
-      </Box>
-      <Box className="box">
-        <AddIncomeForm
-          categoryList={categoryList}
-          setCategoryList={setCategoryList}
-          billId={billId}
-          setBillId={setBillId}
-          bills={bills}
-          setBills={setBills}
-          incomes={incomes}
-          setIncomes={setIncomes}
-        />
+        <Button variant="contained" color="success" onClick={() => setOpen(true)}>
+          Dodaj przychód
+        </Button>
       </Box>
       <Box className="box">
         <IncomesList incomes={incomes} setIncomes={setIncomes} categoryList={categoryList} bills={bills} user={user} />
       </Box>
+
+      <Modal className="modal" open={open} onClose={closeModalAddIncome} aria-labelledby="Dodaj przychód">
+        <Fade in={open}>
+          <Box className="modal-box">
+            <AddIncomeForm
+              categoryList={categoryList}
+              setCategoryList={setCategoryList}
+              billId={billId}
+              setBillId={setBillId}
+              bills={bills}
+              setBills={setBills}
+              incomes={incomes}
+              setIncomes={setIncomes}
+            />
+          </Box>
+        </Fade>
+      </Modal>
     </>
   );
 }

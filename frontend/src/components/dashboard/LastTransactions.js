@@ -1,11 +1,10 @@
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Menu3Dots from "./Menu3Dots";
 
-export default function IncomesList(props) {
+export default function LastTransactions(props) {
   return (
     <>
-      <h2>Ostatnie przychody</h2>
+      <h2>Ostatnie transakcje</h2>
       <List className="lista-przychodow">
         <ListItem>
           <label>
@@ -18,8 +17,7 @@ export default function IncomesList(props) {
             <b>Data</b>
           </label>
         </ListItem>
-        {props.incomes
-          // sort by date then by id
+        {props.transactions
           .sort((a, b) => (a.data > b.data ? -1 : 1))
           .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
           .map((income) => (
@@ -41,7 +39,6 @@ export default function IncomesList(props) {
                   day: "numeric",
                 })}
               </label>
-              <Menu3Dots income={income} user={props.user} incomes={props.incomes} setIncomes={props.setIncomes} />
             </ListItem>
           ))}
       </List>

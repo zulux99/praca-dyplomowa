@@ -49,7 +49,6 @@ export default function IncomesChart(props) {
         setEndDate: setEndDate,
         setCurrentMonth: setCurrentMonth,
         setCurrentYear: setCurrentYear,
-        sum: sum,
         setSum: setSum,
       })
     );
@@ -108,7 +107,7 @@ export default function IncomesChart(props) {
           <NavigateNextIcon />
         </IconButton>
       </Box>
-      Łączna kwota: {sum} zł
+      <label>Łączna kwota {sum.toLocaleString("pl-PL", { style: "currency", currency: "PLN" })}</label>
     </>
   );
 }

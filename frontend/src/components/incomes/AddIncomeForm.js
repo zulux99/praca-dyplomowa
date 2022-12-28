@@ -68,10 +68,10 @@ export default function AddIncomeForm(props) {
       <ToastContainer position="bottom-center" autoClose={2000} />
       <form onSubmit={handleSubmit}>
         <TextField
+          className="input"
           autoComplete="off"
           variant="outlined"
           label="Kwota"
-          type="number"
           required
           onChange={(e) => setPaymentValue(e.target.value)}
           error={!paymentValueValid}

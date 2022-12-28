@@ -2,6 +2,7 @@ import os
 from django.http import HttpResponse
 from rest_framework.views import View
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
@@ -21,8 +22,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAdminUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 
 class FrontendAppView(View):
     """
@@ -194,13 +201,18 @@ class DlugSplataViewSet(APIView):
         splata.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class TransakcjaViewSet(APIView):
-    queryset = Transakcja.objects.all()
+class TransakcjaViewSet(GenericAPIView):
+    queryset = Transakcja.objects.all().order_by('data', 'id').reverse()
     serializer_class = TransakcjaSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
     def get(self, request):
-        transakcje = Transakcja.objects.filter(user=request.user.id)
-        serializer = TransakcjaSerializer(transakcje, many=True)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = TransakcjaSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = TransakcjaSerializer(queryset, many=True)
         return Response(serializer.data)
     def post(self, request):
         serializer = TransakcjaSerializer(data=request.data)
@@ -219,6 +231,16 @@ class TransakcjaViewSet(APIView):
         transakcja = Transakcja.objects.get(pk=pk)
         transakcja.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TransakcjaFromDateToDateViewSet(APIView):
+    queryset = Transakcja.objects.all()
+    serializer_class = TransakcjaSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, date_from, date_to):
+        transakcje = Transakcja.objects.filter(user=request.user.id, data__range=[date_from, date_to])
+        serializer = TransakcjaSerializer(transakcje, many=True)
+        return Response(serializer.data)
+
 
 class PrzychodViewSet(APIView):
     queryset = Transakcja.objects.filter(przychod=True)
