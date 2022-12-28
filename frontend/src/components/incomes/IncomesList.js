@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Menu3Dots from "./Menu3Dots";
 import InfiniteScroll from "react-infinite-scroller";
-import { GetTransactionsByPage } from "../transactions/GetTransactionsByPage";
+import { GetIncomesByPage } from "./GetIncomesByPage";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -19,14 +19,13 @@ export default function IncomesList(props) {
   const [hasMore, setHasMore] = useState(true);
 
   const loadMore = () => {
-    GetTransactionsByPage({
+    GetIncomesByPage({
       user: props.user,
-      url: "/api/transactions/?page=" + pageNumber,
+      url: "/api/incomes/?page=" + pageNumber,
     }).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać listy przychodów");
       } else {
-        console.log(response);
         setIncomes(incomes.concat(response.results));
         setPageNumber(pageNumber + 1);
         if (response.next === null) {

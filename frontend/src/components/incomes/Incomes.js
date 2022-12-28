@@ -23,7 +23,7 @@ export default function Incomes() {
   useEffect(() => {
     GetAllBills(user).then((response) => {
       if (response === -1) {
-        toast.error("Nie udało się pobrać listy rachunków");
+        console.log("Nie udało się pobrać listy rachunków");
       } else {
         setBills(response);
         const defaultBill = response.find((bill) => bill.domyslne === true);
@@ -32,18 +32,11 @@ export default function Incomes() {
     });
     GetAllCategories(user).then((response) => {
       if (response === -1) {
-        toast.error("Nie udało się pobrać listy kategorii");
+        console.log("Nie udało się pobrać listy kategorii");
       } else {
         setCategoryList(
           response.filter((category) => category.przychod === true).sort((a, b) => (a.nazwa > b.nazwa ? 1 : -1))
         );
-      }
-    });
-    GetAllIncomes(user).then((response) => {
-      if (response === -1) {
-        toast.error("Nie udało się pobrać listy przychodów");
-      } else {
-        setIncomes(response);
       }
     });
   }, [user]);
@@ -56,13 +49,13 @@ export default function Incomes() {
     <>
       <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="box">
-        <IncomesChart incomes={incomes} />
+        {/* <IncomesChart */}
         <Button variant="contained" color="success" onClick={() => setOpen(true)}>
           Dodaj przychód
         </Button>
       </Box>
       <Box className="box">
-        <IncomesList incomes={incomes} setIncomes={setIncomes} categoryList={categoryList} bills={bills} user={user} />
+        <IncomesList categoryList={categoryList} bills={bills} user={user} />
       </Box>
 
       <Modal className="modal" open={open} onClose={closeModalAddIncome} aria-labelledby="Dodaj przychód">

@@ -242,13 +242,18 @@ class TransakcjaFromDateToDateViewSet(APIView):
         return Response(serializer.data)
 
 
-class PrzychodViewSet(APIView):
-    queryset = Transakcja.objects.filter(przychod=True)
+class PrzychodViewSet(GenericAPIView):
+    queryset = Transakcja.objects.filter(przychod=True).order_by('data', 'id').reverse()
     serializer_class = TransakcjaSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
     def get(self, request):
-        przychody = Transakcja.objects.filter(user=request.user.id, przychod=True)
-        serializer = TransakcjaSerializer(przychody, many=True)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = TransakcjaSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = TransakcjaSerializer(queryset, many=True)
         return Response(serializer.data)
 
 class PrzychodFromDateToDateViewSet(APIView):
@@ -260,13 +265,18 @@ class PrzychodFromDateToDateViewSet(APIView):
         serializer = TransakcjaSerializer(przychody, many=True)
         return Response(serializer.data)
 
-class WydatekViewSet(APIView):
-    queryset = Transakcja.objects.filter(przychod=False)
+class WydatekViewSet(GenericAPIView):
+    queryset = Transakcja.objects.filter(przychod=True).order_by('data', 'id').reverse()
     serializer_class = TransakcjaSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
     def get(self, request):
-        wydatki = Transakcja.objects.filter(user=request.user.id, przychod=False)
-        serializer = TransakcjaSerializer(wydatki, many=True)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = TransakcjaSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = TransakcjaSerializer(queryset, many=True)
         return Response(serializer.data)
 
 class WydatekFromDateToDateViewSet(APIView):
