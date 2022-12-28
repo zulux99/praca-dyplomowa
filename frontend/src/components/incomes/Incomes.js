@@ -6,15 +6,12 @@ import IncomesChart from "./chart/IncomesChart";
 import IncomesList from "./IncomesList";
 import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
-import { toast, ToastContainer } from "react-toastify";
-import { GetAllIncomes } from "./GetAllIncomes";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
 export default function Incomes() {
   const user = useContext(AuthContext);
-  const [incomes, setIncomes] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [bills, setBills] = useState([]);
   const [billId, setBillId] = useState("");
@@ -47,9 +44,8 @@ export default function Incomes() {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="box">
-        {/* <IncomesChart */}
+        <IncomesChart user={user} />
         <Button variant="contained" color="success" onClick={() => setOpen(true)}>
           Dodaj przychód
         </Button>
@@ -68,8 +64,6 @@ export default function Incomes() {
               setBillId={setBillId}
               bills={bills}
               setBills={setBills}
-              incomes={incomes}
-              setIncomes={setIncomes}
             />
           </Box>
         </Fade>

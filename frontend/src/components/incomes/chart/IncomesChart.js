@@ -50,6 +50,7 @@ export default function IncomesChart(props) {
         setCurrentMonth: setCurrentMonth,
         setCurrentYear: setCurrentYear,
         setSum: setSum,
+        user: props.user,
       })
     );
   }, [interval, arrowValue, props]);

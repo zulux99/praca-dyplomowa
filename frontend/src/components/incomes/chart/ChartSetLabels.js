@@ -1,3 +1,5 @@
+import { GetIncomesFromDateToDate } from "../GetIncomesFromDateToDate";
+
 export function ChartSetLabels(props) {
   if (props.interval === 0) {
     return ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
@@ -42,21 +44,22 @@ export function ChartSetData(props) {
     nextSunday.setDate(nextSunday.getDate() - nextSunday.getDay() + 7 * (props.arrowValue + 1));
     props.setStartDate(prevSunday.getDate() + 1 + "." + (prevSunday.getMonth() + 1) + "." + prevSunday.getFullYear());
     props.setEndDate(nextSunday.getDate() + "." + (nextSunday.getMonth() + 1) + "." + nextSunday.getFullYear());
-    // go through all incomes
     let sum = 0;
-    props.incomes.forEach((income) => {
-      // if income.data is not in current week or
-      if (new Date(income.data) < prevSunday || new Date(income.data) >= nextSunday) return;
-      // if first income.data is in current week, add income value to data
-      if (new Date(income.data) >= prevSunday) {
+    GetIncomesFromDateToDate({
+      date_from: prevSunday.getFullYear() + "-" + (prevSunday.getMonth() + 1) + "-" + (prevSunday.getDate() + 1),
+      date_to: nextSunday.getFullYear() + "-" + (nextSunday.getMonth() + 1) + "-" + nextSunday.getDate(),
+      user: props.user,
+    }).then((response) => {
+      if (response === -1) return;
+      response.forEach((income) => {
         let day = new Date(income.data).getDay();
         if (day === 0) day = 6;
         else day = day - 1;
         data[day] += parseFloat(income.kwota);
         sum += parseFloat(income.kwota);
-      }
+      });
+      props.setSum(sum);
     });
-    props.setSum(sum);
     return data;
   } else if (props.interval === 1) {
     let data = [];
@@ -68,22 +71,25 @@ export function ChartSetData(props) {
     props.setCurrentMonth(prevMonth.getMonth());
     props.setCurrentYear(prevMonth.getFullYear());
     props.setEndDate("");
-    // go through all incomes
     let sum = 0;
-    props.incomes.forEach((income) => {
-      // if income.data is not in current month or
-      if (
-        new Date(income.data).getMonth() !== prevMonth.getMonth() ||
-        new Date(income.data).getFullYear() !== prevMonth.getFullYear()
-      )
-        return;
-      // if first income.data is in current month, add income value to data
-      if (new Date(income.data).getMonth() === prevMonth.getMonth()) {
+    GetIncomesFromDateToDate({
+      date_from: prevMonth.getFullYear() + "-" + (prevMonth.getMonth() + 1) + "-01",
+      date_to:
+        prevMonth.getFullYear() +
+        "-" +
+        (prevMonth.getMonth() + 1) +
+        "-" +
+        new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1, 0).getDate(),
+      user: props.user,
+    }).then((response) => {
+      if (response === -1) return;
+      console.log(response);
+      response.forEach((income) => {
         let day = new Date(income.data).getDate();
         if (data[day - 1] === undefined) data[day - 1] = 0;
         data[day - 1] += parseFloat(income.kwota);
         sum += parseFloat(income.kwota);
-      }
+      });
     });
     props.setSum(sum);
     return data;
@@ -95,18 +101,24 @@ export function ChartSetData(props) {
     nextYear.setFullYear(nextYear.getFullYear() + props.arrowValue + 1);
     props.setStartDate(prevYear.getFullYear());
     props.setEndDate(nextYear.getFullYear());
-    // go through all incomes
     let sum = 0;
-    props.incomes.forEach((income) => {
-      // if income.data is not in current year or
-      if (new Date(income.data).getFullYear() !== prevYear.getFullYear()) return;
-      // if first income.data is in current year, add income value to data
-      if (new Date(income.data).getFullYear() === prevYear.getFullYear()) {
+    GetIncomesFromDateToDate({
+      date_from: prevYear.getFullYear() + "-01-01",
+      date_to:
+        prevYear.getFullYear() +
+        "-" +
+        (prevYear.getMonth() + 1) +
+        "-" +
+        new Date(prevYear.getFullYear(), prevYear.getMonth() + 1, 0).getDate(),
+      user: props.user,
+    }).then((response) => {
+      if (response === -1) return;
+      response.forEach((income) => {
         let month = new Date(income.data).getMonth();
         if (data[month] === undefined) data[month] = 0;
         data[month] += parseFloat(income.kwota);
         sum += parseFloat(income.kwota);
-      }
+      });
     });
     props.setSum(sum);
     return data;
