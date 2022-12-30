@@ -47,7 +47,10 @@ export default function DashBoard() {
         );
       }
     });
-    GetAllCategories(user).then((response) => {
+    GetAllCategories({
+      user: user,
+      url: "/api/categories/",
+    }).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać danych o kategoriach");
       } else {

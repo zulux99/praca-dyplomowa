@@ -8,26 +8,47 @@ import CategoryList from "./CategoryList";
 import { DeleteCategory } from "./DeleteCategoryRequest";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import SearchForm from "./SearchForm";
+import ListOfTransactions from "./ListOfTransactions";
 
 function Categories() {
   const user = useContext(AuthContext);
   const [categoryList, setCategoryList] = useState([]);
+  const [categoriesTab, setCategoriesTab] = useState(1);
+  const [startDate, setStartDate] = useState(
+    new Date(new Date().setDate(new Date().getDate() - 7)).toISOString().slice(0, 10)
+  );
+  const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
+  const [inputValue, setInputValue] = useState("");
+  const [category, setCategory] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [transactions, setTransactions] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    GetAllCategories(user).then((response) => {
+    let url = "";
+    if (categoriesTab === 1) {
+      url = "api/categories/?incomes";
+    } else {
+      url = "api/categories/?expenses";
+    }
+    GetAllCategories({
+      user: user,
+      url: url,
+    }).then((response) => {
       if (response === -1) {
-        toast.error("Nie udało się pobrać kategorii");
+        console.log("Nie udało się pobrać kategorii");
       } else {
         setCategoryList(response);
       }
     });
-  }, []);
+  }, [categoriesTab]);
 
   const handleDelete = (id) => {
     confirmAlert({
       title: "Potwierdź usunięcie",
       message:
-        "Czy na pewno chcesz usunąć tę kategorię? Kategoria zostanie usunięta z wszystkich rekordów, w których została użyta.",
+        "Czy na pewno chcesz usunąć tę kategorię? Usunięcie kategorii spowoduje usunięcie wszystkich transakcji z nią powiązanych.",
       buttons: [
         {
           label: "Tak",
@@ -53,6 +74,38 @@ function Categories() {
   return (
     <Box>
       <ToastContainer position="bottom-center" autoClose={2000} />
+      <Box className="box">
+        {/* <SearchForm
+          categoryList={categoryList}
+          setCategoryList={setCategoryList}
+          user={user}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          category={category}
+          setCategory={setCategory}
+        /> */}
+        <ListOfTransactions
+          user={user}
+          categoryList={categoryList}
+          setCategoryList={setCategoryList}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          category={category}
+          setCategory={setCategory}
+          transactions={transactions}
+          setTransactions={setTransactions}
+          hasMore={hasMore}
+          setHasMore={setHasMore}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          categoriesTab={categoriesTab}
+          setCategoriesTab={setCategoriesTab}
+        />
+      </Box>
       <h1>Lista kategorii</h1>
       <CategoryList categoryList={categoryList} handleDelete={handleDelete} />
       <AddCategoryForm categoryList={categoryList} setCategoryList={setCategoryList} user={user} />

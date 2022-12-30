@@ -52,6 +52,7 @@ export default function AddIncomeForm(props) {
           setInputValue("");
           setCategory(null);
           setDescription("");
+          props.closeModalAddIncome();
         }
       });
     } else {

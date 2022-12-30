@@ -14,7 +14,6 @@ export const findCategoryName = (categoryList, categoryId) => {
 };
 
 export default function IncomesList(props) {
-  const [incomes, setIncomes] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -26,7 +25,7 @@ export default function IncomesList(props) {
       if (response === -1) {
         console.log("Nie udało się pobrać listy przychodów");
       } else {
-        setIncomes(incomes.concat(response.results));
+        props.setIncomes(props.incomes.concat(response.results));
         setPageNumber(pageNumber + 1);
         if (response.next === null) {
           setHasMore(false);
@@ -58,7 +57,7 @@ export default function IncomesList(props) {
               Ładowanie...
             </div>
           }>
-          {incomes
+          {props.incomes
             // sort by date then by id
             .sort((a, b) => (a.data > b.data ? -1 : 1))
             .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))

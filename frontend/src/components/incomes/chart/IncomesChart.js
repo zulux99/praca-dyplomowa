@@ -44,7 +44,6 @@ export default function IncomesChart(props) {
       ChartSetData({
         interval: interval,
         arrowValue: arrowValue,
-        incomes: props.incomes,
         setStartDate: setStartDate,
         setEndDate: setEndDate,
         setCurrentMonth: setCurrentMonth,
@@ -53,7 +52,7 @@ export default function IncomesChart(props) {
         user: props.user,
       })
     );
-  }, [interval, arrowValue, props]);
+  }, [interval, arrowValue, props.user]);
 
   return (
     <>

@@ -15,6 +15,7 @@ export default function Incomes() {
   const [categoryList, setCategoryList] = useState([]);
   const [bills, setBills] = useState([]);
   const [billId, setBillId] = useState("");
+  const [incomes, setIncomes] = useState([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -27,7 +28,10 @@ export default function Incomes() {
         setBillId(defaultBill.id);
       }
     });
-    GetAllCategories(user).then((response) => {
+    GetAllCategories({
+      user: user,
+      url: "/api/categories/",
+    }).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać listy kategorii");
       } else {
@@ -51,7 +55,7 @@ export default function Incomes() {
         </Button>
       </Box>
       <Box className="box">
-        <IncomesList categoryList={categoryList} bills={bills} user={user} />
+        <IncomesList categoryList={categoryList} bills={bills} user={user} incomes={incomes} setIncomes={setIncomes} />
       </Box>
 
       <Modal className="modal" open={open} onClose={closeModalAddIncome} aria-labelledby="Dodaj przychód">
@@ -64,6 +68,8 @@ export default function Incomes() {
               setBillId={setBillId}
               bills={bills}
               setBills={setBills}
+              setIncomes={setIncomes}
+              closeModalAddIncome={closeModalAddIncome}
             />
           </Box>
         </Fade>

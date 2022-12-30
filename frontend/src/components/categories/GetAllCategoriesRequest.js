@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export async function GetAllCategories(user) {
+export async function GetAllCategories(props) {
   try {
-    const response = await axios.get("/api/categories/", {
+    const response = await axios.get(props.url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.authTokens.access}`,
+        Authorization: `Bearer ${props.user.authTokens.access}`,
       },
     });
     return response.data;

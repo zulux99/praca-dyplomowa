@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import AuthContext from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,6 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 function ToolbarComponent(props) {
   let location = useLocation();
+  const user = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState(location.pathname);
   const [name, setName] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,7 +30,7 @@ function ToolbarComponent(props) {
     } else {
       setName(JSON.parse(data).username);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     console.log("open: ", props.open);

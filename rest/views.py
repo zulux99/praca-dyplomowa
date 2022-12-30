@@ -43,7 +43,7 @@ class FrontendAppView(View):
         except:
             return HttpResponse(
                 """
-                index.html not found ! build your React app !!
+                Dotarłeś do serwera API, miłego dnia!
                 """,
                 status=501,
             )
@@ -124,7 +124,12 @@ class KategoriaViewSet(APIView):
     serializer_class = KategoriaSerializer
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        kategorie = Kategoria.objects.filter(user=request.user.id)
+        if 'incomes' in request.query_params:
+            kategorie = Kategoria.objects.filter(user=request.user.id, przychod=True)
+        elif 'expenses' in request.query_params:
+            kategorie = Kategoria.objects.filter(user=request.user.id, przychod=False)
+        else:
+            kategorie = Kategoria.objects.filter(user=request.user.id)
         serializer = KategoriaSerializer(kategorie, many=True)
         return Response(serializer.data)
     def post(self, request):
@@ -208,6 +213,14 @@ class TransakcjaViewSet(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())
+        if 'category' in request.query_params:
+            queryset = queryset.filter(kategoria=request.query_params['category'])
+        if 'account' in request.query_params:
+            queryset = queryset.filter(konto=request.query_params['account'])
+        if 'date_from' in request.query_params:
+            queryset = queryset.filter(data__gte=request.query_params['date_from'])
+        if 'date_to' in request.query_params:
+            queryset = queryset.filter(data__lte=request.query_params['date_to'])
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = TransakcjaSerializer(page, many=True)

@@ -2,10 +2,11 @@ html {
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  width: 100vw;
 }
 
-html::-webkit-scrollbar {}
+html::-webkit-scrollbar {
+  display: none;
+}
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

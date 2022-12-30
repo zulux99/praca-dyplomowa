@@ -90,8 +90,8 @@ export function ChartSetData(props) {
         data[day - 1] += parseFloat(income.kwota);
         sum += parseFloat(income.kwota);
       });
+      props.setSum(sum);
     });
-    props.setSum(sum);
     return data;
   } else if (props.interval === 2) {
     let data = [];
@@ -119,8 +119,8 @@ export function ChartSetData(props) {
         data[month] += parseFloat(income.kwota);
         sum += parseFloat(income.kwota);
       });
+      props.setSum(sum);
     });
-    props.setSum(sum);
     return data;
   }
 }
