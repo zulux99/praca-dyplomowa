@@ -23,7 +23,7 @@ function Categories() {
   const [category, setCategory] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [transactions, setTransactions] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     let url = "";
@@ -32,6 +32,7 @@ function Categories() {
     } else {
       url = "api/categories/?expenses";
     }
+    setCategoryList([]);
     GetAllCategories({
       user: user,
       url: url,
