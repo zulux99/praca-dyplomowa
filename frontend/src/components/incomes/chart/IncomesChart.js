@@ -8,9 +8,10 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ChartSetLabels, ChartSetData } from "./ChartSetLabels";
 import { isBrowser, isMobile } from "react-device-detect";
 
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Title } from "chart.js";
-Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title);
+Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title, ChartDataLabels);
 
 export default function IncomesChart(props) {
   const [interval, setInterval] = useState(0);
@@ -68,13 +69,13 @@ export default function IncomesChart(props) {
             {
               label: "Przychody",
               data: data,
-              backgroundColor: ["rgba(50, 205, 50, 0.7)"],
+              backgroundColor: ["rgba(50, 205, 50, 0.5)"],
               borderColor: ["rgba(50, 205, 50, 1)"],
               borderWidth: 1,
             },
           ],
         }}
-        height={isMobile ? window.innerHeight * 0.5 : window.innerHeight * 0.2}
+        height={isMobile ? window.innerHeight * 0.6 : window.innerHeight * 0.2}
         width={isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.4}
         options={{
           indexAxis: isMobile ? "y" : "x",
@@ -92,6 +93,18 @@ export default function IncomesChart(props) {
             },
             legend: {
               display: false,
+            },
+            datalabels: {
+              display: true,
+              color: "black",
+              anchor: "center",
+              align: "center",
+              offset: 5,
+              font: {
+                size: 12,
+                weight: "bold",
+                lineHeight: 1.2,
+              },
             },
           },
         }}

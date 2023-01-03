@@ -14,11 +14,13 @@ import Check from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Menu3Dots from "../Menu3Dots";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Bills() {
   const user = useContext(AuthContext);
   const [bills, setBills] = useState([]);
   const [billEditing, setBillEditing] = useState(-1);
+  const [loading, setLoading] = useState(true);
   const user_id = user.user.user_id;
 
   useEffect(() => {
@@ -37,6 +39,7 @@ function Bills() {
         },
       });
       setBills(response.data);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -103,49 +106,53 @@ function Bills() {
           <DoughnutChart bills={bills} />
         </Box>
         <List>
-          {bills.map((bill, index) => (
-            <Box key={index}>
-              <ListItem key={index}>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <TextField
-                    defaultValue={bill.nazwa}
-                    variant="standard"
-                    onChange={(e) => ((bills[index].nazwa = e.target.value), console.log(bills))}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        changeBillName(bills[index]);
-                        e.target.blur();
-                      }
-                    }}
-                  />
-                </form>
-                <Box className="konto" sx={bill.domyslne ? { backgroundColor: "lightgreen" } : null}>
-                  <Box className="konto_nazwa_kwota">
-                    <InputLabel className="konto_nazwa">{bill.nazwa + " "}</InputLabel>
-                    <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>
+          {loading ? (
+            <CircularProgress color="success" />
+          ) : (
+            bills.map((bill, index) => (
+              <Box key={index}>
+                <ListItem key={index}>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <TextField
+                      defaultValue={bill.nazwa}
+                      variant="standard"
+                      onChange={(e) => ((bills[index].nazwa = e.target.value), console.log(bills))}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          changeBillName(bills[index]);
+                          e.target.blur();
+                        }
+                      }}
+                    />
+                  </form>
+                  <Box className="konto" sx={bill.domyslne ? { backgroundColor: "lightgreen" } : null}>
+                    <Box className="konto_nazwa_kwota">
+                      <InputLabel className="konto_nazwa">{bill.nazwa + " "}</InputLabel>
+                      <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>
+                    </Box>
+                    <Box className="konto_edytuj" onClick={() => setBillEditing(bill.id)}>
+                      <IconButton>
+                        <EditIcon color="info" />
+                      </IconButton>
+                    </Box>
+                    <Box
+                      className="konto_zatwierdz"
+                      sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
+                      <IconButton onClick={() => changeBillName(bill)}>
+                        <Check color="success" />
+                      </IconButton>
+                    </Box>
+                    <Box>
+                      <IconButton onClick={() => deleteBill(bill.id)}>
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    </Box>
+                    <Menu3Dots bill={bill} id={bill.id} makeDefault={makeDefault} deleteBill={deleteBill} />
                   </Box>
-                  <Box className="konto_edytuj" onClick={() => setBillEditing(bill.id)}>
-                    <IconButton>
-                      <EditIcon color="info" />
-                    </IconButton>
-                  </Box>
-                  <Box
-                    className="konto_zatwierdz"
-                    sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
-                    <IconButton onClick={() => changeBillName(bill)}>
-                      <Check color="success" />
-                    </IconButton>
-                  </Box>
-                  <Box>
-                    <IconButton onClick={() => deleteBill(bill.id)}>
-                      <DeleteIcon color="error" />
-                    </IconButton>
-                  </Box>
-                  <Menu3Dots bill={bill} id={bill.id} makeDefault={makeDefault} deleteBill={deleteBill} />
-                </Box>
-              </ListItem>
-            </Box>
-          ))}
+                </ListItem>
+              </Box>
+            ))
+          )}
         </List>
         <AddBill bills={bills} user={user} getBills={getBills} />
       </Container>

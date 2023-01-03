@@ -32,10 +32,6 @@ function ToolbarComponent(props) {
     }
   }, [user]);
 
-  useEffect(() => {
-    console.log("open: ", props.open);
-  }, [props.open]);
-
   const clickOnProfile = (event) => {
     setAnchorEl(event.currentTarget);
   };

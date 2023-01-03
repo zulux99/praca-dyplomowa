@@ -16,13 +16,14 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import CategoryIcon from "@mui/icons-material/Category";
 import GroupsIcon from "@mui/icons-material/Groups";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 export const mainMenuPagesArrayUser = [
   { link: "/", name: "Panel", icon: <DashboardIcon /> },
   { link: "/incomes", name: "Przychody", icon: <AddCircleIcon /> },
   { link: "/expenses", name: "Wydatki", icon: <RemoveCircleIcon /> },
   { link: "/categories", name: "Kategorie", icon: <CategoryIcon /> },
-  { link: "/charts", name: "Wykresy", icon: <CategoryIcon /> },
+  { link: "/charts", name: "Wykresy", icon: <BarChartIcon /> },
   { link: "/accounts", name: "Konta", icon: <WalletIcon /> },
   { link: "/debtors", name: "Dłużnicy", icon: <GroupsIcon /> },
 ];

@@ -9,6 +9,7 @@ import Incomes from "./incomes/Incomes";
 import Categories from "./categories/Categories";
 import ProfilePage from "./profile/ProfilePage";
 import Expenses from "./expenses/Expenses";
+import Charts from "./charts/Charts";
 
 function MyRoutes(props) {
   return (
@@ -42,6 +43,14 @@ function MyRoutes(props) {
         element={
           <PrivateRoute>
             <Categories />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="charts"
+        element={
+          <PrivateRoute>
+            <Charts />
           </PrivateRoute>
         }
       />

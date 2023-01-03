@@ -37,7 +37,8 @@ export function ChartSetLabels(props) {
 
 export function ChartSetData(props) {
   if (props.interval === 0) {
-    let data = [0, 0, 0, 0, 0, 0, 0];
+    // fill array with nulls
+    let data = Array(7).fill(null);
     let prevSunday = new Date();
     let nextSunday = new Date();
     prevSunday.setDate(prevSunday.getDate() - prevSunday.getDay() + 7 * props.arrowValue);
@@ -104,12 +105,7 @@ export function ChartSetData(props) {
     let sum = 0;
     GetIncomesFromDateToDate({
       date_from: prevYear.getFullYear() + "-01-01",
-      date_to:
-        prevYear.getFullYear() +
-        "-" +
-        (prevYear.getMonth() + 1) +
-        "-" +
-        new Date(prevYear.getFullYear(), prevYear.getMonth() + 1, 0).getDate(),
+      date_to: prevYear.getFullYear() + "-12-31",
       user: props.user,
     }).then((response) => {
       if (response === -1) return;

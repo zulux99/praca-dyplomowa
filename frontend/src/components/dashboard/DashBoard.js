@@ -19,12 +19,18 @@ export default function DashBoard() {
   const [lastTransactions, setLastTransactions] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
 
+  const [loadingLast30DaysTransactions, setLoadingLast30DaysTransactions] = useState(true);
+  const [loadingLastTransactions, setLoadingLastTransactions] = useState(true);
+  const [loadingBills, setLoadingBills] = useState(true);
+  const [loadingCategoryList, setLoadingCategoryList] = useState(true);
+
   useEffect(() => {
     GetAllBills(user).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać danych o rachunkach");
       } else {
         setBills(response);
+        setLoadingBills(false);
       }
     });
     GetTransactionsByPage({ user: user, url: "/api/transactions/?page=1" }).then((response) => {
@@ -32,6 +38,7 @@ export default function DashBoard() {
         console.log("Nie udało się pobrać ostatnich transakcji");
       } else {
         setLastTransactions(response.results);
+        setLoadingLastTransactions(false);
       }
     });
     GetTransactionsFromDateToDate({
@@ -45,6 +52,7 @@ export default function DashBoard() {
         setLast30DaysTransactions(
           response.sort((a, b) => (a.data > b.data ? -1 : a.data === b.data ? (a.id > b.id ? -1 : 1) : 1))
         );
+        setLoadingLast30DaysTransactions(false);
       }
     });
     GetAllCategories({
@@ -55,6 +63,7 @@ export default function DashBoard() {
         console.log("Nie udało się pobrać danych o kategoriach");
       } else {
         setCategoryList(response);
+        setLoadingCategoryList(false);
       }
     });
   }, [user]);
@@ -72,19 +81,23 @@ export default function DashBoard() {
           height: "100%",
         }}>
         <Box className="box">
-          <AccountsBalance user={user} bills={bills} />
+          <AccountsBalance user={user} bills={bills} loading={loadingBills} />
         </Box>
         <Box className="box">
-          <Incomes transactions={last30DaysTransactions} />
+          <Incomes transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
         <Box className="box">
-          <Expenses transactions={last30DaysTransactions} />
+          <Expenses transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
         <Box className="box">
-          <Balance transactions={last30DaysTransactions} />
+          <Balance transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
         <Box className="box">
-          <LastTransactions transactions={lastTransactions} categoryList={categoryList} />
+          <LastTransactions
+            transactions={lastTransactions}
+            categoryList={categoryList}
+            loading={loadingLastTransactions}
+          />
         </Box>
       </Container>
     </>

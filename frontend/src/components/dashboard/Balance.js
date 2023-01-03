@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Balance(props) {
   const [amount, setAmount] = useState(0);
@@ -22,7 +23,9 @@ export default function Balance(props) {
   return (
     <>
       <h2>Bilans</h2>
-      {amount >= 0 ? (
+      {props.loading ? (
+        <CircularProgress color="success" />
+      ) : amount >= 0 ? (
         amount === 0 ? (
           <h3
             style={{
