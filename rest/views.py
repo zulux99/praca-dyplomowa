@@ -221,6 +221,8 @@ class TransakcjaViewSet(GenericAPIView):
             queryset = queryset.filter(data__gte=request.query_params['date_from'])
         if 'date_to' in request.query_params:
             queryset = queryset.filter(data__lte=request.query_params['date_to'])
+        if 'bill' in request.query_params:
+            queryset = queryset.filter(rachunek=request.query_params['bill'])
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = TransakcjaSerializer(page, many=True)

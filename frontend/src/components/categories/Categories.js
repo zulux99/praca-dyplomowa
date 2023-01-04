@@ -13,6 +13,8 @@ import ListOfTransactions from "./ListOfTransactions";
 
 function Categories() {
   const user = useContext(AuthContext);
+  const [bills, setBills] = useState([]);
+  const [bill, setBill] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
   const [categoriesTab, setCategoriesTab] = useState(1);
   const [startDate, setStartDate] = useState(
@@ -20,6 +22,7 @@ function Categories() {
   );
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
   const [inputValue, setInputValue] = useState("");
+  const [inputValueBill, setInputValueBill] = useState("");
   const [category, setCategory] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [transactions, setTransactions] = useState([]);
@@ -91,10 +94,16 @@ function Categories() {
         /> */}
         <ListOfTransactions
           user={user}
+          bills={bills}
+          setBills={setBills}
+          bill={bill}
+          setBill={setBill}
           categoryList={categoryList}
           setCategoryList={setCategoryList}
           inputValue={inputValue}
           setInputValue={setInputValue}
+          inputValueBill={inputValueBill}
+          setInputValueBill={setInputValueBill}
           category={category}
           setCategory={setCategory}
           transactions={transactions}

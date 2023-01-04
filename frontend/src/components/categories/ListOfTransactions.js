@@ -6,6 +6,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import ListItem from "@mui/material/ListItem";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
+import { GetAllBills } from "../bills/GetAllBills";
+import MenuItem from "@mui/material/MenuItem";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -17,6 +19,17 @@ export const findCategoryName = (categoryList, categoryId) => {
 
 export default function ListOfTransactions(props) {
   const [noTransactionsToShow, setNoTransactionsToShow] = useState(false);
+
+  useEffect(() => {
+    GetAllBills(props.user).then((response) => {
+      if (response === -1) {
+        console.log("Nie udało się pobrać listy rachunków");
+      } else {
+        props.setBills(response);
+      }
+    });
+  }, [props.user]);
+
   useEffect(() => {
     props.setTransactions([]);
     props.setPageNumber(1);
@@ -29,21 +42,20 @@ export default function ListOfTransactions(props) {
     setNoTransactionsToShow(false);
     props.setPageNumber(1);
     props.setTransactions([]);
-  }, [props.category]);
-
-  useEffect(() => {
-    if (props.transactions.length === 0 && props.pageNumber === 1) {
-      console.log("nic");
-      loadMore();
-    }
-  }, [props.transactions]);
+  }, [props.category, props.bill]);
 
   const loadMore = () => {
-    if (props.category === null) return;
     props.setHasMore(true);
+    let url = "/api/transactions/?page=" + props.pageNumber;
+    if (props.category) {
+      url += "&category=" + props.category.id;
+    }
+    if (props.bill) {
+      url += "&bill=" + props.bill.id;
+    }
     GetTransactionsByPage({
       user: props.user,
-      url: "/api/transactions/?category=" + props.category.id + "&page=" + props.pageNumber,
+      url: url,
     }).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać listy przychodów");
@@ -63,6 +75,12 @@ export default function ListOfTransactions(props) {
       }
     });
   };
+
+  useEffect(() => {
+    if (props.transactions.length === 0 && props.pageNumber === 1) {
+      loadMore();
+    }
+  }, [props.transactions]);
 
   return (
     <>
@@ -89,6 +107,37 @@ export default function ListOfTransactions(props) {
           width: "100%",
         }}
       />
+      {/* <TextField
+        className="input"
+        select
+        label="Konto"
+        fullWidth
+        value={props.billId === null ? "Wszystkie" : props.billId}
+        InputLabelProps={{ shrink: true }}
+        onChange={(e) => props.setBillId(e.target.value)}>
+        <MenuItem key={0} value={0}>
+          <i>Wszystkie</i>
+        </MenuItem>
+        {props.bills.map((bill) => (
+          <MenuItem key={bill.id} value={bill.id}>
+            {bill.nazwa}
+          </MenuItem>
+        ))}
+      </TextField> */}
+      <Autocomplete
+        className="input"
+        options={props.bills}
+        getOptionLabel={(option) => option.nazwa}
+        value={props.bill}
+        onChange={(e, newValue) => props.setBill(newValue)}
+        inputValue={props.inputValueBill}
+        onInputChange={(e, newInputValue) => props.setInputValueBill(newInputValue)}
+        renderInput={(params) => <TextField {...params} label="Konto" />}
+        sx={{
+          width: "100%",
+        }}
+      />
+
       <InfiniteScroll
         loadMore={loadMore}
         hasMore={props.hasMore}
