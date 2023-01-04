@@ -16,6 +16,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BorderLinearProgress from "@mui/material/LinearProgress";
 import { GetAllDebts } from "./GetAllDebts";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Debtors() {
   const user = useContext(AuthContext);
@@ -27,6 +28,8 @@ function Debtors() {
   const [debtId, setDebtId] = useState(null);
   const [sortType, setSortType] = useState("id");
   const [expanded, setExpanded] = useState(null);
+  const [loadingDebts, setLoadingDebts] = useState(true);
+  const [loadingPayments, setLoadingPayments] = useState(true);
 
   useEffect(() => {
     getDebts();
@@ -39,6 +42,7 @@ function Debtors() {
   const getDebts = () => {
     GetAllDebts(user).then((debts) => {
       setDebts(debts);
+      setLoadingDebts(false);
     });
   };
 
@@ -71,6 +75,7 @@ function Debtors() {
         },
       });
       setPayments(response.data);
+      setLoadingPayments(false);
     } catch (err) {
       console.log(err);
     }
@@ -122,69 +127,77 @@ function Debtors() {
           </Button>
         </Box>
         <Box className="dlugi">
-          {debts
-            .sort((a, b) => {
-              if (a.splacony === b.splacony) {
-                return b.id - a.id;
-              } else {
-                return a.splacony - b.splacony;
-              }
-            })
-            .map((debt) => (
-              <Accordion
-                key={debt.id}
-                className="dlug"
-                expanded={expanded === debt.id}
-                // dont expand on button click
-                onChange={(event, isExpanded) => {
-                  if (event.target.tagName !== "BUTTON") {
-                    setExpanded(isExpanded ? debt.id : false);
-                  }
-                }}>
-                <AccordionSummary
-                  className="accordion-summary"
-                  expandIcon={<ExpandMoreIcon />}
-                  disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
-                  <List key={debt.id}>
-                    <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
-                    <li className="cel">{debt.cel}</li>
-                    <li className="kwota_do_splaty">
-                      {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
-                      &nbsp;/&nbsp;{debt.kwota_do_splaty}
-                    </li>
-                    {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => {
-                          openModalAddPayment(debt.id);
-                        }}>
-                        Dodaj wpłatę
-                      </Button>
-                    )}
-                    <Menu3Dots />
-                  </List>
-                  <BorderLinearProgress
-                    className="progress-bar"
-                    variant="determinate"
-                    color="success"
-                    value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
-                  />
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="splaty">
-                    {payments
-                      .filter((payment) => payment.dlug === debt.id)
-                      .map((payment) => (
-                        <ul className="splata" key={payment.id}>
-                          <li className="kwota">{payment.kwota}</li>
-                          <li className="data_splaty">{payment.data_splaty}</li>
-                        </ul>
-                      ))}
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-            ))}
+          {loadingDebts ? (
+            <CircularProgress color="success" />
+          ) : (
+            debts
+              .sort((a, b) => {
+                if (a.splacony === b.splacony) {
+                  return b.id - a.id;
+                } else {
+                  return a.splacony - b.splacony;
+                }
+              })
+              .map((debt) => (
+                <Accordion
+                  key={debt.id}
+                  className="dlug"
+                  expanded={expanded === debt.id}
+                  // dont expand on button click
+                  onChange={(event, isExpanded) => {
+                    if (event.target.tagName !== "BUTTON") {
+                      setExpanded(isExpanded ? debt.id : false);
+                    }
+                  }}>
+                  <AccordionSummary
+                    className="accordion-summary"
+                    expandIcon={<ExpandMoreIcon />}
+                    disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
+                    <List key={debt.id}>
+                      <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
+                      <li className="cel">{debt.cel}</li>
+                      <li className="kwota_do_splaty">
+                        {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
+                        &nbsp;/&nbsp;{debt.kwota_do_splaty}
+                      </li>
+                      {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={() => {
+                            openModalAddPayment(debt.id);
+                          }}>
+                          Dodaj wpłatę
+                        </Button>
+                      )}
+                      <Menu3Dots />
+                    </List>
+                    <BorderLinearProgress
+                      className="progress-bar"
+                      variant="determinate"
+                      color="success"
+                      value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
+                    />
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className="splaty">
+                      {loadingPayments ? (
+                        <CircularProgress color="success" />
+                      ) : (
+                        payments
+                          .filter((payment) => payment.dlug === debt.id)
+                          .map((payment) => (
+                            <ul className="splata" key={payment.id}>
+                              <li className="kwota">{payment.kwota}</li>
+                              <li className="data_splaty">{payment.data_splaty}</li>
+                            </ul>
+                          ))
+                      )}
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              ))
+          )}
         </Box>
       </Container>
     </>

@@ -36,9 +36,16 @@ function BottomMenu(props) {
           sx={{
             display: "flex",
             height: "56px",
+            padding: "0",
           }}>
           {menuItems.map((item, index) => (
-            <ListItem key={index} sx={{ padding: "0", justifyContent: "center" }}>
+            <ListItem
+              key={index}
+              sx={{
+                padding: "0",
+                justifyContent: "center",
+                backgroundColor: window.location.pathname === item.link && "success.light",
+              }}>
               <Link to={item.link}>{item.name}</Link>
             </ListItem>
           ))}

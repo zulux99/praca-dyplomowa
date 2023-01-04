@@ -43,7 +43,7 @@ function Login() {
           size="small"
           fullWidth
         />
-        <Button type="submit" variant="contained" fullWidth margin="normal">
+        <Button type="submit" variant="contained" fullWidth margin="normal" color="success">
           Zaloguj się
         </Button>
       </form>

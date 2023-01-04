@@ -128,7 +128,7 @@ function Register() {
           size="small"
           fullWidth
         />
-        <Button type="submit" variant="contained" fullWidth>
+        <Button type="submit" variant="contained" fullWidth color="success">
           Załóż konto
         </Button>
         <Box className="adnotacja">

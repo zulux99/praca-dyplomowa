@@ -25,6 +25,9 @@ function ToolbarComponent(props) {
 
   useEffect(() => {
     const data = localStorage.getItem("user");
+    if (data === null) {
+      return;
+    }
     if (JSON.parse(data).first_name !== "") {
       setName(JSON.parse(data).first_name);
     } else {
