@@ -6,7 +6,7 @@ import Login from "./Login";
 import Debtors from "./debtors/Debtors";
 import PrivateRoute from "./PrivateRoute";
 import Incomes from "./incomes/Incomes";
-import Categories from "./categories/Categories";
+import Transactions from "./transactions/Transactions";
 import ProfilePage from "./profile/ProfilePage";
 import Expenses from "./expenses/Expenses";
 import Charts from "./charts/Charts";
@@ -39,10 +39,10 @@ function MyRoutes(props) {
         }
       />
       <Route
-        path="categories"
+        path="transactions"
         element={
           <PrivateRoute>
-            <Categories />
+            <Transactions />
           </PrivateRoute>
         }
       />

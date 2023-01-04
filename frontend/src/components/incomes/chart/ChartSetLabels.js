@@ -43,8 +43,8 @@ export function ChartSetData(props) {
     let nextSunday = new Date();
     prevSunday.setDate(prevSunday.getDate() - prevSunday.getDay() + 7 * props.arrowValue);
     nextSunday.setDate(nextSunday.getDate() - nextSunday.getDay() + 7 * (props.arrowValue + 1));
-    props.setStartDate(prevSunday.getDate() + 1 + "." + (prevSunday.getMonth() + 1) + "." + prevSunday.getFullYear());
-    props.setEndDate(nextSunday.getDate() + "." + (nextSunday.getMonth() + 1) + "." + nextSunday.getFullYear());
+    props.setStartDate(prevSunday.getFullYear() + "-" + (prevSunday.getMonth() + 1) + "-" + (prevSunday.getDate() + 1));
+    props.setEndDate(nextSunday.getFullYear() + "-" + (nextSunday.getMonth() + 1) + "-" + nextSunday.getDate());
     let sum = 0;
     GetIncomesFromDateToDate({
       date_from: prevSunday.getFullYear() + "-" + (prevSunday.getMonth() + 1) + "-" + (prevSunday.getDate() + 1),

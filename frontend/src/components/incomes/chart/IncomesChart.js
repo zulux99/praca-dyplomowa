@@ -119,8 +119,23 @@ export default function IncomesChart(props) {
         />
         {loading && <CircularProgress color="success" sx={{ position: "absolute", top: "50%", left: "50%" }} />}
       </Box>
-      {interval === 0 && startDate + " - " + endDate}
-      {interval === 1 && startDate}
+      {interval === 0 &&
+        new Date(startDate).toLocaleDateString("pl-PL", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }) +
+          " - " +
+          new Date(endDate).toLocaleDateString("pl-PL", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+
+      {interval === 1 &&
+        new Date(currentYear, currentMonth, 1).toLocaleString("pl-PL", { month: "long" }) +
+          " " +
+          currentYear.toLocaleString("pl-PL")}
       {interval === 2 && startDate}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <IconButton onClick={() => setArrowValue(arrowValue - 1)}>

@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../css/Main.css";
 import OfflinePage from "./OfflinePage";
 import AppForUser from "./apps/AppForUser";
+import { ConfirmProvider } from "material-ui-confirm";
 
 function App() {
   if (navigator.onLine) {
@@ -14,7 +15,15 @@ function App() {
     <>
       <BrowserRouter>
         <AuthProvider>
-          <AppForUser />
+          <ConfirmProvider
+            dialogProps={{
+              maxWidth: "xs",
+              fullWidth: true,
+              disableBackdropClick: true,
+              disableEscapeKeyDown: true,
+            }}>
+            <AppForUser />
+          </ConfirmProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

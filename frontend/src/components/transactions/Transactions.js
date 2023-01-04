@@ -1,17 +1,17 @@
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import Box from "@mui/material/Box";
-import { GetAllCategories } from "./GetAllCategoriesRequest";
+import { GetAllCategories } from "../categories//GetAllCategoriesRequest";
 import { ToastContainer, toast } from "react-toastify";
-import AddCategoryForm from "./AddCategoryForm";
-import CategoryList from "./CategoryList";
-import { DeleteCategory } from "./DeleteCategoryRequest";
+import AddCategoryForm from "../categories/AddCategoryForm";
+import CategoryList from "../categories/CategoryList";
+import { DeleteCategory } from "../categories/DeleteCategoryRequest";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import SearchForm from "./SearchForm";
 import ListOfTransactions from "./ListOfTransactions";
 
-function Categories() {
+export default function Transactions() {
   const user = useContext(AuthContext);
   const [bills, setBills] = useState([]);
   const [bill, setBill] = useState(null);
@@ -122,5 +122,3 @@ function Categories() {
     </Box>
   );
 }
-
-export default Categories;
