@@ -7,6 +7,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ChartSetLabels, ChartSetData } from "./ChartSetLabels";
 import { isBrowser, isMobile } from "react-device-detect";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
@@ -14,6 +15,7 @@ import { Chart, BarController, BarElement, LinearScale, CategoryScale, Title } f
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title, ChartDataLabels);
 
 export default function IncomesChart(props) {
+  const [loading, setLoading] = useState(true);
   const [interval, setInterval] = useState(0);
   const [arrowValue, setArrowValue] = useState(0);
   const [data, setData] = useState([]);
@@ -41,6 +43,7 @@ export default function IncomesChart(props) {
   }, [interval]);
 
   useEffect(() => {
+    setLoading(true);
     setData(
       ChartSetData({
         interval: interval,
@@ -51,6 +54,7 @@ export default function IncomesChart(props) {
         setCurrentYear: setCurrentYear,
         setSum: setSum,
         user: props.user,
+        setLoading: setLoading,
       })
     );
   }, [interval, arrowValue, props.user]);
@@ -62,53 +66,59 @@ export default function IncomesChart(props) {
         <Tab label="Miesiąc" onClick={() => setInterval(1)} />
         <Tab label="Rok" onClick={() => setInterval(2)} />
       </Tabs>
-      <Bar
-        data={{
-          labels: labels,
-          datasets: [
-            {
-              label: "Przychody",
-              data: data,
-              backgroundColor: ["rgba(50, 205, 50, 0.5)"],
-              borderColor: ["rgba(50, 205, 50, 1)"],
-              borderWidth: 1,
-            },
-          ],
-        }}
-        height={isMobile ? window.innerHeight * 0.6 : window.innerHeight * 0.2}
-        width={isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.4}
-        options={{
-          indexAxis: isMobile ? "y" : "x",
-          maintainAspectRatio: true,
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-          plugins: {
-            title: {
-              display: true,
-              text: "Przychody",
-            },
-            legend: {
-              display: false,
-            },
-            datalabels: {
-              display: true,
-              color: "black",
-              anchor: "center",
-              align: "center",
-              offset: 5,
-              font: {
-                size: 12,
-                weight: "bold",
-                lineHeight: 1.2,
+      <Box
+        sx={{
+          position: "relative",
+        }}>
+        <Bar
+          data={{
+            labels: labels,
+            datasets: [
+              {
+                label: "Przychody",
+                data: data,
+                backgroundColor: ["rgba(50, 205, 50, 0.5)"],
+                borderColor: ["rgba(50, 205, 50, 1)"],
+                borderWidth: 1,
+              },
+            ],
+          }}
+          height={isMobile ? window.innerHeight * 0.6 : window.innerHeight * 0.2}
+          width={isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.4}
+          options={{
+            indexAxis: isMobile ? "y" : "x",
+            maintainAspectRatio: true,
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
               },
             },
-          },
-        }}
-      />
+            plugins: {
+              title: {
+                display: true,
+                text: "Przychody",
+              },
+              legend: {
+                display: false,
+              },
+              datalabels: {
+                display: true,
+                color: "black",
+                anchor: "center",
+                align: "center",
+                offset: 5,
+                font: {
+                  size: 12,
+                  weight: "bold",
+                  lineHeight: 1.2,
+                },
+              },
+            },
+          }}
+        />
+        {loading && <CircularProgress color="success" sx={{ position: "absolute", top: "50%", left: "50%" }} />}
+      </Box>
       {interval === 0 && startDate + " - " + endDate}
       {interval === 1 && startDate}
       {interval === 2 && startDate}

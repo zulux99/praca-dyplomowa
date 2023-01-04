@@ -60,6 +60,7 @@ export function ChartSetData(props) {
         sum += parseFloat(income.kwota);
       });
       props.setSum(sum);
+      props.setLoading(false);
     });
     return data;
   } else if (props.interval === 1) {
@@ -92,6 +93,7 @@ export function ChartSetData(props) {
         sum += parseFloat(income.kwota);
       });
       props.setSum(sum);
+      props.setLoading(false);
     });
     return data;
   } else if (props.interval === 2) {
@@ -116,6 +118,7 @@ export function ChartSetData(props) {
         sum += parseFloat(income.kwota);
       });
       props.setSum(sum);
+      props.setLoading(false);
     });
     return data;
   }
