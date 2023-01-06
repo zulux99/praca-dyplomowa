@@ -102,6 +102,7 @@ function AddPayment(props) {
                 type="number"
                 className="input"
                 required
+                autoComplete="off"
                 disabled={fullPayment}
                 label="Kwota wpłaty"
                 error={!paymentValueValid}

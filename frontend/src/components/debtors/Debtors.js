@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
-import Menu3Dots from "../Menu3Dots";
 import axios from "axios";
 import base_url from "../../UrlAndPort";
 import Button from "@mui/material/Button";
@@ -17,10 +16,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BorderLinearProgress from "@mui/material/LinearProgress";
 import { GetAllDebts } from "./GetAllDebts";
 import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import CloseIcon from "@mui/icons-material/Close";
+import { DeleteDebt } from "./DeleteDebtRequest";
+import { useConfirm } from "material-ui-confirm";
 
 function Debtors() {
   const user = useContext(AuthContext);
-  const user_id = user.user.user_id;
+  const confirm = useConfirm();
   const [openAddDebtor, setOpenAddDebtor] = useState(false);
   const [openAddPayment, setOpenAddPayment] = useState(false);
   const [debts, setDebts] = useState([]);
@@ -100,106 +107,232 @@ function Debtors() {
     setDebtId(null);
   };
 
+  const deleteDebt = (id) => {
+    confirm({
+      title: "Potwierdź usunięcie",
+      description: "Czy na pewno chcesz usunąć dług?",
+      confirmationText: "Usuń",
+      cancellationText: "Anuluj",
+      confirmationButtonProps: {
+        color: "success",
+      },
+      cancellationButtonProps: {
+        color: "success",
+      },
+    }).then(() => {
+      DeleteDebt({
+        id,
+        user,
+      }).then((response) => {
+        if (response === -1) {
+          console.log("Nie udało się usunąć długu");
+        } else {
+          setDebts(debts.filter((debt) => debt.id !== id));
+          toast.success("Usunięto dług");
+        }
+      });
+    });
+  };
+
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
-      <Button variant="contained" onClick={openModalAddDebtor} color="success">
-        Dodaj
-      </Button>
-      <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
-      <AddPayment
-        open={openAddPayment}
-        closeModal={closeModalAddPayment}
-        payments={payments}
-        getPayments={getPayments}
-        getTotalPayments={getTotalPayments}
-        debts={debts}
-        debtId={debtId}
-      />
-      <Container>
-        <h1>Lista dłużników</h1>
-        <Box>
-          <Button variant="contained" onClick={() => setSortType("nazwa")} color="success">
-            Sortuj po nazwie
-          </Button>
-          <Button variant="contained" onClick={() => setSortType("kwota")} color="success">
-            Sortuj po kwocie
-          </Button>
-        </Box>
-        <Box className="dlugi">
-          {loadingDebts ? (
-            <CircularProgress color="success" />
-          ) : (
-            debts
-              .sort((a, b) => {
-                if (a.splacony === b.splacony) {
-                  return b.id - a.id;
-                } else {
-                  return a.splacony - b.splacony;
-                }
-              })
-              .map((debt) => (
-                <Accordion
-                  key={debt.id}
-                  className="dlug"
-                  expanded={expanded === debt.id}
-                  // dont expand on button click
-                  onChange={(event, isExpanded) => {
-                    if (event.target.tagName !== "BUTTON") {
-                      setExpanded(isExpanded ? debt.id : false);
-                    }
-                  }}>
-                  <AccordionSummary
-                    className="accordion-summary"
-                    expandIcon={<ExpandMoreIcon />}
-                    disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
-                    <List key={debt.id}>
-                      <li className="nazwa_dluznika">{debt.nazwa_dluznika}</li>
-                      <li className="cel">{debt.cel}</li>
-                      <li className="kwota_do_splaty">
-                        {debt.splacony ? debt.kwota_do_splaty : getTotalPayments(debt)}
-                        &nbsp;/&nbsp;{debt.kwota_do_splaty}
-                      </li>
-                      {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
-                        <Button
-                          variant="contained"
-                          color="success"
-                          onClick={() => {
-                            openModalAddPayment(debt.id);
+      <Box className="box">
+        <ToastContainer position="bottom-center" autoClose={2000} />
+        <Button variant="contained" onClick={openModalAddDebtor} color="success">
+          Dodaj
+        </Button>
+        <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
+        <AddPayment
+          open={openAddPayment}
+          closeModal={closeModalAddPayment}
+          payments={payments}
+          getPayments={getPayments}
+          getTotalPayments={getTotalPayments}
+          debts={debts}
+          debtId={debtId}
+        />
+        <Container>
+          <Box className="dlugi">
+            {loadingDebts ? (
+              <CircularProgress color="success" />
+            ) : (
+              debts
+                .sort((a, b) => {
+                  if (a.splacony === b.splacony) {
+                    return b.id - a.id;
+                  } else {
+                    return a.splacony - b.splacony;
+                  }
+                })
+                .map((debt) => (
+                  <Accordion
+                    key={debt.id}
+                    className="dlug"
+                    expanded={expanded === debt.id}
+                    // dont expand on button click
+                    onChange={(event, isExpanded) => {
+                      if (event.target.tagName !== "BUTTON") {
+                        setExpanded(isExpanded ? debt.id : false);
+                      }
+                    }}>
+                    <AccordionSummary
+                      className="accordion-summary"
+                      disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
+                      <List
+                        key={debt.id}
+                        className="dlug-info"
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                        }}>
+                        <ListItem className="nazwa_dluznika">{debt.nazwa_dluznika}</ListItem>
+                        <ListItem className="kwota_do_splaty">
+                          {debt.kwota_do_splaty.toLocaleString("pl-PL", {
+                            style: "currency",
+                            currency: "PLN",
+                          })}{" "}
+                          {"zł"}
+                        </ListItem>
+                        {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
+                          <ListItem
+                            sx={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              alignItems: "center",
+                            }}>
+                            <IconButton
+                              color="success"
+                              onClick={(e) => {
+                                openModalAddPayment(debt.id);
+                                e.stopPropagation();
+                              }}>
+                              <AddCircleIcon />
+                            </IconButton>
+                            <IconButton
+                              variant="contained"
+                              color="error"
+                              onClick={(e) => {
+                                deleteDebt(debt.id);
+                                e.stopPropagation();
+                              }}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItem>
+                        )}
+                      </List>
+                      <BorderLinearProgress
+                        className="progress-bar"
+                        variant="determinate"
+                        color="success"
+                        value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
+                      />
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box className="szczegoly">
+                        <List
+                          key={debt.id}
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column !important",
                           }}>
-                          Dodaj wpłatę
-                        </Button>
+                          <ListItem key={debt.id}>
+                            <span>
+                              Nazwa dłużnika: <strong>{debt.nazwa_dluznika}</strong>
+                            </span>
+                          </ListItem>
+                          <ListItem key={debt.id}>
+                            <span>
+                              Cel: <strong>{debt.cel ? debt.cel : "-"}</strong>
+                            </span>
+                          </ListItem>
+                          <ListItem key={debt.id}>
+                            <span>
+                              Kwota do spłaty: <strong>{debt.kwota_do_splaty}</strong>
+                            </span>
+                          </ListItem>
+                          <ListItem key={debt.id}>
+                            <span>
+                              Spłacono:&nbsp;
+                              <strong>
+                                {getTotalPayments(debt).toLocaleString("pl-PL", {
+                                  style: "currency",
+                                  currency: "PLN",
+                                })}
+                                &nbsp; zł
+                              </strong>
+                            </span>
+                          </ListItem>
+                        </List>
+                      </Box>
+                      {getTotalPayments(debt) > 0 && (
+                        <div className="splaty">
+                          <Box className="splaty-header">
+                            <h3>Spłaty</h3>
+                          </Box>
+                          <Box className="splaty-body">
+                            {loadingPayments ? (
+                              <CircularProgress color="success" />
+                            ) : (
+                              payments
+                                .filter((payment) => payment.dlug === debt.id)
+                                //sort by date then by id (newest first)
+                                .sort((a, b) => {
+                                  if (a.data_splaty === b.data_splaty) {
+                                    return b.id - a.id;
+                                  } else {
+                                    return new Date(b.data_splaty) - new Date(a.data_splaty);
+                                  }
+                                })
+                                .map((payment) => (
+                                  <List className="splata" key={payment.id}>
+                                    <ListItem className="kwota">
+                                      Kwota:&nbsp;
+                                      <strong>
+                                        {payment.kwota.toLocaleString("pl-PL", {
+                                          style: "currency",
+                                          currency: "PLN",
+                                        })}
+                                        {" zł"}
+                                      </strong>
+                                    </ListItem>
+                                    <ListItem className="data_splaty">
+                                      Data spłaty:&nbsp;
+                                      <strong>
+                                        {new Date(payment.data_splaty).toLocaleDateString("pl-PL", {
+                                          year: "numeric",
+                                          month: "long",
+                                          day: "numeric",
+                                        })}
+                                      </strong>
+                                    </ListItem>
+                                  </List>
+                                ))
+                            )}
+                          </Box>
+                        </div>
                       )}
-                      <Menu3Dots />
-                    </List>
-                    <BorderLinearProgress
-                      className="progress-bar"
-                      variant="determinate"
-                      color="success"
-                      value={(getTotalPayments(debt) / debt.kwota_do_splaty) * 100}
-                    />
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div className="splaty">
-                      {loadingPayments ? (
-                        <CircularProgress color="success" />
-                      ) : (
-                        payments
-                          .filter((payment) => payment.dlug === debt.id)
-                          .map((payment) => (
-                            <ul className="splata" key={payment.id}>
-                              <li className="kwota">{payment.kwota}</li>
-                              <li className="data_splaty">{payment.data_splaty}</li>
-                            </ul>
-                          ))
-                      )}
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-              ))
-          )}
-        </Box>
-      </Container>
+                      <Button
+                        className="close"
+                        color="success"
+                        onClick={(e) => {
+                          setExpanded(false);
+                          e.stopPropagation();
+                        }}
+                        sx={{
+                          width: "100%",
+                        }}>
+                        <ExpandMoreIcon style={{ transform: "rotate(180deg)" }} color="success" />
+                      </Button>
+                    </AccordionDetails>
+                  </Accordion>
+                ))
+            )}
+          </Box>
+        </Container>
+      </Box>
     </>
   );
 }

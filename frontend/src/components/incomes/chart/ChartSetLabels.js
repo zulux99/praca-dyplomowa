@@ -37,7 +37,6 @@ export function ChartSetLabels(props) {
 
 export function ChartSetData(props) {
   if (props.interval === 0) {
-    // fill array with nulls
     let data = Array(7).fill(null);
     let prevSunday = new Date();
     let nextSunday = new Date();
