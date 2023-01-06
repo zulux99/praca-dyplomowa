@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { isBrowser, BrowserView } from "react-device-detect";
+import { isBrowser, isMobile, BrowserView } from "react-device-detect";
 import { mainMenuPagesArrayUser } from "./DrawerComponent";
 import IconButton from "@mui/material/IconButton";
 import PersonIcon from "@mui/icons-material/Person";
@@ -41,7 +41,12 @@ function ToolbarComponent(props) {
 
   return (
     <>
-      <Box>
+      <Box
+        sx={{
+          position: isMobile && "fixed",
+          width: isMobile && "100%",
+          zIndex: isMobile && 1000,
+        }}>
         <Toolbar className="pasek-gorny-zawartosc" sx={{ marginLeft: isBrowser && "256px" }}>
           <IconButton
             className="pasek-gorny-menu"

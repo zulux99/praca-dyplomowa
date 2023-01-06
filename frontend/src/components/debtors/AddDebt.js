@@ -97,6 +97,7 @@ function AddDebt(props) {
               <TextField
                 className="input"
                 label="Nazwa dłużnika"
+                autoComplete="name"
                 required
                 variant="outlined"
                 value={debtorName}
@@ -106,6 +107,7 @@ function AddDebt(props) {
                 type="text"
                 className="input"
                 label="Pożyczona kwota"
+                autoComplete="off"
                 required
                 error={!debtValueValid}
                 variant="outlined"
@@ -134,13 +136,19 @@ function AddDebt(props) {
               <TextField
                 className="input"
                 id="cel"
+                autoComplete="goal"
                 variant="outlined"
                 label="Cel (opcjonalne)"
                 value={debtPurpose}
                 placeholder="np. zakup samochodu"
                 onChange={(e) => setDebtPurpose(e.target.value)}
               />
-              <Button variant="contained" type="submit" disabled={debtorName == "" || debtValue == ""} color="success">
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={debtorName == "" || debtValue == ""}
+                color="success"
+                size="large">
                 Dodaj
               </Button>
               <Button
@@ -150,7 +158,9 @@ function AddDebt(props) {
                   setDebtorName("");
                   setDebtValue("");
                   setDebtPurpose("");
-                }}>
+                }}
+                size="large"
+                disabled={debtorName == "" && debtValue == "" && debtPurpose == ""}>
                 Wyczyść
               </Button>
             </form>

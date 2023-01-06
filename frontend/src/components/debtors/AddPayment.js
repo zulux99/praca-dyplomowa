@@ -131,7 +131,12 @@ function AddPayment(props) {
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <Button variant="contained" type="submit" color="success">
+              <Button
+                variant="contained"
+                type="submit"
+                color="success"
+                size="large"
+                disabled={!paymentValueValid || paymentValue === ""}>
                 Dodaj wpłatę
               </Button>
             </form>

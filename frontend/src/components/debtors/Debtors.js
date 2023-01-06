@@ -24,6 +24,7 @@ import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeleteDebt } from "./DeleteDebtRequest";
 import { useConfirm } from "material-ui-confirm";
+import Divider from "@mui/material/Divider";
 
 function Debtors() {
   const user = useContext(AuthContext);
@@ -134,13 +135,28 @@ function Debtors() {
     });
   };
 
+  const deletePayment = (id) => {};
+
   return (
     <>
-      <Box className="box">
+      <Box
+        className="box"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
         <ToastContainer position="bottom-center" autoClose={2000} />
-        <Button variant="contained" onClick={openModalAddDebtor} color="success">
-          Dodaj
-        </Button>
+        <Box
+          component="span"
+          sx={{
+            marginBottom: "32px",
+          }}>
+          <Button variant="contained" onClick={openModalAddDebtor} color="success" size="large">
+            Dodaj dłużnika
+          </Button>
+        </Box>
         <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
         <AddPayment
           open={openAddPayment}
@@ -182,11 +198,7 @@ function Debtors() {
                         key={debt.id}
                         className="dlug-info"
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
                           flexWrap: "wrap",
-                          alignItems: "center",
                         }}>
                         <ListItem className="nazwa_dluznika">{debt.nazwa_dluznika}</ListItem>
                         <ListItem className="kwota_do_splaty">
@@ -200,6 +212,7 @@ function Debtors() {
                           <ListItem
                             sx={{
                               display: "flex",
+                              flexDirection: "row",
                               justifyContent: "flex-end",
                               alignItems: "center",
                             }}>
@@ -236,7 +249,7 @@ function Debtors() {
                           key={debt.id}
                           sx={{
                             display: "flex",
-                            flexDirection: "column !important",
+                            flexDirection: "column",
                           }}>
                           <ListItem key={debt.id}>
                             <span>
@@ -269,6 +282,7 @@ function Debtors() {
                       </Box>
                       {getTotalPayments(debt) > 0 && (
                         <div className="splaty">
+                          <Divider />
                           <Box className="splaty-header">
                             <h3>Spłaty</h3>
                           </Box>
@@ -287,28 +301,40 @@ function Debtors() {
                                   }
                                 })
                                 .map((payment) => (
-                                  <List className="splata" key={payment.id}>
-                                    <ListItem className="kwota">
-                                      Kwota:&nbsp;
-                                      <strong>
-                                        {payment.kwota.toLocaleString("pl-PL", {
-                                          style: "currency",
-                                          currency: "PLN",
-                                        })}
-                                        {" zł"}
-                                      </strong>
-                                    </ListItem>
-                                    <ListItem className="data_splaty">
-                                      Data spłaty:&nbsp;
-                                      <strong>
-                                        {new Date(payment.data_splaty).toLocaleDateString("pl-PL", {
-                                          year: "numeric",
-                                          month: "long",
-                                          day: "numeric",
-                                        })}
-                                      </strong>
-                                    </ListItem>
-                                  </List>
+                                  <div>
+                                    <List className="splata" key={payment.id}>
+                                      <ListItem className="kwota">
+                                        Kwota:&nbsp;
+                                        <strong>
+                                          {payment.kwota.toLocaleString("pl-PL", {
+                                            style: "currency",
+                                            currency: "PLN",
+                                          })}
+                                          {" zł"}
+                                        </strong>
+                                      </ListItem>
+                                      <ListItem className="data_splaty">
+                                        Data spłaty:&nbsp;
+                                        <strong>
+                                          {new Date(payment.data_splaty).toLocaleDateString("pl-PL", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                          })}
+                                        </strong>
+                                      </ListItem>
+                                    </List>
+                                    <Box className="splaty-usun">
+                                      <IconButton
+                                        color="error"
+                                        onClick={(e) => {
+                                          deletePayment(payment.id);
+                                          e.stopPropagation();
+                                        }}>
+                                        <DeleteIcon />
+                                      </IconButton>
+                                    </Box>
+                                  </div>
                                 ))
                             )}
                           </Box>

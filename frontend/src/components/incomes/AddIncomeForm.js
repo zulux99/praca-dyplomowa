@@ -141,6 +141,7 @@ export default function AddIncomeForm(props) {
           className="input"
           label="Opis"
           multiline
+          autoComplete="off"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           helperText={`${description.length}/500`}

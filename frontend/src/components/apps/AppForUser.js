@@ -31,6 +31,7 @@ export default function AppForUser() {
         sx={{
           marginLeft: isBrowser && "256px",
           marginBottom: isMobile ? "56px" : "0",
+          paddingTop: isMobile && "80px",
           width: isMobile ? "100%" : "calc(100% - 256px)",
         }}>
         <MyRoutes />
