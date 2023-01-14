@@ -70,6 +70,9 @@ class DlugSplataSerializer(serializers.ModelSerializer):
     dlug = serializers.PrimaryKeyRelatedField(queryset=Dlug.objects.all())
     kwota = serializers.DecimalField(max_digits=12, decimal_places=2)
     data_splaty = serializers.DateField()
+    class Meta:
+        model = DlugSplata
+        fields = ('id', 'user', 'dlug', 'kwota', 'data_splaty')
     def validate(self, data):
         kwota = data['kwota']
         dlug = data['dlug']
@@ -82,18 +85,6 @@ class DlugSplataSerializer(serializers.ModelSerializer):
         if kwota > dlug.kwota_do_splaty - kwota_splaty:
             raise serializers.ValidationError("Kwota nie może być większa niż kwota do spłaty")
         return data
-    def save(self, **kwargs):
-        super(DlugSplataSerializer, self).save(**kwargs)
-        kwota_splaty = 0
-        splaty = DlugSplata.objects.filter(dlug=self.instance.dlug)
-        for splata in splaty:
-            kwota_splaty += splata.kwota
-        if kwota_splaty == self.instance.dlug.kwota_do_splaty:
-            self.instance.dlug.splacony = True
-            self.instance.dlug.save()
-    class Meta:
-        model = DlugSplata
-        fields = ('id', 'user', 'dlug', 'kwota', 'data_splaty')
     def create(self, validated_data):
         return super(DlugSplataSerializer, self).create(validated_data)
     def update(self, instance, validated_data):

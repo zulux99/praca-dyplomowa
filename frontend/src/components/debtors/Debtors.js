@@ -25,6 +25,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DeleteDebt } from "./DeleteDebtRequest";
 import { useConfirm } from "material-ui-confirm";
 import Divider from "@mui/material/Divider";
+import { DeletePayment } from "./DeletePaymentRequest";
 
 function Debtors() {
   const user = useContext(AuthContext);
@@ -135,7 +136,32 @@ function Debtors() {
     });
   };
 
-  const deletePayment = (id) => {};
+  const deletePayment = (id) => {
+    confirm({
+      title: "Potwierdź usunięcie",
+      description: "Czy na pewno chcesz usunąć wpłatę?",
+      confirmationText: "Usuń",
+      cancellationText: "Anuluj",
+      confirmationButtonProps: {
+        color: "success",
+      },
+      cancellationButtonProps: {
+        color: "success",
+      },
+    }).then(() => {
+      DeletePayment({
+        id,
+        user,
+      }).then((response) => {
+        if (response === -1) {
+          console.log("Nie udało się usunąć wpłaty");
+        } else {
+          setPayments(payments.filter((payment) => payment.id !== id));
+          toast.success("Usunięto wpłatę");
+        }
+      });
+    });
+  };
 
   return (
     <>
@@ -165,6 +191,7 @@ function Debtors() {
           getPayments={getPayments}
           getTotalPayments={getTotalPayments}
           debts={debts}
+          setDebts={setDebts}
           debtId={debtId}
         />
         <Container>
@@ -191,9 +218,7 @@ function Debtors() {
                         setExpanded(isExpanded ? debt.id : false);
                       }
                     }}>
-                    <AccordionSummary
-                      className="accordion-summary"
-                      disabled={debt.splacony || getTotalPayments(debt) == debt.kwota_do_splaty}>
+                    <AccordionSummary className="accordion-summary">
                       <List
                         key={debt.id}
                         className="dlug-info"
@@ -251,22 +276,22 @@ function Debtors() {
                             display: "flex",
                             flexDirection: "column",
                           }}>
-                          <ListItem key={debt.id}>
+                          <ListItem>
                             <span>
                               Nazwa dłużnika: <strong>{debt.nazwa_dluznika}</strong>
                             </span>
                           </ListItem>
-                          <ListItem key={debt.id}>
+                          <ListItem>
                             <span>
                               Cel: <strong>{debt.cel ? debt.cel : "-"}</strong>
                             </span>
                           </ListItem>
-                          <ListItem key={debt.id}>
+                          <ListItem>
                             <span>
                               Kwota do spłaty: <strong>{debt.kwota_do_splaty}</strong>
                             </span>
                           </ListItem>
-                          <ListItem key={debt.id}>
+                          <ListItem>
                             <span>
                               Spłacono:&nbsp;
                               <strong>

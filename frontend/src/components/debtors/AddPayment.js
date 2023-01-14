@@ -41,11 +41,6 @@ function AddPayment(props) {
 
   const addPayment = async (e, debt_id) => {
     e.preventDefault();
-    console.log("user: " + user_id);
-    console.log("dlug: " + debt_id);
-    console.log("kwota: " + paymentValue);
-    console.log("data_splaty: " + paymentDate);
-    console.log("fullPayment: " + fullPayment);
     try {
       const response = await axios.post(
         "/api/debts/payments/",
@@ -65,12 +60,13 @@ function AddPayment(props) {
       console.log(response.data);
       e.target.reset();
       setPaymentValue("");
+      setFullPayment(false);
       props.getPayments();
       props.closeModal();
       toast.success("Dodano wpłatę");
-      props.setDebts(props.debts);
     } catch (err) {
-      toast.error(err.response.data.non_field_errors[0]);
+      console.log(err);
+      toast.error("Nie udało się dodać wpłaty");
     }
   };
 

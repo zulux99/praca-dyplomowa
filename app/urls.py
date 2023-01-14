@@ -21,5 +21,5 @@ from rest.views import FrontendAppView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('rest.urls')),
-    re_path(r'^.*', FrontendAppView.as_view()),
+    # re_path(r'^.*', FrontendAppView.as_view()),
 ]

@@ -9,6 +9,8 @@ class Rachunek(models.Model):
     data_utworzenia = models.DateTimeField(auto_now_add=True)
     data_modyfikacji = models.DateTimeField(auto_now=True)
     domyslne = models.BooleanField(default=False)
+    def __str__(self):
+        return self.nazwa
     def save(self, *args, **kwargs):
         if self.domyslne:
             try:
@@ -26,6 +28,8 @@ class Kategoria(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     nazwa = models.CharField(max_length=200)
     przychod = models.BooleanField(default=False)
+    def __str__(self):
+        return self.nazwa
     class Meta:
         unique_together = ('user', 'nazwa', 'przychod')
 
@@ -36,6 +40,8 @@ class Dlug(models.Model):
     kwota_do_splaty = models.DecimalField(max_digits=12, decimal_places=2)
     rachunek = models.ForeignKey(Rachunek, on_delete=models.CASCADE)
     splacony = models.BooleanField(default=False)
+    def __str__(self):
+        return self.nazwa_dluznika + " - " + str(self.kwota_do_splaty)
     def save(self, *args, **kwargs):
         self.rachunek.kwota -= self.kwota_do_splaty
         self.rachunek.save()
@@ -50,13 +56,21 @@ class DlugSplata(models.Model):
     dlug = models.ForeignKey(Dlug, on_delete=models.CASCADE)
     kwota = models.DecimalField(max_digits=12, decimal_places=2)
     data_splaty = models.DateField()
+    def __str__(self):
+        return self.dlug.nazwa_dluznika + " - " + str(self.kwota) + " - " + str(self.data_splaty)
     def save(self, *args, **kwargs):
         self.dlug.rachunek.kwota += self.kwota
         self.dlug.rachunek.save()
+        if self.dlug.kwota_do_splaty <= self.kwota:
+            self.dlug.splacony = True
+            self.dlug.save()
         super(DlugSplata, self).save(*args, **kwargs)
     def delete(self, *args, **kwargs):
         self.dlug.rachunek.kwota -= self.kwota
         self.dlug.rachunek.save()
+        if self.dlug.kwota_do_splaty <= self.kwota:
+            self.dlug.splacony = False
+            self.dlug.save()
         super(DlugSplata, self).delete(*args, **kwargs)
 
 class Transakcja(models.Model):
@@ -67,6 +81,9 @@ class Transakcja(models.Model):
     kategoria = models.ForeignKey(Kategoria, on_delete=models.CASCADE)
     przychod = models.BooleanField(default=False)
     opis = models.CharField(max_length=500, blank=True)
+    def __str__(self):
+        przychod = "Przychód" if self.przychod else "Wydatek"
+        return przychod + " - " + str(self.kwota) + " - " + str(self.data)
     def save(self, *args, **kwargs):
         if self.kategoria.przychod:
             self.rachunek.kwota += self.kwota
