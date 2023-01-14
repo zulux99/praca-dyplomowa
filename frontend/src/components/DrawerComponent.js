@@ -23,6 +23,7 @@ export const mainMenuPagesArrayUser = [
   { link: "/incomes", name: "Przychody", icon: <AddCircleIcon /> },
   { link: "/expenses", name: "Wydatki", icon: <RemoveCircleIcon /> },
   { link: "/transactions", name: "Lista transakcji", icon: <CategoryIcon /> },
+  { link: "/categories", name: "Kategorie", icon: <CategoryIcon /> },
   { link: "/charts", name: "Wykresy", icon: <BarChartIcon /> },
   { link: "/accounts", name: "Konta", icon: <WalletIcon /> },
   { link: "/debtors", name: "Dłużnicy", icon: <GroupsIcon /> },

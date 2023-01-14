@@ -18,8 +18,8 @@ function BottomMenu(props) {
       setMenuItems([
         { name: "Przychody", link: "/incomes" },
         { name: "Wydatki", link: "/expenses" },
+        { name: "Transakcje", link: "/transactions" },
         { name: "Dłużnicy", link: "/debtors" },
-        { name: "Profil", link: "/profile" },
       ]);
     }
   }, [user]);

@@ -2,11 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import Box from "@mui/material/Box";
 import { GetAllCategories } from "../categories//GetAllCategoriesRequest";
-import { ToastContainer, toast } from "react-toastify";
-import AddCategoryForm from "../categories/AddCategoryForm";
-import CategoryList from "../categories/CategoryList";
-import { DeleteCategory } from "../categories/DeleteCategoryRequest";
-import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import SearchForm from "./SearchForm";
 import ListOfTransactions from "./ListOfTransactions";
@@ -48,36 +43,8 @@ export default function Transactions() {
     });
   }, [categoriesTab]);
 
-  const handleDelete = (id) => {
-    confirmAlert({
-      title: "Potwierdź usunięcie",
-      message:
-        "Czy na pewno chcesz usunąć tę kategorię? Usunięcie kategorii spowoduje usunięcie wszystkich transakcji z nią powiązanych.",
-      buttons: [
-        {
-          label: "Tak",
-          onClick: () => {
-            DeleteCategory(user, id).then((response) => {
-              if (response === -1) {
-                toast.error("Nie udało się usunąć kategorii");
-              } else {
-                setCategoryList(categoryList.filter((category) => category.id !== id));
-                toast.success("Usunięto kategorię");
-              }
-            });
-          },
-        },
-        {
-          label: "Nie",
-          onClick: () => {},
-        },
-      ],
-    });
-  };
-
   return (
     <Box>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="box">
         {/* <SearchForm
           categoryList={categoryList}
@@ -116,9 +83,6 @@ export default function Transactions() {
           setCategoriesTab={setCategoriesTab}
         />
       </Box>
-      <h1>Lista kategorii</h1>
-      <CategoryList categoryList={categoryList} handleDelete={handleDelete} />
-      <AddCategoryForm categoryList={categoryList} setCategoryList={setCategoryList} user={user} />
     </Box>
   );
 }

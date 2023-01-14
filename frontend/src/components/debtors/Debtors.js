@@ -157,6 +157,7 @@ function Debtors() {
           console.log("Nie udało się usunąć wpłaty");
         } else {
           setPayments(payments.filter((payment) => payment.id !== id));
+          getDebts();
           toast.success("Usunięto wpłatę");
         }
       });
@@ -233,14 +234,14 @@ function Debtors() {
                           })}{" "}
                           {"zł"}
                         </ListItem>
-                        {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
-                          <ListItem
-                            sx={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "flex-end",
-                              alignItems: "center",
-                            }}>
+                        <ListItem
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                          }}>
+                          {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
                             <IconButton
                               color="success"
                               onClick={(e) => {
@@ -249,17 +250,17 @@ function Debtors() {
                               }}>
                               <AddCircleIcon />
                             </IconButton>
-                            <IconButton
-                              variant="contained"
-                              color="error"
-                              onClick={(e) => {
-                                deleteDebt(debt.id);
-                                e.stopPropagation();
-                              }}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItem>
-                        )}
+                          )}
+                          <IconButton
+                            variant="contained"
+                            color="error"
+                            onClick={(e) => {
+                              deleteDebt(debt.id);
+                              e.stopPropagation();
+                            }}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItem>
                       </List>
                       <BorderLinearProgress
                         className="progress-bar"

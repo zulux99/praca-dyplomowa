@@ -10,6 +10,7 @@ import Transactions from "./transactions/Transactions";
 import ProfilePage from "./profile/ProfilePage";
 import Expenses from "./expenses/Expenses";
 import Charts from "./charts/Charts";
+import Categories from "./categories/Categories";
 
 function MyRoutes(props) {
   return (
@@ -75,6 +76,14 @@ function MyRoutes(props) {
         element={
           <PrivateRoute>
             <ProfilePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="categories"
+        element={
+          <PrivateRoute>
+            <Categories />
           </PrivateRoute>
         }
       />

@@ -18,6 +18,7 @@ import { Divider } from "@mui/material";
 import { DeleteTransaction } from "../transactions/DeleteTransactionRequest";
 import { toast, ToastContainer } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
+import Button from "@mui/material/Button";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -38,7 +39,6 @@ export const findBillName = (billList, billId) => {
 export default function ListOfTransactions(props) {
   const [noTransactionsToShow, setNoTransactionsToShow] = useState(false);
   const [expanded, setExpanded] = useState(null);
-
   const confirm = useConfirm();
 
   useEffect(() => {
@@ -55,18 +55,10 @@ export default function ListOfTransactions(props) {
     props.setTransactions([]);
     props.setPageNumber(1);
     props.setCategory(null);
-    props.setInputValue("");
-    setNoTransactionsToShow(false);
+    props.setBill(null);
   }, [props.categoriesTab]);
 
-  useEffect(() => {
-    setNoTransactionsToShow(false);
-    props.setPageNumber(1);
-    props.setTransactions([]);
-  }, [props.category, props.bill]);
-
-  const loadMore = () => {
-    props.setHasMore(true);
+  const makeUrl = () => {
     let url = "/api/transactions/?page=" + props.pageNumber;
     if (props.category) {
       url += "&category=" + props.category.id;
@@ -79,6 +71,11 @@ export default function ListOfTransactions(props) {
     } else if (props.categoriesTab === 2) {
       url += "&expenses";
     }
+    return url;
+  };
+
+  const loadMore = () => {
+    let url = makeUrl();
     GetTransactionsByPage({
       user: props.user,
       url: url,
@@ -92,21 +89,27 @@ export default function ListOfTransactions(props) {
           return;
         }
         setNoTransactionsToShow(false);
-        props.setTransactions([...props.transactions, ...response.results]);
-        props.setPageNumber(props.pageNumber + 1);
+        let newTransactions = response.results.filter(
+          (transaction) => !props.transactions.find((t) => t.id === transaction.id)
+        );
+        props.setTransactions([...props.transactions, ...newTransactions]);
         if (response.next === null) {
           props.setHasMore(false);
           props.setPageNumber(1);
+        } else {
+          props.setPageNumber(props.pageNumber + 1);
         }
       }
     });
   };
 
-  useEffect(() => {
-    if (props.transactions.length === 0 && props.pageNumber === 1) {
-      loadMore();
-    }
-  }, [props.transactions]);
+  const showTransactions = () => {
+    setNoTransactionsToShow(false);
+    props.setTransactions([]);
+    props.setPageNumber(1);
+    props.setHasMore(true);
+    loadMore();
+  };
 
   const handleDeleteTransaction = (transaction) => {
     confirm({
@@ -174,6 +177,15 @@ export default function ListOfTransactions(props) {
           width: "100%",
         }}
       />
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => {
+          showTransactions();
+        }}>
+        Pokaż transakcje
+      </Button>
+
       <InfiniteScroll
         loadMore={loadMore}
         hasMore={props.hasMore}
@@ -182,16 +194,23 @@ export default function ListOfTransactions(props) {
             Ładowanie...
           </div>
         }>
-        {noTransactionsToShow && (
+        {noTransactionsToShow ? (
           <div className="loader" key={0}>
             Brak transakcji
           </div>
-        )}
-        {props.transactions !== null &&
+        ) : (
+          props.transactions !== null &&
           props.transactions
             // sort by date then by id
             .sort((a, b) => (a.data > b.data ? -1 : 1))
             .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
+            .filter((transaction) => {
+              if (props.category) {
+                return transaction.kategoria === props.category.id;
+              } else {
+                return true;
+              }
+            })
             .map((transaction) => (
               <Accordion
                 key={transaction.id}
@@ -267,7 +286,8 @@ export default function ListOfTransactions(props) {
                   </ListItem>
                 </AccordionDetails>
               </Accordion>
-            ))}
+            ))
+        )}
       </InfiniteScroll>
     </>
   );
