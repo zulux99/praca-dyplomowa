@@ -82,7 +82,7 @@ export default function AddIncomeForm(props) {
             },
           }}
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
           <DatePicker
             label="Data"
             className="input"

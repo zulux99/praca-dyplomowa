@@ -227,7 +227,11 @@ class TransakcjaViewSet(GenericAPIView):
             queryset = queryset.filter(przychod=False)
         if 'incomes' in request.query_params:
             queryset = queryset.filter(przychod=True)
-        page = self.paginate_queryset(queryset)
+        if 'no_pagination' in request.query_params:
+            serializer = TransakcjaSerializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = TransakcjaSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)

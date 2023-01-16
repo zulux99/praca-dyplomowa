@@ -115,7 +115,7 @@ function AddPayment(props) {
                 control={<Checkbox checked={fullPayment} onChange={() => handleChange()} />}
                 label="Pełna kwota"
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
                 <DatePicker
                   label="Data spłaty"
                   className="input"
