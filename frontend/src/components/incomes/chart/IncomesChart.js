@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ChartSetLabels, ChartSetData } from "./ChartSetLabels";
-import { isBrowser, isMobile } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import ChartDataLabels from "chartjs-plugin-datalabels";

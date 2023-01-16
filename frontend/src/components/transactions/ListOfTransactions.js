@@ -58,6 +58,10 @@ export default function ListOfTransactions(props) {
     props.setBill(null);
   }, [props.categoriesTab]);
 
+  useEffect(() => {
+    props.setTransactions([]);
+    props.setPageNumber(1);
+  }, [props.category, props.bill]);
   const makeUrl = () => {
     let url = "/api/transactions/?page=" + props.pageNumber;
     if (props.category) {
