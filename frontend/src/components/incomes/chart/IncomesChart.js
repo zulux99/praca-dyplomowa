@@ -113,6 +113,14 @@ export default function IncomesChart(props) {
                   weight: "bold",
                   lineHeight: 1.2,
                 },
+                formatter: (value) => {
+                  if (value > 0) {
+                    return value.toLocaleString("pl-PL", {
+                      style: "currency",
+                      currency: "PLN",
+                    });
+                  }
+                },
               },
             },
           }}
