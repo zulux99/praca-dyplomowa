@@ -1,9 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import Box from "@mui/material/Box";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
-import { isMobile } from "react-device-detect";
+import { isMobile, isBrowser } from "react-device-detect";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,8 +12,9 @@ import { GetData } from "./GetDataRequest";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-import CreateChart from "./CreateChart";
+import CircularProgress from "@mui/material/CircularProgress";
 
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Title } from "chart.js";
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title, ChartDataLabels);
@@ -27,6 +27,7 @@ export default function Charts() {
     new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().slice(0, 10)
   );
   const [dateTo, setDateTo] = useState(new Date().toISOString().slice(0, 10));
+  const [loadingChart, setLoadingChart] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingTransactions, setLoadingTransactions] = useState(false);
   const [showBy, setShowBy] = useState("all");
@@ -43,6 +44,7 @@ export default function Charts() {
         console.log("Nie udało się pobrać kategorii");
       } else {
         setCategories(response);
+        setLoadingCategories(false);
       }
     });
   }, [user]);
@@ -50,6 +52,9 @@ export default function Charts() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoadingTransactions(true);
+    setLoadingChart(true);
+    setLabels([]);
+    setDatasets([]);
     let url = "/api/transactions/";
     url += "?no_pagination";
     if (showBy === "incomes") {
@@ -58,6 +63,8 @@ export default function Charts() {
       url += "&expenses";
     } else if (showBy === "all") {
     }
+    url += "&date_from=" + dateFrom;
+    url += "&date_to=" + dateTo;
     GetData({
       user,
       url,
@@ -67,17 +74,59 @@ export default function Charts() {
         console.log("Nie udało się pobrać transakcji");
       } else {
         setTransactions(response);
-        CreateChart({
-          transactions: response,
-          setTransactions,
-          categories,
-          setCategories,
-          setLabels,
-          setDatasets,
-        });
       }
     });
   };
+
+  useEffect(() => {
+    if (transactions.length > 0 && categories.length > 0) {
+      console.log("transactions", transactions);
+      console.log("categories", categories);
+      let categoriesAndSums = [];
+      categories.map((category) => {
+        let sum = 0;
+        transactions.map((transaction) => {
+          if (transaction.kategoria === category.id) {
+            sum += parseFloat(transaction.kwota);
+            setLabels((labels) =>
+              labels.some((item) => item === category.nazwa) ? labels : [...labels, category.nazwa]
+            );
+            // add category to categoriesAndSums if not already there
+            if (!categoriesAndSums.some((item) => item.id === category.id)) {
+              categoriesAndSums.push({ id: category.id, nazwa: category.nazwa, sum });
+            }
+          }
+        });
+      });
+      setDatasets([
+        {
+          label: "Kwota",
+          data: categoriesAndSums.map((item) => item.sum),
+          backgroundColor: categoriesAndSums.map((item) =>
+            item.sum > 0 ? "rgba(0, 255, 0, 0.5)" : "rgba(255, 0, 0, 0.5)"
+          ),
+          borderColor: categoriesAndSums.map((item) => (item.sum > 0 ? "rgba(0, 255, 0, 1)" : "rgba(255, 0, 0, 1)")),
+          borderWidth: 1,
+          datalabels: {
+            display: true,
+            color: "black",
+            anchor: "center",
+            align: "center",
+            offset: 5,
+            font: {
+              size: 12,
+              weight: "bold",
+              lineHeight: 1.2,
+            },
+            formatter: (value) => {
+              return value + " zł";
+            },
+          },
+        },
+      ]);
+    }
+    setLoadingChart(false);
+  }, [transactions, categories]);
 
   return (
     <>
@@ -122,28 +171,54 @@ export default function Charts() {
           </Button>
         </form>
       </Box>
-      <Box className="box">
-        <Bar
-          data={{
-            labels: labels,
-            datasets: datasets,
-          }}
-          height={height}
-          options={{
-            plugins: {
-              datalabels: {
-                display: true,
-                color: "white",
-              },
-            },
-            indexAxis: isMobile ? "y" : "x",
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
+      <Box
+        className="box"
+        sx={{
+          display: transactions.length > 0 ? "flex" : loadingTransactions ? "flex" : "none",
+          justifyContent: "center",
+        }}>
+        {loadingChart ? (
+          <CircularProgress color="success" />
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              Halo
+            </Box>
+            <Box
+              sx={{
+                width: isBrowser ? (labels.length > 0 ? labels.length < 10 && labels.length * 250 : 0) : "100%",
+              }}>
+              <Bar
+                data={{
+                  labels: labels,
+                  datasets: datasets,
+                }}
+                height={isMobile ? (labels.length > 0 ? labels.length * 50 : 0) : 300}
+                options={{
+                  maintainAspectRatio: false,
+                  indexAxis: isMobile ? "y" : "x",
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+        )}
       </Box>
     </>
   );
