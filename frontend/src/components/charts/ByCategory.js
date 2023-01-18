@@ -9,6 +9,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Box from "@mui/material/Box";
 import { GetData } from "./GetDataRequest";
+import CircularProgress from "@mui/material/CircularProgress";
+import ChartBox from "./ChartBox";
 
 export default function ByCategory(props) {
   const [dateFrom, setDateFrom] = useState(
@@ -16,18 +18,28 @@ export default function ByCategory(props) {
   );
   const [dateTo, setDateTo] = useState(new Date().toISOString().slice(0, 10));
   const [showBy, setShowBy] = useState("all");
+  const [showedDateFrom, setShowedDateFrom] = useState(null);
+  const [showedDateTo, setShowedDateTo] = useState(null);
+  const [loadingChart, setLoadingChart] = useState(false);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+  const [labels, setLabels] = useState([]);
+  const [datasets, setDatasets] = useState([]);
+  const [isAnyIncome, setIsAnyIncome] = useState(false);
+  const [isAnyExpense, setIsAnyExpense] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.setIsAnyIncome(false);
-    props.setSubmitted(true);
-    props.setIsAnyExpense(false);
-    props.setLoadingTransactions(true);
-    props.setLoadingChart(true);
-    props.setLabels([]);
-    props.setDatasets([]);
-    props.setShowedDateFrom(dateFrom);
-    props.setShowedDateTo(dateTo);
+    setIsAnyIncome(false);
+    setIsAnyExpense(false);
+    setSubmitted(true);
+    setLoadingTransactions(true);
+    setLoadingChart(true);
+    setLabels([]);
+    setDatasets([]);
+    setShowedDateFrom(dateFrom);
+    setShowedDateTo(dateTo);
     let url = "/api/transactions/";
     url += "?no_pagination";
     if (showBy === "incomes") {
@@ -42,32 +54,31 @@ export default function ByCategory(props) {
       user: props.user,
       url,
     }).then((response) => {
-      props.setLoadingTransactions(false);
+      setLoadingTransactions(false);
       if (response === -1) {
         console.log("Nie udało się pobrać transakcji");
       } else {
-        props.setTransactions(response);
+        setTransactions(response);
       }
     });
   };
 
   useEffect(() => {
-    if (props.transactions.length > 0 && props.categories.length > 0) {
-      console.log(props.transactions);
+    if (transactions.length > 0 && props.categories.length > 0) {
       let categoriesAndSums = [];
-      props.setIsAnyIncome(false);
-      props.setIsAnyExpense(false);
+      setIsAnyIncome(false);
+      setIsAnyExpense(false);
       props.categories.map((category) => {
         let sum = 0;
-        props.transactions.map((transaction) => {
+        transactions.map((transaction) => {
           if (transaction.przychod === true) {
-            props.setIsAnyIncome(true);
+            setIsAnyIncome(true);
           } else if (transaction.przychod === false) {
-            props.setIsAnyExpense(true);
+            setIsAnyExpense(true);
           }
           if (transaction.kategoria === category.id) {
             sum += parseFloat(transaction.kwota);
-            props.setLabels((labels) =>
+            setLabels((labels) =>
               labels.some((item) => item === category.nazwa) ? labels : [...labels, category.nazwa]
             );
             if (!categoriesAndSums.some((item) => item.id === category.id)) {
@@ -83,7 +94,7 @@ export default function ByCategory(props) {
         });
       });
       console.log(categoriesAndSums);
-      props.setDatasets([
+      setDatasets([
         {
           data: categoriesAndSums.map((item) => item.sum),
           backgroundColor: categoriesAndSums.map((item) =>
@@ -114,50 +125,74 @@ export default function ByCategory(props) {
         },
       ]);
     }
-    props.setLoadingChart(false);
-  }, [props.transactions, props.categories]);
+    setLoadingChart(false);
+  }, [transactions, props.categories]);
 
   return (
-    <Box className="box">
-      <form onSubmit={handleSubmit}>
-        <RadioGroup
-          row
-          defaultValue="top"
-          value={showBy}
-          onChange={(e) => setShowBy(e.target.value)}
-          sx={{ justifyContent: "center" }}>
-          <FormControlLabel value="incomes" control={<Radio />} label="Przychody" />
-          <FormControlLabel value="expenses" control={<Radio />} label="Wydatki" />
-          <FormControlLabel value="all" control={<Radio />} label="Wszystko" />
-        </RadioGroup>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
-          <DatePicker
-            label="Data"
-            className="input"
-            inputFormat="DD/MM/YYYY"
-            value={dateFrom}
-            onChange={(newValue) => {
-              setDateFrom(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
-            }}
-            renderInput={(params) => <TextField {...params} />}
+    <>
+      <Box className="box">
+        <form onSubmit={handleSubmit}>
+          <RadioGroup
+            row
+            defaultValue="top"
+            value={showBy}
+            onChange={(e) => setShowBy(e.target.value)}
+            sx={{ justifyContent: "center" }}>
+            <FormControlLabel value="all" control={<Radio />} label="Wszystko" />
+            <FormControlLabel value="incomes" control={<Radio />} label="Przychody" />
+            <FormControlLabel value="expenses" control={<Radio />} label="Wydatki" />
+          </RadioGroup>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
+            <DatePicker
+              label="Data"
+              className="input"
+              inputFormat="DD/MM/YYYY"
+              value={dateFrom}
+              onChange={(newValue) => {
+                setDateFrom(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
+            <DatePicker
+              label="Data"
+              className="input"
+              inputFormat="DD/MM/YYYY"
+              value={dateTo}
+              onChange={(newValue) => {
+                setDateTo(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          {props.loadingCategories ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress color="success" />
+            </Box>
+          ) : (
+            <Button type="submit" variant="contained" color="success">
+              Pokaż wykres
+            </Button>
+          )}
+        </form>
+      </Box>
+      {submitted && (
+        <Box className="box">
+          <ChartBox
+            labels={labels}
+            datasets={datasets}
+            showedDateFrom={showedDateFrom}
+            showedDateTo={showedDateTo}
+            loadingChart={loadingChart}
+            transactions={transactions}
+            isAnyIncome={isAnyIncome}
+            isAnyExpense={isAnyExpense}
+            submitted={submitted}
+            tab={props.tab}
           />
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
-          <DatePicker
-            label="Data"
-            className="input"
-            inputFormat="DD/MM/YYYY"
-            value={dateTo}
-            onChange={(newValue) => {
-              setDateTo(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        <Button type="submit" variant="contained" color="success">
-          Pokaż wykres
-        </Button>
-      </form>
-    </Box>
+        </Box>
+      )}
+    </>
   );
 }

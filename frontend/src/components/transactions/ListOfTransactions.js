@@ -226,12 +226,21 @@ export default function ListOfTransactions(props) {
                 }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <ListItem key={transaction.id}>
-                    <span
-                      style={{
-                        color: "green",
-                      }}>
-                      + {transaction.kwota} zł
-                    </span>
+                    {transaction.przychod ? (
+                      <span
+                        style={{
+                          color: "green",
+                        }}>
+                        + {transaction.kwota} zł
+                      </span>
+                    ) : (
+                      <span
+                        style={{
+                          color: "red",
+                        }}>
+                        - {transaction.kwota} zł
+                      </span>
+                    )}
                     <span>
                       {new Date(transaction.data).toLocaleDateString("pl-PL", {
                         weekday: "long",

@@ -2,22 +2,18 @@ import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import ByCategory from "./ByCategory";
-import ChartBox from "./ChartBox";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import SwipeableViews from "react-swipeable-views";
+import ByTime from "./ByTime";
 
 export default function Charts() {
   const user = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
-  const [transactions, setTransactions] = useState([]);
-  const [showedDateFrom, setShowedDateFrom] = useState(null);
-  const [showedDateTo, setShowedDateTo] = useState(null);
-  const [loadingChart, setLoadingChart] = useState(false);
+  const [chosenCategory, setChosenCategory] = useState(null);
+  const [tab, setTab] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingTransactions, setLoadingTransactions] = useState(false);
-  const [labels, setLabels] = useState([]);
-  const [datasets, setDatasets] = useState([]);
-  const [isAnyIncome, setIsAnyIncome] = useState(false);
-  const [isAnyExpense, setIsAnyExpense] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     GetAllCategories({
@@ -35,41 +31,35 @@ export default function Charts() {
 
   return (
     <>
-      <ByCategory
-        user={user}
-        categories={categories}
-        transactions={transactions}
-        showedDateFrom={showedDateFrom}
-        showedDateTo={showedDateTo}
-        loadingChart={loadingChart}
-        loadingCategories={loadingCategories}
-        loadingTransactions={loadingTransactions}
-        labels={labels}
-        datasets={datasets}
-        setLabels={setLabels}
-        setDatasets={setDatasets}
-        setLoadingChart={setLoadingChart}
-        setLoadingTransactions={setLoadingTransactions}
-        setShowedDateFrom={setShowedDateFrom}
-        setShowedDateTo={setShowedDateTo}
-        setTransactions={setTransactions}
-        setIsAnyIncome={setIsAnyIncome}
-        setIsAnyExpense={setIsAnyExpense}
-        setSubmitted={setSubmitted}
-      />
-      <ChartBox
-        labels={labels}
-        datasets={datasets}
-        showedDateFrom={showedDateFrom}
-        showedDateTo={showedDateTo}
-        loadingChart={loadingChart}
-        loadingCategories={loadingCategories}
-        loadingTransactions={loadingTransactions}
-        transactions={transactions}
-        isAnyIncome={isAnyIncome}
-        isAnyExpense={isAnyExpense}
-        submitted={submitted}
-      />
+      <Tabs
+        value={tab}
+        onChange={(e, newValue) => {
+          setTab(newValue);
+        }}
+        centered>
+        <Tab label="Według kategorii" />
+        <Tab label="Według czasu" />
+      </Tabs>
+      <SwipeableViews
+        disabled
+        index={tab}
+        onChangeIndex={(index) => {
+          setTab(index);
+        }}>
+        <Box>
+          <ByCategory user={user} categories={categories} loadingCategories={loadingCategories} tab={tab} />
+        </Box>
+        <Box>
+          <ByTime
+            tab={tab}
+            user={user}
+            categories={categories}
+            chosenCategory={chosenCategory}
+            setChosenCategory={setChosenCategory}
+            loadingCategories={loadingCategories}
+          />
+        </Box>
+      </SwipeableViews>
     </>
   );
 }

@@ -214,7 +214,8 @@ class TransakcjaViewSet(GenericAPIView):
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())
         if 'category' in request.query_params:
-            queryset = queryset.filter(kategoria=request.query_params['category'])
+            categories = request.query_params['category'].split(',')
+            queryset = queryset.filter(kategoria__in=categories)
         if 'account' in request.query_params:
             queryset = queryset.filter(konto=request.query_params['account'])
         if 'date_from' in request.query_params:
