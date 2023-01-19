@@ -54,14 +54,9 @@ export default function ByTime(props) {
         "Grudzień",
       ]);
     }
+    setLoadingChart(true);
     makeChart();
   }, [interval, arrowValueForMonth, arrowValueForYear]);
-
-  useEffect(() => {
-    if (transactions.length > 0) {
-    }
-    setLoadingChart(false);
-  }, [transactions]);
 
   const makeChart = () => {
     if (props.chosenCategory) {
@@ -69,6 +64,7 @@ export default function ByTime(props) {
       setIsAnyExpense(false);
       setSubmitted(true);
       setDatasets([]);
+      setLoadingChart(true);
       let url = "/api/transactions/";
       url += "?no_pagination";
       url += "&category=" + props.chosenCategory.id;
@@ -138,8 +134,42 @@ export default function ByTime(props) {
               },
             ]);
           }
+          if (interval === 1) {
+            let isIncome = false;
+            let data = [];
+            response.forEach((transaction) => {
+              let date = new Date(transaction.data);
+              let month = date.getMonth();
+              if (data[month]) {
+                data[month] += parseFloat(transaction.kwota);
+              } else {
+                data[month] = parseFloat(transaction.kwota);
+              }
+              if (transaction.przychod) isIncome = true;
+            });
+            console.log("data: ", data);
+            setDatasets([
+              {
+                data: data,
+                backgroundColor: isIncome ? "rgba(0, 255, 0, 0.2)" : "rgba(255, 0, 0, 0.2)",
+                borderColor: isIncome ? "rgba(0, 255, 0, 1)" : "rgba(255, 0, 0, 1)",
+                borderWidth: 1,
+                datalabels: {
+                  formatter: (value) => {
+                    if (value > 0) {
+                      return value.toLocaleString("pl-PL", {
+                        style: "currency",
+                        currency: "PLN",
+                      });
+                    }
+                  },
+                },
+              },
+            ]);
+          }
         }
       });
+      setLoadingChart(false);
     }
   };
 
@@ -169,8 +199,8 @@ export default function ByTime(props) {
           }}
           aria-label="Wybierz przedział czasu"
           centered>
-          <Tab label="Dzień" />
           <Tab label="Miesiąc" />
+          <Tab label="Rok" />
         </Tabs>
         <Button
           type="submit"
