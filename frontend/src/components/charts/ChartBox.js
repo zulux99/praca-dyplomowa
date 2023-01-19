@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import IconButton from "@mui/material/IconButton";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
@@ -28,6 +30,16 @@ export default function ChartBox(props) {
             justifyContent: "center",
             alignItems: "center",
           }}>
+          <Tabs
+            value={props.interval}
+            onChange={(event, newValue) => {
+              props.setInterval(newValue);
+            }}
+            aria-label="Wybierz przedział czasu"
+            centered>
+            <Tab label="Miesiąc" />
+            <Tab label="Rok" />
+          </Tabs>
           <Typography
             variant="h5"
             sx={{

@@ -6,8 +6,6 @@ import ChartBox from "./ChartBox";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import { GetData } from "./GetDataRequest";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 
 export default function ByTime(props) {
   const [labels, setLabels] = useState([]);
@@ -112,7 +110,12 @@ export default function ByTime(props) {
               } else {
                 data[day - 1] = parseFloat(transaction.kwota);
               }
-              if (transaction.przychod) isIncome = true;
+              if (transaction.przychod) {
+                isIncome = true;
+                setIsAnyIncome(true);
+              } else {
+                setIsAnyExpense(true);
+              }
             });
             console.log("data: ", data);
             setDatasets([
@@ -145,7 +148,12 @@ export default function ByTime(props) {
               } else {
                 data[month] = parseFloat(transaction.kwota);
               }
-              if (transaction.przychod) isIncome = true;
+              if (transaction.przychod) {
+                isIncome = true;
+                setIsAnyIncome(true);
+              } else {
+                setIsAnyExpense(true);
+              }
             });
             console.log("data: ", data);
             setDatasets([
@@ -192,16 +200,6 @@ export default function ByTime(props) {
             renderInput={(params) => <TextField {...params} label="Kategoria" variant="outlined" />}
           />
         )}
-        <Tabs
-          value={interval}
-          onChange={(event, newValue) => {
-            setInterval(newValue);
-          }}
-          aria-label="Wybierz przedział czasu"
-          centered>
-          <Tab label="Miesiąc" />
-          <Tab label="Rok" />
-        </Tabs>
         <Button
           type="submit"
           variant="contained"
@@ -213,26 +211,25 @@ export default function ByTime(props) {
         </Button>
       </Box>
       {submitted && (
-        <Box className="box">
-          <ChartBox
-            labels={labels}
-            datasets={datasets}
-            showedDateFrom={showedDateFrom}
-            showedDateTo={showedDateTo}
-            loadingChart={loadingChart}
-            transactions={transactions}
-            isAnyIncome={isAnyIncome}
-            isAnyExpense={isAnyExpense}
-            submitted={submitted}
-            showedDate={showedDate}
-            arrowValueForMonth={arrowValueForMonth}
-            arrowValueForYear={arrowValueForYear}
-            setArrowValueForMonth={setArrowValueForMonth}
-            setArrowValueForYear={setArrowValueForYear}
-            interval={interval}
-            tab={props.tab}
-          />
-        </Box>
+        <ChartBox
+          labels={labels}
+          datasets={datasets}
+          showedDateFrom={showedDateFrom}
+          showedDateTo={showedDateTo}
+          loadingChart={loadingChart}
+          transactions={transactions}
+          isAnyIncome={isAnyIncome}
+          isAnyExpense={isAnyExpense}
+          submitted={submitted}
+          showedDate={showedDate}
+          arrowValueForMonth={arrowValueForMonth}
+          arrowValueForYear={arrowValueForYear}
+          setArrowValueForMonth={setArrowValueForMonth}
+          setArrowValueForYear={setArrowValueForYear}
+          interval={interval}
+          setInterval={setInterval}
+          tab={props.tab}
+        />
       )}
     </>
   );

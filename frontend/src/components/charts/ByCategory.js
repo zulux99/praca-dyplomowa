@@ -178,20 +178,18 @@ export default function ByCategory(props) {
         </form>
       </Box>
       {submitted && (
-        <Box className="box">
-          <ChartBox
-            labels={labels}
-            datasets={datasets}
-            showedDateFrom={showedDateFrom}
-            showedDateTo={showedDateTo}
-            loadingChart={loadingChart}
-            transactions={transactions}
-            isAnyIncome={isAnyIncome}
-            isAnyExpense={isAnyExpense}
-            submitted={submitted}
-            tab={props.tab}
-          />
-        </Box>
+        <ChartBox
+          labels={labels}
+          datasets={datasets}
+          showedDateFrom={showedDateFrom}
+          showedDateTo={showedDateTo}
+          loadingChart={loadingChart}
+          transactions={transactions}
+          isAnyIncome={isAnyIncome}
+          isAnyExpense={isAnyExpense}
+          submitted={submitted}
+          tab={props.tab}
+        />
       )}
     </>
   );
