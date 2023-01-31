@@ -4,7 +4,7 @@ import axios from "axios";
 import base_url from "../../UrlAndPort";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import AddDebt from "./AddDebt";
 import AddPayment from "./AddPayment";
 import Box from "@mui/material/Box";
@@ -174,7 +174,6 @@ function Debtors() {
           alignItems: "center",
           justifyContent: "center",
         }}>
-        <ToastContainer position="bottom-center" autoClose={2000} />
         <Box
           component="span"
           sx={{
@@ -195,7 +194,10 @@ function Debtors() {
           setDebts={setDebts}
           debtId={debtId}
         />
-        <Container>
+        <Container
+          sx={{
+            padding: "0",
+          }}>
           <Box className="dlugi">
             {loadingDebts ? (
               <CircularProgress color="success" />

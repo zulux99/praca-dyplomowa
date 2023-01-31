@@ -27,7 +27,7 @@ from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 50
 
@@ -213,6 +213,7 @@ class TransakcjaViewSet(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(user=request.user.id)
         if 'category' in request.query_params:
             categories = request.query_params['category'].split(',')
             queryset = queryset.filter(kategoria__in=categories)
@@ -273,6 +274,7 @@ class PrzychodViewSet(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(user=request.user.id)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = TransakcjaSerializer(page, many=True)
@@ -296,6 +298,7 @@ class WydatekViewSet(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     def get(self, request):
         queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(user=request.user.id)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = TransakcjaSerializer(page, many=True)

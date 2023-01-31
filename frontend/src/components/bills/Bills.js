@@ -17,7 +17,7 @@ import Menu3Dots from "../Menu3Dots";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useConfirm } from "material-ui-confirm";
 import { DeleteBill } from "./DeleteBillRequest";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function Bills() {
   const user = useContext(AuthContext);
@@ -140,7 +140,6 @@ function Bills() {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Container align="center">
         <Box>
           <DoughnutChart bills={bills} />

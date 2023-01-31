@@ -8,6 +8,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { ChartSetLabels, ChartSetData } from "./ChartSetLabels";
 import { isMobile } from "react-device-detect";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
 
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
@@ -16,7 +17,7 @@ Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title, Cha
 
 export default function IncomesChart(props) {
   const [loading, setLoading] = useState(true);
-  const [interval, setInterval] = useState(0);
+  const [interval, setInterval] = useState(1);
   const [arrowValue, setArrowValue] = useState(0);
   const [data, setData] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -127,33 +128,54 @@ export default function IncomesChart(props) {
         />
         {loading && <CircularProgress color="success" sx={{ position: "absolute", top: "50%", left: "50%" }} />}
       </Box>
-      {interval === 0 &&
-        new Date(startDate).toLocaleDateString("pl-PL", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }) +
-          " - " +
-          new Date(endDate).toLocaleDateString("pl-PL", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "16px",
+          marginTop: "16px",
+        }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <IconButton onClick={() => setArrowValue(arrowValue - 1)}>
+            <NavigateBeforeIcon color="success" />
+          </IconButton>
+          <Box
+            component={"span"}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: "240px",
+            }}>
+            {interval === 0 &&
+              new Date(startDate).toLocaleDateString("pl-PL", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }) +
+                " - " +
+                new Date(endDate).toLocaleDateString("pl-PL", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
 
-      {interval === 1 &&
-        new Date(currentYear, currentMonth, 1).toLocaleString("pl-PL", { month: "long" }) +
-          " " +
-          currentYear.toLocaleString("pl-PL")}
-      {interval === 2 && startDate}
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <IconButton onClick={() => setArrowValue(arrowValue - 1)}>
-          <NavigateBeforeIcon />
-        </IconButton>
-        <IconButton onClick={() => setArrowValue(arrowValue + 1)}>
-          <NavigateNextIcon />
-        </IconButton>
+            {interval === 1 &&
+              new Date(currentYear, currentMonth, 1).toLocaleString("pl-PL", { month: "long" }) +
+                " " +
+                currentYear.toLocaleString("pl-PL")}
+            {interval === 2 && startDate}
+          </Box>
+          <IconButton onClick={() => setArrowValue(arrowValue + 1)}>
+            <NavigateNextIcon color="success" />
+          </IconButton>
+        </Box>
+        <label>Łączna kwota {sum.toLocaleString("pl-PL", { style: "currency", currency: "PLN" })}</label>
+        <Button variant="contained" color="success" onClick={() => props.setOpen(true)}>
+          Dodaj przychód
+        </Button>
       </Box>
-      <label>Łączna kwota {sum.toLocaleString("pl-PL", { style: "currency", currency: "PLN" })}</label>
     </>
   );
 }

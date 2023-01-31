@@ -44,7 +44,7 @@ function ToolbarComponent(props) {
       <Box
         sx={{
           position: isMobile && "fixed",
-          width: isMobile && "100%",
+          width: "100%",
           zIndex: isMobile && 1000,
         }}>
         <Toolbar className="pasek-gorny-zawartosc" sx={{ marginLeft: isBrowser && "256px" }}>

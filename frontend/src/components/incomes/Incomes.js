@@ -6,7 +6,6 @@ import IncomesChart from "./chart/IncomesChart";
 import IncomesList from "./IncomesList";
 import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
@@ -49,10 +48,7 @@ export default function Incomes() {
   return (
     <>
       <Box className="box">
-        <IncomesChart user={user} />
-        <Button variant="contained" color="success" onClick={() => setOpen(true)}>
-          Dodaj przychód
-        </Button>
+        <IncomesChart user={user} setOpen={setOpen} />
       </Box>
       <Box className="box">
         <IncomesList categoryList={categoryList} bills={bills} user={user} incomes={incomes} setIncomes={setIncomes} />

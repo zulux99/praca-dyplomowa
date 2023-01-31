@@ -3,7 +3,7 @@ import AuthContext from "../../context/AuthContext";
 import Box from "@mui/material/Box";
 import CategoryList from "./CategoryList";
 import AddCategoryForm from "./AddCategoryForm";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { DeleteCategory } from "../categories/DeleteCategoryRequest";
 import { useConfirm } from "material-ui-confirm";
 import { GetAllCategories } from "./GetAllCategoriesRequest";
@@ -55,7 +55,6 @@ export default function Categories() {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="box">
         <CategoryList
           categoryList={categoryList}

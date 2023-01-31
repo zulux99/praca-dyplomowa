@@ -6,6 +6,7 @@ import OfflinePage from "./OfflinePage";
 import AppForUser from "./apps/AppForUser";
 import { ConfirmProvider } from "material-ui-confirm";
 import "dayjs/locale/pl";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   if (navigator.onLine) {
@@ -24,6 +25,7 @@ function App() {
               disableEscapeKeyDown: true,
             }}>
             <AppForUser />
+            <ToastContainer position="bottom-center" autoClose={2000} />
           </ConfirmProvider>
         </AuthProvider>
       </BrowserRouter>

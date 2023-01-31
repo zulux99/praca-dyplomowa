@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { AddCategory } from "./AddCategoryRequest";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 function AddCategoryForm(props) {
   const [categoryName, setCategoryName] = useState("");
@@ -28,7 +28,6 @@ function AddCategoryForm(props) {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Box className="kategorie_dodaj">
         <form onSubmit={handleSubmit}>
           <TextField

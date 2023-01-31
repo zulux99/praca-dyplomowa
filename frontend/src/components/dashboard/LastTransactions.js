@@ -1,6 +1,8 @@
 import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -13,7 +15,10 @@ export const findCategoryName = (categoryList, categoryId) => {
 export default function LastTransactions(props) {
   return (
     <>
-      <h2>Ostatnie transakcje</h2>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+        <h2>Ostatnie transakcje</h2>
+        <Link to="/transactions">Zobacz więcej</Link>
+      </Box>
       <List className="lista-przychodow">
         <ListItem>
           <label>
@@ -32,7 +37,6 @@ export default function LastTransactions(props) {
           props.transactions
             .sort((a, b) => (a.data > b.data ? -1 : 1))
             .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
-            .slice(0, 5)
             .map((income) => (
               <ListItem key={income.id}>
                 <label

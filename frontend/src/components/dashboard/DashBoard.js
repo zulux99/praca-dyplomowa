@@ -70,36 +70,27 @@ export default function DashBoard() {
 
   return (
     <>
-      <Container
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          width: "100%",
-          height: "100%",
-        }}>
-        <Box className="box">
+      <Box className="dashboard-container">
+        <Box className="box dashboard-card">
           <AccountsBalance user={user} bills={bills} loading={loadingBills} />
         </Box>
-        <Box className="box">
+        <Box className="box dashboard-card">
           <Incomes transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
-        <Box className="box">
+        <Box className="box dashboard-card">
           <Expenses transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
-        <Box className="box">
+        <Box className="box dashboard-card">
           <Balance transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
         </Box>
-        <Box className="box">
+        <Box className="box dashboard-transactions">
           <LastTransactions
             transactions={lastTransactions}
             categoryList={categoryList}
             loading={loadingLastTransactions}
           />
         </Box>
-      </Container>
+      </Box>
     </>
   );
 }

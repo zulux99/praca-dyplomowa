@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { GetDefaultBill } from "../bills/GetDefaultBill";
 
 function AddDebt(props) {
@@ -88,7 +88,6 @@ function AddDebt(props) {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Modal className="modal" open={props.open} onClose={props.closeModal} aria-labelledby="Dodaj dług">
         <Fade in={props.open}>
           <Box className="modal-box">

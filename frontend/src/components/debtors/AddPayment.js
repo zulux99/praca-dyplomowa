@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -82,7 +82,6 @@ function AddPayment(props) {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <Modal
         className="modal"
         open={props.open}

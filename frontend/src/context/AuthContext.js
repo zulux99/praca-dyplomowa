@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -34,8 +35,12 @@ export const AuthProvider = ({ children }) => {
       getUserData(response.data.access);
     } catch (err) {
       console.log(err.response);
-      if (err.response.status !== 200) {
-        alert("Coś poszło nie tak");
+      if (err.response.status === 401) {
+        toast.error("Niepoprawny login lub hasło");
+      } else {
+        if (err.response.status !== 200) {
+          toast.error("Coś poszło nie tak. Spróbuj ponownie później.");
+        }
       }
     }
   };

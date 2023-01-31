@@ -7,7 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { AddTransaction } from "../transactions/AddTransactionRequest";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -66,7 +66,6 @@ export default function AddIncomeForm(props) {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <form onSubmit={handleSubmit}>
         <TextField
           className="input"

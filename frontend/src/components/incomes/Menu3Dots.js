@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DeleteTransaction } from "../transactions/DeleteTransactionRequest";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 function Menu3Dots(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,7 +32,6 @@ function Menu3Dots(props) {
 
   return (
     <Box sx={{ display: "block" }}>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <IconButton onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>

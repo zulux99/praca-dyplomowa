@@ -7,7 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import { GetAllBills } from "../bills/GetAllBills";
-import MenuItem from "@mui/material/MenuItem";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -16,9 +15,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { Divider } from "@mui/material";
 import { DeleteTransaction } from "../transactions/DeleteTransactionRequest";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
 import Button from "@mui/material/Button";
+import TransactionAccordion from "./TransactionAccordion";
 
 export const findCategoryName = (categoryList, categoryId) => {
   try {
@@ -146,7 +146,6 @@ export default function ListOfTransactions(props) {
 
   return (
     <>
-      <ToastContainer position="bottom-center" autoClose={2000} />
       <ToggleButtonGroup value={props.categoriesTab} exclusive color="success">
         <ToggleButton value={1} onClick={() => props.setCategoriesTab(1)}>
           Przychody
@@ -216,89 +215,17 @@ export default function ListOfTransactions(props) {
               }
             })
             .map((transaction) => (
-              <Accordion
-                key={transaction.id}
-                expanded={expanded === transaction.id}
-                onChange={(event, isExpanded) => {
-                  if (event.target.tagName !== "BUTTON") {
-                    setExpanded(isExpanded ? transaction.id : false);
-                  }
-                }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <ListItem key={transaction.id}>
-                    {transaction.przychod ? (
-                      <span
-                        style={{
-                          color: "green",
-                        }}>
-                        + {transaction.kwota} zł
-                      </span>
-                    ) : (
-                      <span
-                        style={{
-                          color: "red",
-                        }}>
-                        - {transaction.kwota} zł
-                      </span>
-                    )}
-                    <span>
-                      {new Date(transaction.data).toLocaleDateString("pl-PL", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                    <span>{findCategoryName(props.categoryList, transaction.kategoria)}</span>
-                  </ListItem>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Divider />
-                  <ListItem
-                    key={transaction.id}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      width: "100%",
-                    }}>
-                    <span>
-                      Kwota: <b>{transaction.kwota} zł</b>
-                    </span>
-                    <span>
-                      Data:{" "}
-                      <b>
-                        {new Date(transaction.data).toLocaleDateString("pl-PL", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </b>
-                    </span>
-                    <span>
-                      Kategoria: <b>{findCategoryName(props.categoryList, transaction.kategoria)}</b>
-                    </span>
-                    <span>
-                      Konto: <b>{findBillName(props.bills, transaction.rachunek)}</b>
-                    </span>
-                    <span>
-                      Opis: <b>{transaction.opis}</b>
-                    </span>
-                    <span
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        width: "100%",
-                      }}>
-                      <IconButton onClick={() => handleDeleteTransaction(transaction)}>
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </span>
-                  </ListItem>
-                </AccordionDetails>
-              </Accordion>
+              <TransactionAccordion
+                user={props.user}
+                transaction={transaction}
+                onDelete={handleDeleteTransaction}
+                setTransactions={props.setTransactions}
+                transactions={props.transactions}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                categoryList={props.categoryList}
+                bills={props.bills}
+              />
             ))
         )}
       </InfiniteScroll>
