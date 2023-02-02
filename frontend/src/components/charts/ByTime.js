@@ -197,13 +197,14 @@ export default function ByTime(props) {
             }}
             options={props.categories}
             getOptionLabel={(option) => option.nazwa}
-            renderInput={(params) => <TextField {...params} label="Kategoria" variant="outlined" />}
+            renderInput={(params) => <TextField color="success" {...params} label="Kategoria" variant="outlined" />}
           />
         )}
         <Button
           type="submit"
           variant="contained"
           color="success"
+          size="large"
           onClick={() => {
             makeChart();
           }}>

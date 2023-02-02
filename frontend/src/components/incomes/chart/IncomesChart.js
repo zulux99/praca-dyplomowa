@@ -62,10 +62,45 @@ export default function IncomesChart(props) {
 
   return (
     <>
-      <Tabs value={interval} indicatorColor="primary" textColor="primary" centered>
-        <Tab label="Tydzień" onClick={() => setInterval(0)} />
-        <Tab label="Miesiąc" onClick={() => setInterval(1)} />
-        <Tab label="Rok" onClick={() => setInterval(2)} />
+      <Tabs
+        value={interval}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+        TabIndicatorProps={{ style: { background: "green" } }}>
+        <Tab
+          label={
+            <span
+              style={{
+                color: interval === 0 ? "green" : "black",
+              }}>
+              Tydzień
+            </span>
+          }
+          onClick={() => setInterval(0)}
+        />
+        <Tab
+          label={
+            <span
+              style={{
+                color: interval === 1 ? "green" : "black",
+              }}>
+              Miesiąc
+            </span>
+          }
+          onClick={() => setInterval(1)}
+        />
+        <Tab
+          label={
+            <span
+              style={{
+                color: interval === 2 ? "green" : "black",
+              }}>
+              Rok
+            </span>
+          }
+          onClick={() => setInterval(2)}
+        />
       </Tabs>
       <Box
         sx={{
@@ -136,7 +171,7 @@ export default function IncomesChart(props) {
           gap: "16px",
           marginTop: "16px",
         }}>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: "300px" }}>
           <IconButton onClick={() => setArrowValue(arrowValue - 1)}>
             <NavigateBeforeIcon color="success" />
           </IconButton>
@@ -146,18 +181,17 @@ export default function IncomesChart(props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              minWidth: "240px",
             }}>
             {interval === 0 &&
               new Date(startDate).toLocaleDateString("pl-PL", {
                 year: "numeric",
-                month: "long",
+                month: "numeric",
                 day: "numeric",
               }) +
                 " - " +
                 new Date(endDate).toLocaleDateString("pl-PL", {
                   year: "numeric",
-                  month: "long",
+                  month: "numeric",
                   day: "numeric",
                 })}
 
@@ -172,7 +206,15 @@ export default function IncomesChart(props) {
           </IconButton>
         </Box>
         <label>Łączna kwota {sum.toLocaleString("pl-PL", { style: "currency", currency: "PLN" })}</label>
-        <Button variant="contained" color="success" onClick={() => props.setOpen(true)}>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => props.setOpen(true)}
+          sx={{
+            width: "100%",
+            maxWidth: "300px",
+            marginBottom: "16px",
+          }}>
           Dodaj przychód
         </Button>
       </Box>

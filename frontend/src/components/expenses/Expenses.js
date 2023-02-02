@@ -8,7 +8,7 @@ export default function Expenses() {
       </Box>
       <Box className="box">{/* <AddExpenseForm /> */}W tym miejscu będzie formularz dodawania wydatku</Box>
       <Box className="box">
-        <h2>Ostatnie wydatki</h2>
+        <h2>Wydatki</h2>
         <p>W tym miejscu będą wyświetlane ostatnie wydatki</p>
       </Box>
     </>

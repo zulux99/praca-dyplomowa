@@ -33,14 +33,6 @@ export default function DashBoard() {
         setLoadingBills(false);
       }
     });
-    GetTransactionsByPage({ user: user, url: "/api/transactions/?page=1" }).then((response) => {
-      if (response === -1) {
-        console.log("Nie udało się pobrać ostatnich transakcji");
-      } else {
-        setLastTransactions(response.results);
-        setLoadingLastTransactions(false);
-      }
-    });
     GetTransactionsFromDateToDate({
       user: user,
       date_from: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split("T")[0],
@@ -66,7 +58,19 @@ export default function DashBoard() {
         setLoadingCategoryList(false);
       }
     });
+    loadLastTransactions();
   }, [user]);
+
+  const loadLastTransactions = () => {
+    GetTransactionsByPage({ user: user, url: "/api/transactions/?page=1" }).then((response) => {
+      if (response === -1) {
+        console.log("Nie udało się pobrać ostatnich transakcji");
+      } else {
+        setLastTransactions(response.results);
+        setLoadingLastTransactions(false);
+      }
+    });
+  };
 
   return (
     <>
@@ -85,9 +89,13 @@ export default function DashBoard() {
         </Box>
         <Box className="box dashboard-transactions">
           <LastTransactions
+            user={user}
             transactions={lastTransactions}
+            setTransactions={setLastTransactions}
             categoryList={categoryList}
             loading={loadingLastTransactions}
+            bills={bills}
+            reloadTransactions={loadLastTransactions}
           />
         </Box>
       </Box>

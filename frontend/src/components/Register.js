@@ -64,6 +64,7 @@ function Register() {
           autoComplete="name"
           variant="outlined"
           label="Imię (opcjonalne)"
+          color="success"
           id="name"
           onChange={(e) => setFirstName(e.target.value)}
           margin="dense"
@@ -77,6 +78,7 @@ function Register() {
           error={usernameExists ? true : false}
           helperText={usernameExists ? "Użytkownik o tej nazwie już istnieje" : ""}
           autoComplete="username"
+          color="success"
           variant="outlined"
           label="Nazwa użytkownika"
           id="username"
@@ -89,6 +91,7 @@ function Register() {
           className="textField"
           required
           variant="outlined"
+          color="success"
           type="password"
           label="Hasło"
           id="password"
@@ -100,6 +103,7 @@ function Register() {
         />
         <TextField
           className="textField"
+          color="success"
           required
           error={passwordMatch ? false : true}
           helperText={passwordMatch ? false : "Hasła się nie zgadzają"}
@@ -115,6 +119,7 @@ function Register() {
         />
         <TextField
           className="textField"
+          color="success"
           required
           error={emailExists ? true : false}
           helperText={emailExists ? "Ten email jest już zarejestrowany" : ""}

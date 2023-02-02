@@ -1,7 +1,6 @@
 import { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Menu3Dots from "./Menu3Dots";
 import InfiniteScroll from "react-infinite-scroller";
 import { GetIncomesByPage } from "./GetIncomesByPage";
 import TransactionAccordion from "../transactions/TransactionAccordion";
@@ -30,25 +29,23 @@ export default function IncomesList(props) {
 
   return (
     <>
-      <h2>Ostatnie przychody</h2>
+      <span
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <h2>Przychody</h2>
+      </span>
       <List className="lista-przychodow">
         <ListItem>
-          <label
-            style={{
-              width: "calc(100% * 1/3)",
-            }}>
+          <label>
             <b>Kwota</b>
           </label>
-          <label
-            style={{
-              width: "calc(100% * 1/3)",
-            }}>
+          <label>
             <b>Data</b>
           </label>
-          <label
-            style={{
-              width: "calc(100% * 1/3)",
-            }}>
+          <label>
             <b>Kategoria</b>
           </label>
         </ListItem>
@@ -69,6 +66,7 @@ export default function IncomesList(props) {
                 user={props.user}
                 key={income.id}
                 transaction={income}
+                transactions={props.incomes}
                 setTransactions={props.setIncomes}
                 expanded={expanded}
                 setExpanded={setExpanded}

@@ -50,6 +50,7 @@ export default function TransactionAccordion(props) {
             console.log("Nie udało się usunąć transakcji");
           } else {
             props.setTransactions(props.transactions.filter((t) => t.id !== transaction.id));
+            if (props.reloadTransactions) props.reloadTransactions();
             toast.success("Usunięto transakcję");
           }
         });
@@ -67,12 +68,17 @@ export default function TransactionAccordion(props) {
         }
       }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <ListItem key={props.transaction.id}>
+        <ListItem
+          key={props.transaction.id}
+          sx={{
+            padding: "0px",
+          }}>
           {props.transaction.przychod ? (
             <span
               style={{
                 color: "green",
                 width: "calc(100% * 1/3)",
+                paddingRight: "10px",
               }}>
               + {props.transaction.kwota} zł
             </span>
@@ -81,6 +87,7 @@ export default function TransactionAccordion(props) {
               style={{
                 color: "red",
                 width: "calc(100% * 1/3)",
+                paddingRight: "10px",
               }}>
               - {props.transaction.kwota} zł
             </span>
@@ -88,9 +95,9 @@ export default function TransactionAccordion(props) {
           <span
             style={{
               width: "calc(100% * 1/3)",
+              paddingRight: "10px",
             }}>
             {new Date(props.transaction.data).toLocaleDateString("pl-PL", {
-              weekday: "long",
               year: "numeric",
               month: "long",
               day: "numeric",

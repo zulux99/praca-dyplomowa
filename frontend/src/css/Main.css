@@ -139,6 +139,16 @@ ul.gorne-menu {
   gap: 16px;
 }
 
+.lista-przychodow li>label {
+  width: calc(100% * 1/3);
+}
+
+.title {
+  font-weight: 600;
+  margin: 0;
+  padding-left: 32px;
+  padding-right: 32px;
+}
 
 .boczne-menu-link {
   width: 100%;

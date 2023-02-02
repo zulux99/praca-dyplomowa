@@ -67,11 +67,13 @@ export default function AddIncomeForm(props) {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <h2>Dodaj przychód</h2>
         <TextField
           className="input"
           autoComplete="off"
           variant="outlined"
           label="Kwota"
+          color="success"
           required
           onChange={(e) => setPaymentValue(e.target.value)}
           error={!paymentValueValid}
@@ -90,13 +92,14 @@ export default function AddIncomeForm(props) {
             onChange={(newValue) => {
               setPaymentDate(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField color="success" {...params} />}
           />
         </LocalizationProvider>
         <TextField
           className="input"
           select
           required
+          color="success"
           label="Konto"
           InputLabelProps={{ shrink: true }}
           value={props.billId}
@@ -110,9 +113,12 @@ export default function AddIncomeForm(props) {
         <Box
           sx={{
             display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            marginLeft: "16px",
+            marginRight: "16px",
           }}>
           <Autocomplete
-            className="input"
             options={props.categoryList}
             disablePortal
             autoHighlight
@@ -123,15 +129,15 @@ export default function AddIncomeForm(props) {
             onChange={(e, newValue) => setCategory(newValue)}
             inputValue={inputValue}
             onInputChange={(e, newInputValue) => setInputValue(newInputValue)}
-            renderInput={(params) => <TextField {...params} label="Kategoria" />}
+            renderInput={(params) => <TextField color="success" {...params} label="Kategoria" />}
             sx={{
-              width: "100%",
+              width: "calc(100% - 80px)",
             }}
           />
           <IconButton onClick={() => setOpen(true)}>
             <AddCircleOutlineIcon
               style={{
-                fontSize: "2rem",
+                fontSize: "32px",
               }}
             />
           </IconButton>
@@ -141,12 +147,13 @@ export default function AddIncomeForm(props) {
           label="Opis"
           multiline
           autoComplete="off"
+          color="success"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           helperText={`${description.length}/500`}
           inputProps={{ maxLength: 500 }}
         />
-        <Button variant="contained" type="submit" color="success">
+        <Button variant="contained" type="submit" color="success" size="large">
           Dodaj przychód
         </Button>
       </form>

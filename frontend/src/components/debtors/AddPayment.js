@@ -97,6 +97,7 @@ function AddPayment(props) {
                 type="number"
                 className="input"
                 required
+                color="success"
                 autoComplete="off"
                 disabled={fullPayment}
                 label="Kwota wpłaty"
@@ -123,7 +124,7 @@ function AddPayment(props) {
                   onChange={(newValue) => {
                     setPaymentDate(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => <TextField color="success" {...params} />}
                 />
               </LocalizationProvider>
               <Button

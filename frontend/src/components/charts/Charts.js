@@ -31,35 +31,73 @@ export default function Charts() {
 
   return (
     <>
-      <Tabs
-        value={tab}
-        onChange={(e, newValue) => {
-          setTab(newValue);
-        }}
-        centered>
-        <Tab label="Według kategorii" />
-        <Tab label="Według czasu" />
-      </Tabs>
-      <SwipeableViews
-        disabled
-        index={tab}
-        onChangeIndex={(index) => {
-          setTab(index);
+      <Box
+        className="box"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          margin: "32px 0",
+          padding: "16px 8px",
         }}>
-        <Box>
-          <ByCategory user={user} categories={categories} loadingCategories={loadingCategories} tab={tab} />
-        </Box>
-        <Box>
-          <ByTime
-            tab={tab}
-            user={user}
-            categories={categories}
-            chosenCategory={chosenCategory}
-            setChosenCategory={setChosenCategory}
-            loadingCategories={loadingCategories}
+        <Tabs
+          value={tab}
+          onChange={(e, newValue) => {
+            setTab(newValue);
+          }}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "green",
+            },
+          }}
+          sx={{
+            marginBottom: "32px",
+          }}
+          centered>
+          <Tab
+            label={
+              <span
+                style={{
+                  color: tab === 0 ? "green" : "black",
+                }}>
+                Według kategorii
+              </span>
+            }
           />
-        </Box>
-      </SwipeableViews>
+          <Tab
+            label={
+              <span
+                style={{
+                  color: tab === 1 ? "green" : "black",
+                }}>
+                Według czasu
+              </span>
+            }
+          />
+        </Tabs>
+        <SwipeableViews
+          disabled
+          index={tab}
+          onChangeIndex={(index) => {
+            setTab(index);
+          }}>
+          <Box>
+            <ByCategory user={user} categories={categories} loadingCategories={loadingCategories} tab={tab} />
+          </Box>
+          <Box>
+            <ByTime
+              tab={tab}
+              user={user}
+              categories={categories}
+              chosenCategory={chosenCategory}
+              setChosenCategory={setChosenCategory}
+              loadingCategories={loadingCategories}
+            />
+          </Box>
+        </SwipeableViews>
+      </Box>
     </>
   );
 }

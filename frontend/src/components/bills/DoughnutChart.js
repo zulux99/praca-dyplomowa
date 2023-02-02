@@ -17,15 +17,35 @@ function DoughnutChart(props) {
               display: true,
               text: "Konta",
             },
+            datalabels: {
+              display: true,
+              color: "black",
+              anchor: "center",
+              align: "end",
+              offset: 5,
+              font: {
+                size: 14,
+                weight: "bold",
+                lineHeight: 1.2,
+              },
+            },
           },
         }}
+        height={200}
         data={{
           labels: props.bills.map((bill) => bill.nazwa),
           datasets: [
             {
               label: "Konta",
               data: props.bills.map((bill) => bill.kwota),
-              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+              backgroundColor: [
+                "rgba(255, 99, 132)",
+                "rgba(54, 162, 235)",
+                "rgba(255, 206, 86)",
+                "rgba(75, 192, 192)",
+                "rgba(153, 102, 255)",
+                "rgba(255, 159, 64)",
+              ],
             },
           ],
         }}

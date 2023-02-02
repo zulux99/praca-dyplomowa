@@ -18,7 +18,7 @@ export default function SearchForm(props) {
             onChange={(newValue) => {
               props.setStartDate(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField color="success" {...params} />}
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -30,7 +30,7 @@ export default function SearchForm(props) {
             onChange={(newValue) => {
               props.setEndDate(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField color="success" {...params} />}
           />
         </LocalizationProvider>
         <Autocomplete
@@ -41,7 +41,7 @@ export default function SearchForm(props) {
           onChange={(e, newValue) => props.setCategory(newValue)}
           inputValue={props.inputValue}
           onInputChange={(e, newInputValue) => props.setInputValue(newInputValue)}
-          renderInput={(params) => <TextField {...params} label="Kategoria" />}
+          renderInput={(params) => <TextField color="success" {...params} label="Kategoria" />}
           sx={{
             width: "100%",
           }}

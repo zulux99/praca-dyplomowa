@@ -19,7 +19,7 @@ function BottomMenu(props) {
         { name: "Przychody", link: "/incomes" },
         { name: "Wydatki", link: "/expenses" },
         { name: "Transakcje", link: "/transactions" },
-        { name: "Dłużnicy", link: "/debtors" },
+        { name: "Konta", link: "/accounts" },
       ]);
     }
   }, [user]);

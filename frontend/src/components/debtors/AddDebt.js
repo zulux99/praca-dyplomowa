@@ -98,6 +98,7 @@ function AddDebt(props) {
                 label="Nazwa dłużnika"
                 autoComplete="name"
                 required
+                color="success"
                 variant="outlined"
                 value={debtorName}
                 onChange={(e) => setDebtorName(e.target.value)}
@@ -108,6 +109,7 @@ function AddDebt(props) {
                 label="Pożyczona kwota"
                 autoComplete="off"
                 required
+                color="success"
                 error={!debtValueValid}
                 variant="outlined"
                 value={debtValue}
@@ -124,6 +126,7 @@ function AddDebt(props) {
                 select
                 required
                 label="Konto"
+                color="success"
                 value={billId}
                 onChange={(e) => setBillId(e.target.value)}>
                 {bills.map((bill) => (
@@ -136,6 +139,7 @@ function AddDebt(props) {
                 className="input"
                 id="cel"
                 autoComplete="goal"
+                color="success"
                 variant="outlined"
                 label="Cel (opcjonalne)"
                 value={debtPurpose}

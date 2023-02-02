@@ -1,23 +1,26 @@
+import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
-
-export const findCategoryName = (categoryList, categoryId) => {
-  try {
-    return categoryList.find((category) => category.id === categoryId).nazwa;
-  } catch (err) {
-    return "Nieznana";
-  }
-};
+import TransactionAccordion from "../transactions/TransactionAccordion";
 
 export default function LastTransactions(props) {
+  const [expanded, setExpanded] = useState(false);
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}
+        className="title">
         <h2>Ostatnie transakcje</h2>
-        <Link to="/transactions">Zobacz więcej</Link>
+        <Link
+          to="/transactions"
+          style={{
+            color: "green",
+          }}>
+          Zobacz więcej
+        </Link>
       </Box>
       <List className="lista-przychodow">
         <ListItem>
@@ -25,10 +28,10 @@ export default function LastTransactions(props) {
             <b>Kwota</b>
           </label>
           <label>
-            <b>Kategoria</b>
+            <b>Data</b>
           </label>
           <label>
-            <b>Data</b>
+            <b>Kategoria</b>
           </label>
         </ListItem>
         {props.loading ? (
@@ -38,23 +41,18 @@ export default function LastTransactions(props) {
             .sort((a, b) => (a.data > b.data ? -1 : 1))
             .sort((a, b) => (a.data === b.data ? (a.id > b.id ? -1 : 1) : 0))
             .map((income) => (
-              <ListItem key={income.id}>
-                <label
-                  style={{
-                    color: "green",
-                  }}>
-                  + {income.kwota} zł
-                </label>
-                <label>{findCategoryName(props.categoryList, income.kategoria)}</label>
-                <label>
-                  {new Date(income.data).toLocaleDateString("pl-PL", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </label>
-              </ListItem>
+              <TransactionAccordion
+                user={props.user}
+                transaction={income}
+                categoryList={props.categoryList}
+                key={income.id}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                transactions={props.transactions}
+                setTransactions={props.setTransactions}
+                bills={props.bills}
+                reloadTransactions={props.reloadTransactions}
+              />
             ))
         )}
       </List>

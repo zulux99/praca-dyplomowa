@@ -16,7 +16,7 @@ export default function Expenses(props) {
 
   return (
     <>
-      <h2>Twoje wydatki</h2>
+      <h2>Wydatki</h2>
       {props.loading ? (
         <CircularProgress color="success" />
       ) : amount > 0 ? (

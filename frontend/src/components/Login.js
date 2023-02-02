@@ -26,6 +26,7 @@ function Login() {
           label="Nazwa użytkownika"
           autoComplete="username"
           name="username"
+          color="success"
           id="username"
           margin="normal"
           size="small"
@@ -36,6 +37,7 @@ function Login() {
           required
           variant="outlined"
           label="Hasło"
+          color="success"
           name="password"
           autoComplete="current-password"
           id="current-password"

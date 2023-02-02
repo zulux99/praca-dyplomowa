@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 export default function AccountsBalance(props) {
   return (
     <>
-      <h2>Twoje saldo</h2>
+      <h2>Saldo</h2>
       <h3>
         {props.loading ? (
           <CircularProgress color="success" />

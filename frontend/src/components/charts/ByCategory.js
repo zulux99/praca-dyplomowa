@@ -138,9 +138,9 @@ export default function ByCategory(props) {
             value={showBy}
             onChange={(e) => setShowBy(e.target.value)}
             sx={{ justifyContent: "center" }}>
-            <FormControlLabel value="all" control={<Radio />} label="Wszystko" />
-            <FormControlLabel value="incomes" control={<Radio />} label="Przychody" />
-            <FormControlLabel value="expenses" control={<Radio />} label="Wydatki" />
+            <FormControlLabel value="all" control={<Radio color="success" />} label="Wszystko" />
+            <FormControlLabel value="incomes" control={<Radio color="success" />} label="Przychody" />
+            <FormControlLabel value="expenses" control={<Radio color="success" />} label="Wydatki" />
           </RadioGroup>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
             <DatePicker
@@ -151,7 +151,7 @@ export default function ByCategory(props) {
               onChange={(newValue) => {
                 setDateFrom(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
               }}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField color="success" {...params} />}
             />
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
@@ -163,7 +163,7 @@ export default function ByCategory(props) {
               onChange={(newValue) => {
                 setDateTo(newValue.$y + "-" + parseInt(newValue.$M + 1) + "-" + newValue.$D);
               }}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField color="success" {...params} />}
             />
           </LocalizationProvider>
           {props.loadingCategories ? (
@@ -171,7 +171,7 @@ export default function ByCategory(props) {
               <CircularProgress color="success" />
             </Box>
           ) : (
-            <Button type="submit" variant="contained" color="success">
+            <Button type="submit" variant="contained" color="success" size="large">
               Pokaż wykres
             </Button>
           )}

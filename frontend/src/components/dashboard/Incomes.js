@@ -16,7 +16,7 @@ export default function Incomes(props) {
 
   return (
     <>
-      <h2>Twoje przychody</h2>
+      <h2>Przychody</h2>
       {props.loading ? (
         <CircularProgress color="success" />
       ) : amount > 0 ? (
