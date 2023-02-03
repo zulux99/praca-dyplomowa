@@ -13,6 +13,7 @@ import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function DashBoard() {
   const user = useContext(AuthContext);
@@ -76,7 +77,7 @@ export default function DashBoard() {
 
   return (
     <>
-      {!loadingLastTransactions && lastTransactions.length > 0 ? (
+      {!loadingLastTransactions && lastTransactions.length > 0 && (
         <Box className="dashboard-container">
           <Box className="box dashboard-card">
             <AccountsBalance user={user} bills={bills} loading={loadingBills} />
@@ -102,7 +103,23 @@ export default function DashBoard() {
             />
           </Box>
         </Box>
-      ) : (
+      )}
+      {loadingLastTransactions && (
+        <Box
+          className="box"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            pt: "32px",
+            pb: "32px",
+            textAlign: "center",
+          }}>
+          <CircularProgress color="success" size={128} />
+        </Box>
+      )}
+      {!loadingLastTransactions && lastTransactions.length === 0 && (
         <Box
           className="box"
           sx={{

@@ -178,57 +178,56 @@ function Bills() {
         sx={{
           display: loading && "flex",
           justifyContent: loading && "center",
-          padding: loading && "64px",
+          pb: loading && "32px",
         }}>
-        {loading ? (
-          <CircularProgress color="success" size={128} />
-        ) : (
-          <Box>
-            <Box>{!loading && bills.length > 0 && <DoughnutChart bills={bills} />}</Box>
+        <Box>
+          <Box>{!loading && bills.length > 0 && <DoughnutChart bills={bills} />}</Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              pt: "32px",
+              pb: "32px",
+            }}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => setAddBillFormOpen(true)}
+              size="large"
+              sx={{
+                width: "100%",
+                maxWidth: "240px",
+              }}>
+              Dodaj konto
+            </Button>
+          </Box>
+          {!loading && bills.length === 0 && (
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                width: "100%",
-                pt: "32px",
-                pb: "32px",
+                mb: "32px",
+                textAlign: "center",
               }}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => setAddBillFormOpen(true)}
-                size="large"
-                sx={{
-                  width: "100%",
-                  maxWidth: "240px",
-                }}>
-                Dodaj konto
-              </Button>
-            </Box>
-            {!loading && bills.length === 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  mb: "32px",
-                  textAlign: "center",
-                }}>
-                <Typography variant="h4" color="success">
-                  Nie masz żadnych kont
-                </Typography>
-                <Typography variant="h6" color="success" sx={{ mt: "16px" }}>
-                  Dodaj konto, które będzie twoim źródłem pieniędzy
-                </Typography>
-                <Box component="span" sx={{ mt: "32px", p: "0 32px" }}>
-                  Zarządzaj swoimi źródłami finansowymi z łatwością. Masz masz pełen wgląd w swoje konta i możesz łatwo
-                  nadzorować swoje przychody i wydatki.
-                </Box>
+              <Typography variant="h4" color="success">
+                Nie masz żadnych kont
+              </Typography>
+              <Typography variant="h6" color="success" sx={{ mt: "16px" }}>
+                Dodaj konto, które będzie twoim źródłem pieniędzy
+              </Typography>
+              <Box component="span" sx={{ mt: "32px", p: "0 32px" }}>
+                Zarządzaj swoimi źródłami finansowymi z łatwością. Masz masz pełen wgląd w swoje konta i możesz łatwo
+                nadzorować swoje przychody i wydatki.
               </Box>
-            )}
-
+            </Box>
+          )}
+          {loading ? (
+            <CircularProgress color="success" size={128} />
+          ) : (
             <List>
               {bills.map((bill, index) => (
                 <Link onClick={() => makeDefault(bill)}>
@@ -352,15 +351,9 @@ function Bills() {
                 </Link>
               ))}
             </List>
-            <AddBill
-              bills={bills}
-              user={user}
-              getBills={getBills}
-              open={addBillFormOpen}
-              setOpen={setAddBillFormOpen}
-            />
-          </Box>
-        )}
+          )}
+          <AddBill bills={bills} user={user} getBills={getBills} open={addBillFormOpen} setOpen={setAddBillFormOpen} />
+        </Box>
       </Box>
     </>
   );

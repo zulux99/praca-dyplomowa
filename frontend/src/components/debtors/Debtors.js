@@ -172,6 +172,7 @@ function Debtors() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          pb: "32px",
         }}>
         <Box
           component="span"

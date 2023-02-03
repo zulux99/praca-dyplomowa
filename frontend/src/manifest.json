@@ -1,7 +1,7 @@
 {
-  "short_name": "Budżet domowy",
-  "name": "Budżet domowy",
-  "description": "Aplikacja do zarządzania budżetem domowym",
+  "short_name": "e-Budget",
+  "name": "e-Budget",
+  "description": "Aplikacja do zarządzania finansami",
   "icons": [
     {
       "src": "favicon.ico",
