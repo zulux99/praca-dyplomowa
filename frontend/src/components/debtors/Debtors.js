@@ -20,8 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
 import { DeleteDebt } from "./DeleteDebtRequest";
 import { useConfirm } from "material-ui-confirm";
 import Divider from "@mui/material/Divider";
@@ -185,6 +184,28 @@ function Debtors() {
           </Button>
         </Box>
         <AddDebt open={openAddDebtor} closeModal={closeModalAddDebtor} getDebts={getDebts} />
+        {!loadingDebts && !loadingPayments && debts.length === 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: "32px",
+              textAlign: "center",
+            }}>
+            <Typography variant="h4" color="success">
+              Nie masz żadnych dłużników
+            </Typography>
+            <Typography variant="h6" color="success" sx={{ mt: "16px" }}>
+              Dodaj dłużnika, aby rozpocząć śledzenie pożyczek
+            </Typography>
+            <Box component="span" sx={{ mt: "32px", p: "0 32px" }}>
+              Ta strona umożliwia Ci śledzenie pożyczek, które udzieliłeś innym. W prosty sposób wpisz szczegóły
+              dotyczące kwoty pożyczki i osoby, której ją udzieliłeś.
+            </Box>
+          </Box>
+        )}
         <AddPayment
           open={openAddPayment}
           closeModal={closeModalAddPayment}

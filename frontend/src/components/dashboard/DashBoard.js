@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import AccountsBalance from "./AccountsBalance";
 import { GetAllBills } from "../bills/GetAllBills";
 import { GetTransactionsByPage } from "../transactions/GetTransactionsByPage";
@@ -11,6 +10,9 @@ import Expenses from "./Expenses";
 import LastTransactions from "./LastTransactions";
 import Balance from "./Balance";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 
 export default function DashBoard() {
   const user = useContext(AuthContext);
@@ -74,31 +76,131 @@ export default function DashBoard() {
 
   return (
     <>
-      <Box className="dashboard-container">
-        <Box className="box dashboard-card">
-          <AccountsBalance user={user} bills={bills} loading={loadingBills} />
+      {!loadingLastTransactions && lastTransactions.length > 0 ? (
+        <Box className="dashboard-container">
+          <Box className="box dashboard-card">
+            <AccountsBalance user={user} bills={bills} loading={loadingBills} />
+          </Box>
+          <Box className="box dashboard-card">
+            <Incomes transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
+          </Box>
+          <Box className="box dashboard-card">
+            <Expenses transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
+          </Box>
+          <Box className="box dashboard-card">
+            <Balance transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
+          </Box>
+          <Box className="box dashboard-transactions">
+            <LastTransactions
+              user={user}
+              transactions={lastTransactions}
+              setTransactions={setLastTransactions}
+              categoryList={categoryList}
+              loading={loadingLastTransactions}
+              bills={bills}
+              reloadTransactions={loadLastTransactions}
+            />
+          </Box>
         </Box>
-        <Box className="box dashboard-card">
-          <Incomes transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
+      ) : (
+        <Box
+          className="box"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            pt: "32px",
+            mb: "32px",
+            textAlign: "center",
+          }}>
+          <Typography variant="h4">Nie masz żadnych transakcji</Typography>
+          <Typography variant="h5" sx={{ mt: "16px" }}>
+            W jaki sposób zacząć korzystać z aplikacji?
+          </Typography>
+          <List sx={{ mt: "32px", mb: "32px", p: "0 32px" }}>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 1.</Typography>
+            </ListItem>
+            <ListItem>
+              Po pierwszym uruchomieniu aplikacji, musisz utworzyć co najmniej jedno konto, które będzie źródłem Twoich
+              pieniędzy.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 2.</Typography>
+            </ListItem>
+            <ListItem>
+              Następnie możesz dodawać kategorie swoich przychodów i wydatków. Możesz to zrobić podczas dodawania nowych
+              transakcji lub w osobnej zakładce.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 3.</Typography>
+            </ListItem>
+            <ListItem>
+              W zakładce "Lista transakcji" możesz zobaczyć wszystkie swoje transakcje, w tym przychody i wydatki.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 4.</Typography>
+            </ListItem>
+            <ListItem>
+              W zakładce "Wykresy" możesz zobaczyć wykresy swoich transakcji według kategorii i czasu.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 5.</Typography>
+            </ListItem>
+            <ListItem>
+              W zakładce "Dłużnicy" możesz śledzić swoje pożyczki poprzez dodawanie rekordów dotyczących osób, którym
+              pożyczyłeś pieniądze, oraz śledzenie ich spłat.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Typography variant="h6">Krok 6.</Typography>
+            </ListItem>
+            <ListItem>
+              Kontynuuj dodawanie swoich transakcji i śledzenie swoich finansów. Aplikacja pomoże Ci zachować pełen
+              wgląd w swoje finanse i łatwo nadzorować swoje przychody i wydatki.
+            </ListItem>
+            <ListItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mt: "32px",
+              }}>
+              <Typography variant="h6">Miłego korzystania z aplikacji!</Typography>
+            </ListItem>
+          </List>
         </Box>
-        <Box className="box dashboard-card">
-          <Expenses transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
-        </Box>
-        <Box className="box dashboard-card">
-          <Balance transactions={last30DaysTransactions} loading={loadingLast30DaysTransactions} />
-        </Box>
-        <Box className="box dashboard-transactions">
-          <LastTransactions
-            user={user}
-            transactions={lastTransactions}
-            setTransactions={setLastTransactions}
-            categoryList={categoryList}
-            loading={loadingLastTransactions}
-            bills={bills}
-            reloadTransactions={loadLastTransactions}
-          />
-        </Box>
-      </Box>
+      )}
     </>
   );
 }

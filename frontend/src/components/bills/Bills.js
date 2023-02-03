@@ -19,15 +19,31 @@ import { useConfirm } from "material-ui-confirm";
 import { DeleteBill } from "./DeleteBillRequest";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 function Bills() {
   const user = useContext(AuthContext);
   const [bills, setBills] = useState([]);
   const [billEditing, setBillEditing] = useState(null);
+  const [newBillName, setNewBillName] = useState("");
+  const [billAlreadyExists, setBillAlreadyExists] = useState(false);
+  const [newBillAmount, setNewBillAmount] = useState(0);
+  const [isNewAmountValid, setIsNewAmountValid] = useState(true);
   const [loading, setLoading] = useState(true);
   const [addBillFormOpen, setAddBillFormOpen] = useState(false);
   const user_id = user.user.user_id;
   const confirm = useConfirm();
+  const validAmount = new RegExp("^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$");
+
+  useEffect(() => {
+    validAmount.test(newBillAmount) ? setIsNewAmountValid(true) : setIsNewAmountValid(false);
+  }, [newBillAmount]);
+
+  useEffect(() => {
+    bills.find((bill) => bill.nazwa === newBillName && bill.id !== billEditing)
+      ? setBillAlreadyExists(true)
+      : setBillAlreadyExists(false);
+  }, [newBillName]);
 
   useEffect(() => {
     getBills();
@@ -54,10 +70,25 @@ function Bills() {
 
   const updateBill = async (bill) => {
     setLoading(true);
+    if (newBillName === "") {
+      toast.error("Nazwa konta nie może być pusta");
+      setLoading(false);
+      return;
+    }
+    if (!isNewAmountValid) {
+      toast.error("Niepoprawna kwota");
+      setLoading(false);
+      return;
+    }
+    if (billAlreadyExists) {
+      toast.error("Konto o takiej nazwie już istnieje");
+      setLoading(false);
+      return;
+    }
     try {
       const response = await axios.put(
         `/api/bills/update/${bill.id}/`,
-        JSON.stringify({ user: user_id, nazwa: bill.nazwa, kwota: bill.kwota }),
+        JSON.stringify({ user: user_id, nazwa: newBillName, kwota: newBillAmount }),
         {
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +99,9 @@ function Bills() {
       console.log(response.data);
       getBills();
       setBillEditing(null);
-      toast.success("Zmieniono nazwę konta");
+      setNewBillName("");
+      setNewBillAmount(0);
+      toast.success("Zmieniono");
     } catch (err) {
       console.log(err.response.data);
     }
@@ -151,16 +184,15 @@ function Bills() {
           <CircularProgress color="success" size={128} />
         ) : (
           <Box>
-            <Box>
-              <DoughnutChart bills={bills} />
-            </Box>
+            <Box>{!loading && bills.length > 0 && <DoughnutChart bills={bills} />}</Box>
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
-                margin: "32px 0",
+                pt: "32px",
+                pb: "32px",
               }}>
               <Button
                 variant="contained"
@@ -174,6 +206,29 @@ function Bills() {
                 Dodaj konto
               </Button>
             </Box>
+            {!loading && bills.length === 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mb: "32px",
+                  textAlign: "center",
+                }}>
+                <Typography variant="h4" color="success">
+                  Nie masz żadnych kont
+                </Typography>
+                <Typography variant="h6" color="success" sx={{ mt: "16px" }}>
+                  Dodaj konto, które będzie twoim źródłem pieniędzy
+                </Typography>
+                <Box component="span" sx={{ mt: "32px", p: "0 32px" }}>
+                  Zarządzaj swoimi źródłami finansowymi z łatwością. Masz masz pełen wgląd w swoje konta i możesz łatwo
+                  nadzorować swoje przychody i wydatki.
+                </Box>
+              </Box>
+            )}
+
             <List>
               {bills.map((bill, index) => (
                 <Link onClick={() => makeDefault(bill)}>
@@ -206,7 +261,7 @@ function Bills() {
                             <TextField
                               defaultValue={bill.nazwa}
                               variant="standard"
-                              onChange={(e) => (bills[index].nazwa = e.target.value)}
+                              onChange={(e) => setNewBillName(e.target.value)}
                               color="success"
                               onClick={(e) => {
                                 e.preventDefault();
@@ -232,8 +287,10 @@ function Bills() {
                               }}
                               defaultValue={bill.kwota}
                               variant="standard"
-                              onChange={(e) => (bills[index].kwota = e.target.value)}
+                              onChange={(e) => setNewBillAmount(e.target.value)}
                               color="success"
+                              error={!isNewAmountValid}
+                              helperText={!isNewAmountValid && "Nieprawidłowa kwota"}
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -267,7 +324,11 @@ function Bills() {
                             e.stopPropagation();
                           }}>
                           <IconButton
-                            onClick={() => setBillEditing(bill.id)}
+                            onClick={() => {
+                              setBillEditing(bill.id);
+                              setNewBillName(bill.nazwa);
+                              setNewBillAmount(bill.kwota);
+                            }}
                             sx={billEditing == bill.id ? { display: "none" } : { display: "block" }}>
                             <EditIcon color="info" />
                           </IconButton>

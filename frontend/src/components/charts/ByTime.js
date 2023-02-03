@@ -52,8 +52,10 @@ export default function ByTime(props) {
         "Grudzień",
       ]);
     }
-    setLoadingChart(true);
-    makeChart();
+    setTimeout(() => {
+      setLoadingChart(true);
+      makeChart();
+    }, 100);
   }, [interval, arrowValueForMonth, arrowValueForYear]);
 
   const makeChart = () => {

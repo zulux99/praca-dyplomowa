@@ -4,6 +4,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { AddCategory } from "./AddCategoryRequest";
 import { toast } from "react-toastify";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import { width } from "@mui/system";
 
 function AddCategoryForm(props) {
   const [categoryName, setCategoryName] = useState("");
@@ -46,7 +50,42 @@ function AddCategoryForm(props) {
             required
             onChange={(e) => setCategoryName(e.target.value)}
           />
-          <Button type="submit" variant="contained" color="success" size="large">
+          {props.checkbox && (
+            <FormControl
+              component="fieldset"
+              sx={{
+                margin: "0 16px",
+              }}>
+              <FormControlLabel
+                value="Wydatki"
+                control={<span />}
+                label="Wydatki"
+                onClick={() => props.setIsIncome(false)}
+                sx={{
+                  backgroundColor: !props.isIncome && "rgba(0,255,0,0.15)",
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "0",
+                  padding: "12px",
+                }}
+              />
+              <FormControlLabel
+                value="Przychody"
+                control={<span />}
+                label="Przychody"
+                onClick={() => props.setIsIncome(true)}
+                sx={{
+                  backgroundColor: props.isIncome && "rgba(0,255,0,0.15)",
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "0",
+                  padding: "12px",
+                }}
+              />
+            </FormControl>
+          )}
+
+          <Button type="submit" variant="contained" color="success" size="large" disabled={categoryName.length === 0}>
             Dodaj
           </Button>
         </form>
