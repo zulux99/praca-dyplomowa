@@ -130,8 +130,17 @@ export default function ByCategory(props) {
 
   return (
     <>
-      <Box className="box">
-        <form onSubmit={handleSubmit}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: "400px",
+          margin: "0 auto",
+        }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            width: "100%",
+          }}>
           <RadioGroup
             row
             defaultValue="top"
@@ -171,7 +180,14 @@ export default function ByCategory(props) {
               <CircularProgress color="success" />
             </Box>
           ) : (
-            <Button type="submit" variant="contained" color="success" size="large">
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              size="large"
+              sx={{
+                mb: 2,
+              }}>
               Pokaż wykres
             </Button>
           )}

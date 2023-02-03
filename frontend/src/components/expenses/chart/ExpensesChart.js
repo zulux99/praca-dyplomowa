@@ -15,7 +15,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart, BarController, BarElement, LinearScale, CategoryScale, Title } from "chart.js";
 Chart.register(BarController, BarElement, LinearScale, CategoryScale, Title, ChartDataLabels);
 
-export default function IncomesChart(props) {
+export default function ExpensesChart(props) {
   const [loading, setLoading] = useState(true);
   const [interval, setInterval] = useState(1);
   const [arrowValue, setArrowValue] = useState(0);
@@ -119,8 +119,8 @@ export default function IncomesChart(props) {
               {
                 label: "Przychody",
                 data: data,
-                backgroundColor: ["rgba(50, 205, 50, 0.5)"],
-                borderColor: ["rgba(50, 205, 50, 1)"],
+                backgroundColor: ["rgba(255, 0, 0, 0.2)"],
+                borderColor: ["rgba(255, 0, 0, 1)"],
                 borderWidth: 1,
               },
             ],
@@ -221,7 +221,7 @@ export default function IncomesChart(props) {
             maxWidth: "300px",
             marginBottom: "16px",
           }}>
-          Dodaj przychód
+          Dodaj wydatek
         </Button>
       </Box>
     </>

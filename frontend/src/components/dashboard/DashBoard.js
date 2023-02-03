@@ -42,7 +42,7 @@ export default function DashBoard() {
         console.log("Nie udalo sie pobrać transakcji do wykresu");
       } else {
         setLast30DaysTransactions(
-          response.sort((a, b) => (a.data > b.data ? -1 : a.data === b.data ? (a.id > b.id ? -1 : 1) : 1))
+          response.results.sort((a, b) => (a.data > b.data ? -1 : a.data === b.data ? (a.id > b.id ? -1 : 1) : 1))
         );
         setLoadingLast30DaysTransactions(false);
       }

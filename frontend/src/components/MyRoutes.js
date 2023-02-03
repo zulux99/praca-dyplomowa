@@ -5,12 +5,12 @@ import Register from "./Register";
 import Login from "./Login";
 import Debtors from "./debtors/Debtors";
 import PrivateRoute from "./PrivateRoute";
-import Incomes from "./incomes/Incomes";
 import Transactions from "./transactions/Transactions";
 import ProfilePage from "./profile/ProfilePage";
-import Expenses from "./expenses/Expenses";
 import Charts from "./charts/Charts";
 import Categories from "./categories/Categories";
+import Incomes from "./incomes/Incomes";
+import Expenses from "./expenses/Expenses";
 
 function MyRoutes(props) {
   return (
@@ -40,6 +40,14 @@ function MyRoutes(props) {
         }
       />
       <Route
+        path="expenses"
+        element={
+          <PrivateRoute>
+            <Expenses />
+          </PrivateRoute>
+        }
+      />
+      <Route
         path="transactions"
         element={
           <PrivateRoute>
@@ -60,14 +68,6 @@ function MyRoutes(props) {
         element={
           <PrivateRoute>
             <Debtors />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="expenses"
-        element={
-          <PrivateRoute>
-            <Expenses />
           </PrivateRoute>
         }
       />

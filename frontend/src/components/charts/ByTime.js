@@ -183,7 +183,12 @@ export default function ByTime(props) {
 
   return (
     <>
-      <Box className="box">
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: "400px",
+          margin: "auto",
+        }}>
         {props.loadingCategories ? (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <CircularProgress color="success" />
@@ -204,7 +209,9 @@ export default function ByTime(props) {
           type="submit"
           variant="contained"
           color="success"
+          fullWidth
           size="large"
+          sx={{ mt: 2 }}
           onClick={() => {
             makeChart();
           }}>

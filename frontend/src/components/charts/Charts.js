@@ -31,17 +31,7 @@ export default function Charts() {
 
   return (
     <>
-      <Box
-        className="box"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          margin: "32px 0",
-          padding: "16px 8px",
-        }}>
+      <Box className="box" sx={{}}>
         <Tabs
           value={tab}
           onChange={(e, newValue) => {
@@ -54,8 +44,10 @@ export default function Charts() {
           }}
           sx={{
             marginBottom: "32px",
-          }}
-          centered>
+            ".MuiTabs-flexContainer": {
+              justifyContent: "center",
+            },
+          }}>
           <Tab
             label={
               <span
@@ -83,10 +75,16 @@ export default function Charts() {
           onChangeIndex={(index) => {
             setTab(index);
           }}>
-          <Box>
+          <Box
+            sx={{
+              paddingTop: "8px",
+            }}>
             <ByCategory user={user} categories={categories} loadingCategories={loadingCategories} tab={tab} />
           </Box>
-          <Box>
+          <Box
+            sx={{
+              paddingTop: "8px",
+            }}>
             <ByTime
               tab={tab}
               user={user}

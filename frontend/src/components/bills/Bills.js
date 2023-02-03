@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
+import Close from "@mui/icons-material/Close";
 import { useConfirm } from "material-ui-confirm";
 import { DeleteBill } from "./DeleteBillRequest";
 import { toast } from "react-toastify";
@@ -139,147 +140,166 @@ function Bills() {
 
   return (
     <>
-      <Box className="box">
-        <Box>
-          <DoughnutChart bills={bills} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            margin: "32px 0",
-          }}>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => setAddBillFormOpen(true)}
-            size="large"
-            sx={{
-              width: "100%",
-              maxWidth: "240px",
-            }}>
-            Dodaj konto
-          </Button>
-        </Box>
-        <List>
-          {loading ? (
-            <CircularProgress color="success" />
-          ) : (
-            bills.map((bill, index) => (
-              <Link onClick={() => makeDefault(bill)}>
-                <Box key={index}>
-                  <ListItem
-                    key={index}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}>
-                    <Box
-                      component="span"
+      <Box
+        className="box"
+        sx={{
+          display: loading && "flex",
+          justifyContent: loading && "center",
+          padding: loading && "64px",
+        }}>
+        {loading ? (
+          <CircularProgress color="success" size={128} />
+        ) : (
+          <Box>
+            <Box>
+              <DoughnutChart bills={bills} />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                margin: "32px 0",
+              }}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => setAddBillFormOpen(true)}
+                size="large"
+                sx={{
+                  width: "100%",
+                  maxWidth: "240px",
+                }}>
+                Dodaj konto
+              </Button>
+            </Box>
+            <List>
+              {bills.map((bill, index) => (
+                <Link onClick={() => makeDefault(bill)}>
+                  <Box key={index}>
+                    <ListItem
+                      key={index}
                       sx={{
-                        backgroundColor: bill.domyslne && "rgba(0, 255, 0, 0.15)",
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        maxWidth: "640px",
-                        padding: "8px 16px",
+                        justifyContent: "center",
                       }}>
                       <Box
+                        component="span"
                         sx={{
+                          backgroundColor: bill.domyslne && "rgba(0, 255, 0, 0.15)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
-                          width: "75%",
+                          width: "100%",
+                          maxWidth: "640px",
+                          padding: "8px 16px",
                         }}>
-                        {billEditing === bill.id && (
-                          <TextField
-                            defaultValue={bill.nazwa}
-                            variant="standard"
-                            onChange={(e) => (bills[index].nazwa = e.target.value)}
-                            color="success"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                updateBill(bills[index]);
-                                e.target.blur();
-                              }
-                            }}
-                          />
-                        )}
-                        {billEditing !== bill.id && (
-                          <InputLabel className="konto_nazwa" sx={{}}>
-                            {bill.nazwa + " "}
-                          </InputLabel>
-                        )}
-                        {billEditing === bill.id && (
-                          <TextField
-                            sx={{
-                              marginLeft: "16px",
-                            }}
-                            defaultValue={bill.kwota}
-                            variant="standard"
-                            onChange={(e) => (bills[index].kwota = e.target.value)}
-                            color="success"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            // numeric input
-                            type="number"
-                            InputProps={{
-                              inputProps: {
-                                inputMode: "numeric",
-                              },
-                            }}
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                updateBill(bills[index]);
-                                e.target.blur();
-                              }
-                            }}
-                          />
-                        )}
-                        {billEditing !== bill.id && <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "75%",
+                          }}>
+                          {billEditing === bill.id && (
+                            <TextField
+                              defaultValue={bill.nazwa}
+                              variant="standard"
+                              onChange={(e) => (bills[index].nazwa = e.target.value)}
+                              color="success"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  updateBill(bills[index]);
+                                  e.target.blur();
+                                }
+                              }}
+                            />
+                          )}
+                          {billEditing !== bill.id && (
+                            <InputLabel className="konto_nazwa" sx={{}}>
+                              {bill.nazwa + " "}
+                            </InputLabel>
+                          )}
+                          {billEditing === bill.id && (
+                            <TextField
+                              sx={{
+                                marginLeft: "16px",
+                              }}
+                              defaultValue={bill.kwota}
+                              variant="standard"
+                              onChange={(e) => (bills[index].kwota = e.target.value)}
+                              color="success"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              // numeric input
+                              type="number"
+                              InputProps={{
+                                inputProps: {
+                                  inputMode: "numeric",
+                                },
+                              }}
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  updateBill(bills[index]);
+                                  e.target.blur();
+                                }
+                              }}
+                            />
+                          )}
+                          {billEditing !== bill.id && <InputLabel className="konto_kwota">{bill.kwota} zł</InputLabel>}
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            width: "25%",
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}>
+                          <IconButton
+                            onClick={() => setBillEditing(bill.id)}
+                            sx={billEditing == bill.id ? { display: "none" } : { display: "block" }}>
+                            <EditIcon color="info" />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => updateBill(bill)}
+                            sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
+                            <Check color="success" />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => setBillEditing(null)}
+                            sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
+                            <Close color="error" />
+                          </IconButton>
+                          <IconButton onClick={() => deleteBill(bill.id)}>
+                            <DeleteIcon color="error" />
+                          </IconButton>
+                        </Box>
                       </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: "25%",
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}>
-                        <IconButton
-                          onClick={() => setBillEditing(bill.id)}
-                          sx={billEditing == bill.id ? { display: "none" } : { display: "block" }}>
-                          <EditIcon color="info" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => updateBill(bill)}
-                          sx={billEditing == bill.id ? { display: "block" } : { display: "none" }}>
-                          <Check color="success" />
-                        </IconButton>
-                        <IconButton onClick={() => deleteBill(bill.id)}>
-                          <DeleteIcon color="error" />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </ListItem>
-                </Box>
-              </Link>
-            ))
-          )}
-        </List>
-        <AddBill bills={bills} user={user} getBills={getBills} open={addBillFormOpen} setOpen={setAddBillFormOpen} />
+                    </ListItem>
+                  </Box>
+                </Link>
+              ))}
+            </List>
+            <AddBill
+              bills={bills}
+              user={user}
+              getBills={getBills}
+              open={addBillFormOpen}
+              setOpen={setAddBillFormOpen}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );

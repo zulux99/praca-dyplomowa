@@ -5,14 +5,14 @@ import ListItem from "@mui/material/ListItem";
 import InfiniteScroll from "react-infinite-scroller";
 import TransactionAccordion from "../transactions/TransactionAccordion";
 
-export default function IncomesList(props) {
+export default function ExpensesList(props) {
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [expanded, setExpanded] = useState(false);
 
   const loadMore = async () => {
     try {
-      const response = await axios.get("/api/transactions/?" + "&incomes" + "&page=" + pageNumber, {
+      const response = await axios.get("/api/transactions/?" + "&expenses" + "&page=" + pageNumber, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${props.user.authTokens.access}`,

@@ -1,26 +1,26 @@
 import { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
-import AddIncomeForm from "./AddIncomeForm";
-import Box from "@mui/material/Box";
 import IncomesChart from "./chart/IncomesChart";
 import IncomesList from "./IncomesList";
+import AddIncomeForm from "./AddIncomeForm";
+import Box from "@mui/material/Box";
 import { GetAllBills } from "../bills/GetAllBills";
 import { GetAllCategories } from "../categories/GetAllCategoriesRequest";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
-export default function Incomes() {
+export default function Incomes(props) {
   const user = useContext(AuthContext);
   const [categoryList, setCategoryList] = useState([]);
   const [bills, setBills] = useState([]);
   const [billId, setBillId] = useState("");
-  const [incomes, setIncomes] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     GetAllBills(user).then((response) => {
       if (response === -1) {
-        console.log("Nie udało się pobrać listy rachunków");
+        console.log("Nie udało się pobrać listy kont");
       } else {
         setBills(response);
         const defaultBill = response.find((bill) => bill.domyslne === true);
@@ -29,32 +29,36 @@ export default function Incomes() {
     });
     GetAllCategories({
       user: user,
-      url: "/api/categories/",
+      url: "/api/categories/?&incomes",
     }).then((response) => {
       if (response === -1) {
         console.log("Nie udało się pobrać listy kategorii");
       } else {
-        setCategoryList(
-          response.filter((category) => category.przychod === true).sort((a, b) => (a.nazwa > b.nazwa ? 1 : -1))
-        );
+        setCategoryList(response);
       }
     });
   }, [user]);
 
-  const closeModalAddIncome = () => {
+  const closeModalAddTransaction = () => {
     setOpen(false);
   };
 
   return (
     <>
       <Box className="box">
-        <IncomesChart user={user} setOpen={setOpen} />
+        <IncomesChart user={user} setOpen={setOpen} transactions={transactions} />
       </Box>
       <Box className="box">
-        <IncomesList categoryList={categoryList} bills={bills} user={user} incomes={incomes} setIncomes={setIncomes} />
+        <IncomesList
+          categoryList={categoryList}
+          bills={bills}
+          user={user}
+          transactions={transactions}
+          setTransactions={setTransactions}
+        />
       </Box>
 
-      <Modal className="modal" open={open} onClose={closeModalAddIncome} aria-labelledby="Dodaj przychód">
+      <Modal className="modal" open={open} onClose={closeModalAddTransaction} aria-labelledby="Dodaj przychód">
         <Fade in={open}>
           <Box className="modal-box">
             <AddIncomeForm
@@ -64,8 +68,8 @@ export default function Incomes() {
               setBillId={setBillId}
               bills={bills}
               setBills={setBills}
-              setIncomes={setIncomes}
-              closeModalAddIncome={closeModalAddIncome}
+              setTransactions={setTransactions}
+              closeModalAddTransaction={closeModalAddTransaction}
             />
           </Box>
         </Fade>

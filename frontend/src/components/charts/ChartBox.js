@@ -21,6 +21,7 @@ export default function ChartBox(props) {
         display: props.transactions.length > 0 ? "flex" : props.submitted ? "flex" : "none",
         justifyContent: "center",
         flexDirection: "column",
+        mb: 6,
       }}>
       {props.tab === 1 && (
         <Box
@@ -29,6 +30,7 @@ export default function ChartBox(props) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            gap: "16px",
           }}>
           <Tabs
             value={props.interval}
@@ -36,9 +38,32 @@ export default function ChartBox(props) {
               props.setInterval(newValue);
             }}
             aria-label="Wybierz przedział czasu"
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: "green",
+              },
+            }}
             centered>
-            <Tab label="Miesiąc" />
-            <Tab label="Rok" />
+            <Tab
+              label={
+                <span
+                  style={{
+                    color: props.interval === 0 ? "green" : "black",
+                  }}>
+                  Miesiąc
+                </span>
+              }
+            />
+            <Tab
+              label={
+                <span
+                  style={{
+                    color: props.interval === 1 ? "green" : "black",
+                  }}>
+                  Rok
+                </span>
+              }
+            />
           </Tabs>
           <Typography
             variant="h5"
@@ -48,7 +73,6 @@ export default function ChartBox(props) {
             }}>
             Przedział czasowy
           </Typography>
-          <span>{props.showedDate && props.showedDate}</span>
           {props.interval === 0 && (
             <span>
               <IconButton
@@ -57,6 +81,7 @@ export default function ChartBox(props) {
                 }}>
                 <NavigateBeforeIcon />
               </IconButton>
+              <span>{props.showedDate && props.showedDate}</span>
               <IconButton
                 onClick={() => {
                   props.setArrowValueForMonth(props.arrowValueForMonth + 1);
@@ -73,6 +98,7 @@ export default function ChartBox(props) {
                 }}>
                 <NavigateBeforeIcon />
               </IconButton>
+              <span>{props.showedDate && props.showedDate}</span>
               <IconButton
                 onClick={() => {
                   props.setArrowValueForYear(props.arrowValueForYear + 1);
@@ -94,13 +120,7 @@ export default function ChartBox(props) {
             justifyContent: "center",
             alignItems: "center",
           }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
+          <Box sx={{}}>
             {props.tab === 0 && (
               <Box
                 sx={{

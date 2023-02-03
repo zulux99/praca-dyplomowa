@@ -177,6 +177,7 @@ function Debtors() {
         <Box
           component="span"
           sx={{
+            marginTop: "32px",
             marginBottom: "32px",
           }}>
           <Button variant="contained" onClick={openModalAddDebtor} color="success" size="large">
@@ -198,9 +199,15 @@ function Debtors() {
           sx={{
             padding: "0",
           }}>
-          <Box className="dlugi">
+          <Box
+            className="dlugi"
+            sx={{
+              display: loadingDebts && "flex",
+              alignItems: loadingDebts && "center",
+              padding: loadingDebts && "64px",
+            }}>
             {loadingDebts ? (
-              <CircularProgress color="success" />
+              <CircularProgress color="success" size={128} />
             ) : (
               debts
                 .sort((a, b) => {
@@ -227,6 +234,7 @@ function Debtors() {
                         className="dlug-info"
                         sx={{
                           flexWrap: "wrap",
+                          paddingRight: "80px",
                         }}>
                         <ListItem className="nazwa_dluznika">{debt.nazwa_dluznika}</ListItem>
                         <ListItem className="kwota_do_splaty">
@@ -238,10 +246,8 @@ function Debtors() {
                         </ListItem>
                         <ListItem
                           sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                            alignItems: "center",
+                            position: "absolute",
+                            right: "0",
                           }}>
                           {!debt.splacony && getTotalPayments(debt) != debt.kwota_do_splaty && (
                             <IconButton

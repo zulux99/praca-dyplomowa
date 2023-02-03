@@ -16,7 +16,7 @@ import Fade from "@mui/material/Fade";
 import AddCategoryForm from "../categories/AddCategoryForm";
 import Box from "@mui/material/Box";
 
-export default function AddIncomeForm(props) {
+export default function AddExpenseForm(props) {
   const user = useContext(AuthContext);
   const [category, setCategory] = useState(null);
   const [description, setDescription] = useState("");
@@ -37,23 +37,25 @@ export default function AddIncomeForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (paymentValueValid) {
-      AddTransaction(user, paymentValue, paymentDate, props.billId, category.id, true, description).then((response) => {
-        if (response === -1) {
-          toast.error("Nie udało się dodać przychodu");
-        } else {
-          props.setTransactions((prevTransactions) => {
-            const newTransactions = [...prevTransactions, response];
-            newTransactions.sort((a, b) => (a.data > b.data ? -1 : 1));
-            return newTransactions;
-          });
-          toast.success("Dodano przychód");
-          e.target.reset();
-          setInputValue("");
-          setCategory(null);
-          setDescription("");
-          props.closeModalAddTransaction();
+      AddTransaction(user, paymentValue, paymentDate, props.billId, category.id, false, description).then(
+        (response) => {
+          if (response === -1) {
+            toast.error("Nie udało się dodać wydatku");
+          } else {
+            props.setTransactions((prevTransactions) => {
+              const newTransactions = [...prevTransactions, response];
+              newTransactions.sort((a, b) => (a.data > b.data ? -1 : 1));
+              return newTransactions;
+            });
+            toast.success("Dodano wydatek");
+            e.target.reset();
+            setInputValue("");
+            setCategory(null);
+            setDescription("");
+            props.closeModalAddTransaction();
+          }
         }
-      });
+      );
     } else {
       toast.error("Niepoprawna kwota");
     }
@@ -66,7 +68,7 @@ export default function AddIncomeForm(props) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2>Dodaj przychód</h2>
+        <h2>Dodaj wydatek</h2>
         <TextField
           className="input"
           autoComplete="off"
@@ -153,7 +155,7 @@ export default function AddIncomeForm(props) {
           inputProps={{ maxLength: 500 }}
         />
         <Button variant="contained" type="submit" color="success" size="large">
-          Dodaj przychód
+          Dodaj wydatek
         </Button>
       </form>
       <Modal className="modal" open={open} onClose={closeModalAddCategory} aria-labelledby="Dodaj kategorię">
@@ -163,7 +165,7 @@ export default function AddIncomeForm(props) {
               user={user}
               categoryList={props.categoryList}
               setCategoryList={props.setCategoryList}
-              isIncome={true}
+              isIncome={false}
               open={open}
               setOpen={setOpen}
             />
