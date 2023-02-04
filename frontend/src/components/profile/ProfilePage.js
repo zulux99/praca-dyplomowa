@@ -152,8 +152,8 @@ export default function ProfilePage() {
                 id="outlined-basic"
                 label="Hasło"
                 variant="outlined"
+                autoComplete="new-password"
                 type="password"
-                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 color="success"
                 size="small"
