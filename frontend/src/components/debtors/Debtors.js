@@ -357,7 +357,7 @@ function Debtors() {
                                   }
                                 })
                                 .map((payment) => (
-                                  <div>
+                                  <div key={payment.id}>
                                     <List className="splata" key={payment.id}>
                                       <ListItem className="kwota">
                                         Kwota:&nbsp;

@@ -29,7 +29,6 @@ function AddDebt(props) {
       }
     });
     getBills();
-    console.log(props.open);
   }, []);
 
   useEffect(() => {

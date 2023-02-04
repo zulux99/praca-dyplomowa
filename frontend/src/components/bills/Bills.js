@@ -230,7 +230,7 @@ function Bills() {
           ) : (
             <List>
               {bills.map((bill, index) => (
-                <Link onClick={() => makeDefault(bill)}>
+                <Link onClick={() => makeDefault(bill)} key={index}>
                   <Box key={index}>
                     <ListItem
                       key={index}

@@ -33,7 +33,6 @@ export default function ByTime(props) {
         labels.push(i);
       }
       setLabels(labels);
-      console.log("showedDate: ", showedDate);
     } else if (interval === 1) {
       let date = new Date();
       let year = date.getFullYear() + arrowValueForYear;
@@ -78,8 +77,6 @@ export default function ByTime(props) {
         url += "&date_from=" + startDate;
         url += "&date_to=" + endDate;
         setShowedDate(new Date(year, month, 1).toLocaleDateString("pl-PL", { month: "long", year: "numeric" }));
-        console.log("startDate: ", startDate);
-        console.log("endDate: ", endDate);
       }
       if (interval === 1) {
         let date = new Date();
@@ -90,8 +87,6 @@ export default function ByTime(props) {
         url += "&date_from=" + startDate;
         url += "&date_to=" + endDate;
         setShowedDate(new Date(year, 0, 1).toLocaleDateString("pl-PL", { year: "numeric" }));
-        console.log("startDate: ", startDate);
-        console.log("endDate: ", endDate);
       }
       GetData({
         user: props.user,
@@ -119,7 +114,6 @@ export default function ByTime(props) {
                 setIsAnyExpense(true);
               }
             });
-            console.log("data: ", data);
             setDatasets([
               {
                 data: data,
@@ -157,7 +151,6 @@ export default function ByTime(props) {
                 setIsAnyExpense(true);
               }
             });
-            console.log("data: ", data);
             setDatasets([
               {
                 data: data,

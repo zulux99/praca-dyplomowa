@@ -35,7 +35,6 @@ function AddPayment(props) {
     const paymentsSum = payments.reduce((acc, payment) => acc + parseFloat(payment.kwota), 0);
     const debt = props.debts.filter((debt) => debt.id === debt_id);
     const debtValue = debt[0].kwota_do_splaty;
-    console.log(debtValue - paymentsSum);
     return debtValue - paymentsSum;
   };
 
@@ -57,7 +56,6 @@ function AddPayment(props) {
           },
         }
       );
-      console.log(response.data);
       e.target.reset();
       setPaymentValue("");
       setFullPayment(false);

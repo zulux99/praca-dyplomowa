@@ -59,6 +59,7 @@ function CategoryList(props) {
         <CircularProgress color="success" />
       ) : (
         props.categoryList
+          .filter((category) => category.przychod)
           .sort((a, b) => a.nazwa.localeCompare(b.nazwa))
           .sort((a, b) => a.przychod - b.przychod)
           .map((category, index) => (

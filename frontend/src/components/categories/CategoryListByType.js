@@ -10,7 +10,6 @@ import Check from "@mui/icons-material/Check";
 export default function CategoryListByType(props) {
   return (
     <Box
-      key={props.key}
       sx={{
         display: "flex",
         alignItems: "center",

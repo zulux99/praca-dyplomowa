@@ -93,7 +93,6 @@ export default function ByCategory(props) {
           }
         });
       });
-      console.log(categoriesAndSums);
       setDatasets([
         {
           data: categoriesAndSums.map((item) => item.sum),
