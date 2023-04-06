@@ -21,12 +21,6 @@ function Register() {
   const [firstName, setFirstName] = useState("");
 
   useEffect(() => {
-    if (user.user) {
-      return <Navigate to="/" />;
-    }
-  }, []);
-
-  useEffect(() => {
     password !== password2 && password2 !== "" ? setPasswordMatch(false) : setPasswordMatch(true);
   }, [password, password2]);
 
@@ -52,6 +46,10 @@ function Register() {
       }
     }
   };
+
+  if (user.user) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Box className="tlo">

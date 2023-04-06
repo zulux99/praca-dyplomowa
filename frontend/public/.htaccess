@@ -1,5 +1,5 @@
   RewriteEngine On
-  RewriteRule ^api/(.*[^/])/?$ http://113.30.191.73:8000/api/$1/ [QSA,L,R=307]
+#  RewriteRule ^api/(.*[^/])/?$ http://113.30.191.73:8000/api/$1/ [QSA,L,R=307]
   RewriteBase /
   RewriteCond %{SERVER_PORT} 80
   RewriteRule ^index\.html$ - [L]
